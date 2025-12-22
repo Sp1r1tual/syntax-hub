@@ -1,0 +1,24 @@
+{
+  "name": "syntax-hub",
+  "private": true,
+  "version": "0.0.1",
+  "author": "Andrii Zub",
+  "license": "MIT",
+  "scripts": {
+    "lint:client": "npm run lint --prefix client",
+    "lint:server": "npm run lint --prefix server",
+    "format": "prettier --write .",
+    "postinstall": "npm install --prefix client && npm install --prefix server",
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,css,json,md}": "prettier --write"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.6.2"
+  }
+}

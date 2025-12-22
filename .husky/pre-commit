@@ -1,0 +1,2 @@
+echo "Running lint-staged..."
+npx husky add .husky/pre-commit "npx lint-staged"
