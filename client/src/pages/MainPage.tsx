@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
-import { Hero } from "@/components/sections/hero/Hero";
+import { Hero } from "@/ui/sections/hero/Hero";
 
 import styles from "./styles/MainPage.module.css";
 

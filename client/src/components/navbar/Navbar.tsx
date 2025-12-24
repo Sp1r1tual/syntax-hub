@@ -13,8 +13,26 @@ import styles from "./styles/Navbar.module.css";
 
 export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [learningOpen, setLearningOpen] = useState(false);
+  const [communityOpen, setCommunityOpen] = useState(false);
+  const [mobileLearningOpen, setMobileLearningOpen] = useState(false);
+  const [mobileCommunityOpen, setMobileCommunityOpen] = useState(false);
 
-  const toggleMobileMenu = () => setMobileOpen((prev) => !prev);
+  const toggleMobileMenu = () => {
+    setMobileOpen((prev) => !prev);
+    setMobileLearningOpen(false);
+    setMobileCommunityOpen(false);
+  };
+
+  const toggleMobileLearning = () => {
+    setMobileLearningOpen((prev) => !prev);
+    setMobileCommunityOpen(false);
+  };
+
+  const toggleMobileCommunity = () => {
+    setMobileCommunityOpen((prev) => !prev);
+    setMobileLearningOpen(false);
+  };
 
   return (
     <>
@@ -30,14 +48,50 @@ export const Navbar = () => {
             </Link>
 
             <div className={styles.desktopMenu}>
-              <button className={styles.link}>
-                Навчання
-                <img src={DownArrowSvg} alt="" className={styles.arrow} />
-              </button>
-              <button className={styles.link}>
-                Спільнота
-                <img src={DownArrowSvg} alt="" className={styles.arrow} />
-              </button>
+              <div
+                className={styles.dropdownWrapper}
+                onMouseEnter={() => setLearningOpen(true)}
+                onMouseLeave={() => setLearningOpen(false)}
+              >
+                <button className={styles.link}>
+                  Навчання
+                  <img src={DownArrowSvg} alt="" className={styles.arrow} />
+                </button>
+                {learningOpen && (
+                  <div className={styles.dropdown}>
+                    <Link to="/courses" className={styles.dropdownItem}>
+                      Вивчення коду
+                    </Link>
+                    <Link to="/tutorials" className={styles.dropdownItem}>
+                      Дорожні карти
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              <div
+                className={styles.dropdownWrapper}
+                onMouseEnter={() => setCommunityOpen(true)}
+                onMouseLeave={() => setCommunityOpen(false)}
+              >
+                <button className={styles.link}>
+                  Спільнота
+                  <img src={DownArrowSvg} alt="" className={styles.arrow} />
+                </button>
+                {communityOpen && (
+                  <div className={styles.dropdown}>
+                    <Link to="/forum" className={styles.dropdownItem}>
+                      Форум
+                    </Link>
+                    <Link to="/events" className={styles.dropdownItem}>
+                      Події
+                    </Link>
+                    <Link to="/blog" className={styles.dropdownItem}>
+                      Блог
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -77,14 +131,85 @@ export const Navbar = () => {
         }`}
       >
         <div className={styles.mobileMenu}>
-          <button className={styles.link}>
-            Навчання
-            <img src={RightArrowSvg} alt="" className={styles.arrow} />
-          </button>
-          <button className={styles.link}>
-            Спільнота
-            <img src={RightArrowSvg} alt="" className={styles.arrow} />
-          </button>
+          {!mobileLearningOpen && !mobileCommunityOpen && (
+            <>
+              <button className={styles.link} onClick={toggleMobileLearning}>
+                Навчання
+                <img src={RightArrowSvg} alt="" className={styles.arrow} />
+              </button>
+              <button className={styles.link} onClick={toggleMobileCommunity}>
+                Спільнота
+                <img src={RightArrowSvg} alt="" className={styles.arrow} />
+              </button>
+            </>
+          )}
+
+          {mobileLearningOpen && (
+            <div className={styles.mobileSubmenu}>
+              <button
+                className={styles.mobileBackBtn}
+                onClick={() => setMobileLearningOpen(false)}
+              >
+                <img
+                  src={RightArrowSvg}
+                  alt=""
+                  className={`${styles.arrow} ${styles.arrowBack}`}
+                />
+                Назад
+              </button>
+              <Link
+                to="/"
+                className={styles.link}
+                onClick={() => setMobileOpen(false)}
+              >
+                Курси
+              </Link>
+              <Link
+                to="/"
+                className={styles.link}
+                onClick={() => setMobileOpen(false)}
+              >
+                Дорожні карти
+              </Link>
+            </div>
+          )}
+
+          {mobileCommunityOpen && (
+            <div className={styles.mobileSubmenu}>
+              <button
+                className={styles.mobileBackBtn}
+                onClick={() => setMobileCommunityOpen(false)}
+              >
+                <img
+                  src={RightArrowSvg}
+                  alt=""
+                  className={`${styles.arrow} ${styles.arrowBack}`}
+                />
+                Назад
+              </button>
+              <Link
+                to="/"
+                className={styles.link}
+                onClick={() => setMobileOpen(false)}
+              >
+                Форум
+              </Link>
+              <Link
+                to="/"
+                className={styles.link}
+                onClick={() => setMobileOpen(false)}
+              >
+                Події
+              </Link>
+              <Link
+                to="/"
+                className={styles.link}
+                onClick={() => setMobileOpen(false)}
+              >
+                Блог
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 

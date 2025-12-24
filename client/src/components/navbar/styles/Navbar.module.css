@@ -58,6 +58,70 @@
   gap: 1rem;
 }
 
+.dropdownWrapper {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding-top: 0.5rem;
+  background: linear-gradient(
+    145deg,
+    rgba(46, 46, 50, 0.95) 0%,
+    rgba(42, 42, 46, 0.85) 100%
+  );
+  backdrop-filter: blur(14px) saturate(140%);
+  border-radius: 0.5rem;
+  min-width: 12rem;
+  display: flex;
+  flex-direction: column;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+.dropdown::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+  background: transparent;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  padding: 0.6rem 1rem;
+  color: #f5f5f5;
+  border-radius: 0.4rem;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  margin: 0.25rem 0.5rem;
+}
+
+.dropdownItem:first-child {
+  margin-top: 0.5rem;
+}
+
+.dropdownItem:last-child {
+  margin-bottom: 0.5rem;
+}
+
+.dropdownItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .leftSide {
   display: flex;
   align-items: center;
@@ -112,6 +176,10 @@ a {
   width: 1rem;
   height: 1rem;
   opacity: 0.7;
+}
+
+.arrowBack {
+  transform: rotate(180deg);
 }
 
 .themeToggler {
@@ -207,7 +275,7 @@ a {
     opacity 0.3s ease,
     transform 0.3s ease;
   pointer-events: none;
-  position: relative;
+  position: fixed;
   z-index: 200;
 }
 
@@ -231,6 +299,38 @@ a {
   );
   backdrop-filter: blur(14px) saturate(140%);
   border-radius: 0.5rem;
+}
+
+.mobileSubmenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.mobileBackBtn {
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f5f5f5;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobileBackBtn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
 .mobileMenuImg {
