@@ -4,11 +4,13 @@ import App from "./App";
 import { PageLayout } from "./layouts/PageLayout";
 import { MainPage } from "./pages/MainPage";
 import { CoursesPage } from "./pages/CoursesPage";
+import { RouteErrorFallback } from "./components/errors/RouteErrorFallback";
 
 export const Router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <RouteErrorFallback />,
     children: [
       {
         element: <PageLayout />,
