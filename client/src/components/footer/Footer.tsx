@@ -31,7 +31,7 @@ export const Footer = () => {
           <div className={styles.copyright}>
             © {new Date().getFullYear()}
             <span className={styles.copyrightText}>
-              SyntaxHub - made for progress
+              SyntaxHub - зроблено для прогресу
             </span>
           </div>
         </div>

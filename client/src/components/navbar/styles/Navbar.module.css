@@ -22,11 +22,11 @@
   padding: 0.7rem 0;
   background: linear-gradient(
     145deg,
-    rgba(17, 17, 19, 0.95) 0%,
-    rgba(34, 34, 38, 0.85) 100%
+    rgba(46, 46, 50, 0.95) 0%,
+    rgba(42, 42, 46, 0.85) 100%
   );
   backdrop-filter: blur(14px) saturate(140%);
-  position: relative;
+  position: fixed;
   z-index: 100;
 }
 
@@ -88,6 +88,9 @@ a {
   align-items: center;
   justify-content: center;
   text-align: center;
+  font-family:
+    Onest Variable,
+    sans-serif;
   line-height: 1.2;
 }
 
@@ -133,8 +136,8 @@ a {
   right: 1rem;
   background: linear-gradient(
     145deg,
-    rgba(17, 17, 19, 0.95) 0%,
-    rgba(34, 34, 38, 0.85) 100%
+    rgba(46, 46, 50, 0.95) 0%,
+    rgba(42, 42, 46, 0.85) 100%
   );
   backdrop-filter: blur(14px) saturate(140%);
   border-radius: 15%;
@@ -174,6 +177,9 @@ a {
 }
 
 .authBtnText {
+  font-family:
+    Onest Variable,
+    sans-serif;
   display: inline;
 }
 
@@ -190,6 +196,7 @@ a {
 }
 
 .mobileMenuWrapper {
+  top: 4.25rem;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -219,8 +226,8 @@ a {
   gap: 0.5rem;
   background: linear-gradient(
     145deg,
-    rgba(17, 17, 19, 0.95) 0%,
-    rgba(34, 34, 38, 0.85) 100%
+    rgba(46, 46, 50, 0.95) 0%,
+    rgba(42, 42, 46, 0.85) 100%
   );
   backdrop-filter: blur(14px) saturate(140%);
   border-radius: 0.5rem;

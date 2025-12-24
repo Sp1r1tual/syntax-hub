@@ -3,8 +3,8 @@
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(
     145deg,
-    rgba(17, 17, 19, 0.95) 0%,
-    rgba(34, 34, 38, 0.85) 100%
+    rgba(46, 46, 50, 0.95) 0%,
+    rgba(42, 42, 46, 0.85) 100%
   );
   backdrop-filter: blur(14px) saturate(140%);
 }
@@ -30,6 +30,9 @@
   font-size: 1rem;
   color: #ffffff;
   text-decoration: none;
+  font-family:
+    Onest Variable,
+    sans-serif;
   transition: color 0.2s ease;
 }
 
@@ -69,6 +72,9 @@
 }
 
 .copyrightText {
+  font-family:
+    Onest Variable,
+    sans-serif;
   color: #ffffff;
 }
 
@@ -86,10 +92,10 @@
   }
 
   .copyright {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
   }
 
   .copyrightText {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
   }
 }

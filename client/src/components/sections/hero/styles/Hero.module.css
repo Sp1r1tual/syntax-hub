@@ -1,0 +1,81 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.typingContainer {
+  width: 25rem;
+  font-family: "Courier New", monospace;
+  font-size: 1.2rem;
+  color: #00ff41;
+  background: #39463c;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+  display: flex;
+  gap: 0.25rem;
+}
+
+.staticText {
+  color: #00ff41;
+}
+
+.typingText {
+  color: #00ff41;
+  display: inline-flex;
+  align-items: center;
+}
+
+.cursor {
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.logoImg {
+  max-width: 25rem;
+  height: auto;
+}
+
+.text {
+  font-family:
+    Onest Variable,
+    sans-serif;
+  max-width: 40rem;
+  font-size: 1.3rem;
+  color: #ffffff;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .typingContainer {
+    width: 95%;
+    max-width: 16rem;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .logoImg {
+    max-width: 100%;
+  }
+
+  .text {
+    font-size: 1.2rem;
+  }
+}
