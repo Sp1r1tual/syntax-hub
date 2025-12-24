@@ -1,3 +1,19 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 50;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .navbar {
   display: flex;
   align-items: center;
@@ -10,6 +26,8 @@
     rgba(34, 34, 38, 0.85) 100%
   );
   backdrop-filter: blur(14px) saturate(140%);
+  position: relative;
+  z-index: 100;
 }
 
 .logoWrapper {
@@ -97,7 +115,7 @@ a {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -143,7 +161,7 @@ a {
 .authBtn {
   border-radius: 0.75rem;
   padding: 0.5rem 1rem;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
   color: #f5f5f5;
   display: inline-flex;
   align-items: center;
@@ -182,6 +200,8 @@ a {
     opacity 0.3s ease,
     transform 0.3s ease;
   pointer-events: none;
+  position: relative;
+  z-index: 200;
 }
 
 .mobileMenuWrapper.visible {

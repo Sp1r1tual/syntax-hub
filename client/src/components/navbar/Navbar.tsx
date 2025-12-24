@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import NavbarHeaderPng from "@/assets/navbar-header.png";
 import DownArrowSvg from "@/assets/down-arrow.svg";
 import LightModeSvg from "@/assets/light-mode.svg";
-// import DarkModeSvg from "@/assets/dark-mode.svg";
 import GoogleLogoPng from "@/assets/google-logo.png";
 import BurgerMenuSvg from "@/assets/burger-menu.svg";
 import CloseSvg from "@/assets/close.svg";
@@ -66,6 +65,11 @@ export const Navbar = () => {
           </div>
         </div>
       </nav>
+
+      <div
+        className={`${styles.overlay} ${mobileOpen ? styles.visible : ""}`}
+        onClick={() => setMobileOpen(false)}
+      />
 
       <div
         className={`${styles.mobileMenuWrapper} ${
