@@ -1,19 +1,11 @@
-import { Navbar } from "@/components/navbar/Navbar";
-import { Footer } from "@/components/footer/Footer";
-import { Hero } from "@/ui/sections/hero/Hero";
-import { Advantages } from "@/ui/sections/advantages/Advantages";
-
-import styles from "./styles/MainPage.module.css";
+import { Hero } from "@/components/ui/sections/Hero";
+import { Advantages } from "@/components/ui/sections/Advantages";
 
 export const MainPage = () => {
   return (
-    <div className={styles.mainPage}>
-      <Navbar />
-      <div className={styles.content}>
-        <Hero />
-        <Advantages />
-      </div>
-      <Footer />
-    </div>
+    <>
+      <Hero />
+      <Advantages />
+    </>
   );
 };

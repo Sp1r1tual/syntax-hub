@@ -60,10 +60,7 @@ export const Navbar = () => {
                 {learningOpen && (
                   <div className={styles.dropdown}>
                     <Link to="/courses" className={styles.dropdownItem}>
-                      Вивчення коду
-                    </Link>
-                    <Link to="/tutorials" className={styles.dropdownItem}>
-                      Дорожні карти
+                      Курси
                     </Link>
                   </div>
                 )}
@@ -84,10 +81,7 @@ export const Navbar = () => {
                       Форум
                     </Link>
                     <Link to="/events" className={styles.dropdownItem}>
-                      Події
-                    </Link>
-                    <Link to="/blog" className={styles.dropdownItem}>
-                      Блог
+                      Новини
                     </Link>
                   </div>
                 )}
@@ -158,18 +152,11 @@ export const Navbar = () => {
                 Назад
               </button>
               <Link
-                to="/"
+                to="/courses"
                 className={styles.link}
                 onClick={() => setMobileOpen(false)}
               >
                 Курси
-              </Link>
-              <Link
-                to="/"
-                className={styles.link}
-                onClick={() => setMobileOpen(false)}
-              >
-                Дорожні карти
               </Link>
             </div>
           )}
@@ -199,14 +186,7 @@ export const Navbar = () => {
                 className={styles.link}
                 onClick={() => setMobileOpen(false)}
               >
-                Події
-              </Link>
-              <Link
-                to="/"
-                className={styles.link}
-                onClick={() => setMobileOpen(false)}
-              >
-                Блог
+                Новини
               </Link>
             </div>
           )}
