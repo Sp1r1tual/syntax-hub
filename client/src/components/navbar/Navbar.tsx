@@ -62,6 +62,10 @@ export const Navbar = () => {
                     <Link to="/courses" className={styles.dropdownItem}>
                       Курси
                     </Link>
+
+                    <Link to="/roadmaps" className={styles.dropdownItem}>
+                      Роадмапи
+                    </Link>
                   </div>
                 )}
               </div>
@@ -157,6 +161,14 @@ export const Navbar = () => {
                 onClick={() => setMobileOpen(false)}
               >
                 Курси
+              </Link>
+
+              <Link
+                to="/roadmaps"
+                className={styles.link}
+                onClick={() => setMobileOpen(false)}
+              >
+                Роадмапи
               </Link>
             </div>
           )}
