@@ -40,7 +40,7 @@ export const Hero = () => {
   }, [displayedText, isDeleting, currentWordIndex]);
 
   return (
-    <div className={styles.hero}>
+    <section className={styles.hero}>
       <div className={styles.typingContainer}>
         <span className={styles.staticText}>{"> ЗАВАНТАЖЕННЯ_ТВОЇХ_"}</span>
         <span className={styles.typingText}>
@@ -59,6 +59,6 @@ export const Hero = () => {
         Розвивай свої навички, відкривай нові можливості та напрямки для
         розвитку. Ми допомагаємо повірити в себе і впевнено рухатися вперед.
       </p>
-    </div>
+    </section>
   );
 };

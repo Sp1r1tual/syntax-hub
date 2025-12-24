@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
 import { Hero } from "@/ui/sections/hero/Hero";
+import { Advantages } from "@/ui/sections/advantages/Advantages";
 
 import styles from "./styles/MainPage.module.css";
 
@@ -10,6 +11,7 @@ export const MainPage = () => {
       <Navbar />
       <div className={styles.content}>
         <Hero />
+        <Advantages />
       </div>
       <Footer />
     </div>

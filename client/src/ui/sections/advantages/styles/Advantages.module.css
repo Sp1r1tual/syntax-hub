@@ -1,0 +1,71 @@
+.advantagesWrapper {
+  width: 100%;
+  max-width: 90%;
+  margin: 2rem auto 8rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.header {
+  font-family:
+    Onest Variable,
+    sans-serif;
+  text-align: center;
+  color: #ffffff;
+  font-size: 600;
+}
+
+.advantagesItem {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: linear-gradient(
+    145deg,
+    rgba(46, 46, 50, 0.95) 0%,
+    rgba(42, 42, 46, 0.85) 100%
+  );
+  backdrop-filter: blur(14px) saturate(140%);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.itemHeader {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  text-align: center;
+  font-weight: 700;
+  color: #ffffff;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.itemText {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(245, 245, 245, 0.85);
+  font-family:
+    Onest Variable,
+    sans-serif;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .advantagesWrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .advantagesWrapper {
+    grid-template-columns: 1fr;
+    margin-top: 1.5rem;
+  }
+
+  .advantagesItem {
+    padding: 1.25rem;
+  }
+}

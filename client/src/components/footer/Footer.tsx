@@ -25,7 +25,7 @@ export const Footer = () => {
 
         <div className={styles.right}>
           <a className={styles.contact} href={`mailto:${mail}`}>
-            Зв&apos;язатися зі мною
+            Зв&apos;язатися з нами
           </a>
 
           <div className={styles.copyright}>
