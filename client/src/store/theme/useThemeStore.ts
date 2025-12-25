@@ -1,0 +1,25 @@
+import { create } from "zustand";
+
+type ThemeState = {
+  isDarkTheme: boolean;
+  toggleTheme: () => void;
+};
+
+export const useThemeStore = create<ThemeState>((set) => ({
+  isDarkTheme: localStorage.getItem("theme") !== "light",
+
+  toggleTheme: () =>
+    set((state) => {
+      const newTheme = !state.isDarkTheme;
+
+      document.body.classList.add("theme-transitioning");
+      document.body.classList.toggle("light-theme", !newTheme);
+      localStorage.setItem("theme", newTheme ? "dark" : "light");
+
+      setTimeout(() => {
+        document.body.classList.remove("theme-transitioning");
+      }, 400);
+
+      return { isDarkTheme: newTheme };
+    }),
+}));

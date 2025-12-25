@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import { ThemeButton } from "../ui/buttons/ThemeButton";
+
 import NavbarHeaderPng from "@/assets/navbar-header.png";
 import DownArrowSvg from "@/assets/down-arrow.svg";
-import LightModeSvg from "@/assets/light-mode.svg";
 import GoogleLogoPng from "@/assets/google-logo.png";
 import BurgerMenuSvg from "@/assets/burger-menu.svg";
 import CloseSvg from "@/assets/close.svg";
@@ -118,13 +119,9 @@ export const Navbar = () => {
           </div>
 
           <div className={styles.rightSide}>
-            <button className={styles.themeToggler}>
-              <img
-                src={LightModeSvg}
-                alt="theme toggler"
-                className={styles.themeTogglerImg}
-              />
-            </button>
+            <div className={styles.themeButtonWrapper}>
+              <ThemeButton />
+            </div>
 
             <button className={styles.authBtn}>
               <img src={GoogleLogoPng} alt="" className={styles.authBtnImg} />
@@ -234,9 +231,7 @@ export const Navbar = () => {
           mobileOpen ? styles.visible : ""
         }`}
       >
-        <button className={styles.themeToggler}>
-          <img src={LightModeSvg} alt="" className={styles.themeTogglerImg} />
-        </button>
+        <ThemeButton />
       </div>
     </>
   );

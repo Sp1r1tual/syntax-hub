@@ -4,7 +4,8 @@ import { RouterProvider } from "react-router-dom";
 
 import { Router } from "./Router";
 
-import "./index.css";
+import "./styles/index.css";
+import "./styles/theme.css";
 
 const container = document.getElementById("root");
 

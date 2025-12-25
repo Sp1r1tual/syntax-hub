@@ -1,11 +1,7 @@
 .footer {
   width: 100%;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(
-    145deg,
-    rgba(46, 46, 50, 0.95) 0%,
-    rgba(42, 42, 46, 0.85) 100%
-  );
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary);
   backdrop-filter: blur(14px) saturate(140%);
 }
 
@@ -28,7 +24,7 @@
 
 .footerLink {
   font-size: 1rem;
-  color: #ffffff;
+  color: var(--text-secondary);
   text-decoration: none;
   font-family:
     Onest Variable,
@@ -37,7 +33,7 @@
 }
 
 .footerLink:hover {
-  color: #ffffff;
+  color: var(--text-main);
   text-decoration: underline;
 }
 
@@ -53,22 +49,22 @@
 .contact {
   border-radius: 0.75rem;
   padding: 0.5rem 1rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #f5f5f5;
+  background-color: var(--bg-hover-strong);
+  color: var(--text-secondary);
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .contact:hover {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: var(--bg-active);
 }
 
 .copyright {
   display: flex;
   gap: 0.5rem;
   font-size: 1rem;
-  color: #ffffff;
+  color: var(--text-secondary);
   font-family:
     Onest Variable,
     sans-serif;
@@ -78,7 +74,7 @@
   font-family:
     Onest Variable,
     sans-serif;
-  color: #ffffff;
+  color: var(--text-secondary);
 }
 
 @media (max-width: 768px) {

@@ -10,22 +10,22 @@
   width: 25rem;
   font-family: "Courier New", monospace;
   font-size: 1.2rem;
-  color: #00ff41;
-  background: #39463c;
+  color: var(--terminal-text);
+  background: var(--terminal-bg);
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
-  border: 1px solid rgba(0, 255, 65, 0.3);
-  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+  border: 1px solid var(--terminal-border);
+  box-shadow: 0 0 20px var(--terminal-shadow);
   display: flex;
   gap: 0.25rem;
 }
 
 .staticText {
-  color: #00ff41;
+  color: var(--terminal-text);
 }
 
 .typingText {
-  color: #00ff41;
+  color: var(--terminal-text);
   display: inline-flex;
   align-items: center;
 }
@@ -49,6 +49,7 @@
 .logoImg {
   max-width: 25rem;
   height: auto;
+  filter: var(--icon-filter);
 }
 
 .text {
@@ -56,8 +57,8 @@
     Onest Variable,
     sans-serif;
   max-width: 40rem;
-  font-size: 1.3rem;
-  color: #ffffff;
+  font-size: 1.4rem;
+  color: var(--text-secondary);
   text-align: center;
 }
 
