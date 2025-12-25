@@ -1,33 +1,42 @@
 import { useEffect } from "react";
-import { Outlet, useMatches } from "react-router-dom";
+import { Outlet, useMatches, useParams } from "react-router-dom";
 
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
+
+import { courses } from "@/data/courses/courses";
 
 import styles from "./styles/PageLyout.module.css";
 
 export const PageLayout = () => {
   const matches = useMatches();
+  const { courseSlug } = useParams();
 
   useEffect(() => {
     if (typeof document === "undefined") return;
 
     let title: string | undefined;
 
-    for (let i = matches.length - 1; i >= 0; i--) {
-      const handle = matches[i]?.handle;
+    if (courseSlug) {
+      const course = courses.find((c) => c.slug === courseSlug);
 
-      if (handle && typeof handle === "object" && "title" in handle) {
-        title = (handle as { title?: string }).title;
-
-        if (title) break;
+      if (course) {
+        title = `${course.title} | SyntaxHub`;
       }
     }
 
-    if (title) {
-      document.title = title;
+    if (!title) {
+      for (let i = matches.length - 1; i >= 0; i--) {
+        const handle = matches[i]?.handle as { title?: string } | undefined;
+        if (handle?.title) {
+          title = handle.title;
+          break;
+        }
+      }
     }
-  }, [matches]);
+
+    if (title) document.title = title;
+  }, [matches, courseSlug]);
 
   return (
     <div className={styles.page}>

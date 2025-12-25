@@ -1,43 +1,12 @@
-.coursesHeader {
-  grid-column: 1 / -1;
-  font-family:
-    Onest Variable,
-    sans-serif;
-  max-width: 70rem;
-  text-align: start;
-  font-size: 1.3rem;
-  color: #ffffff;
-}
-
-.coursesWrapper {
+.courseWrapper {
   gap: 2rem;
   max-width: 70rem;
   margin: 0 auto;
   padding: 0 1rem 8rem;
 }
 
-.courseSectionTitle {
-  color: white;
-  font-weight: 600;
-  font-size: 1.3rem;
-  font-family:
-    Onest Variable,
-    sans-serif;
-}
-
-.categoryBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.coursesGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
 .course {
+  max-width: 70rem;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -56,24 +25,28 @@
     transform 0.15s ease;
 }
 
-.course:hover {
-  background-color: rgba(255, 255, 255, 0.12);
-  transform: translateY(-2px);
-}
-
 .course img {
-  width: 3rem;
-  height: 3rem;
+  width: 5rem;
+  height: 5rem;
   object-fit: contain;
   flex-shrink: 0;
   margin-left: 0;
   border-radius: 0.25rem;
 }
 
+.naming {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  flex: 1 1 70%;
+}
+
 .courseTitle {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: 600;
   margin: 0;
+  margin-bottom: 0.15rem;
   font-family:
     Onest Variable,
     sans-serif;
@@ -81,28 +54,55 @@
 
 .description {
   display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-clamp: 2;
   font-size: 0.9rem;
   opacity: 0.7;
   margin: 0.15rem 0 0;
   font-family:
     Onest Variable,
     sans-serif;
+  font-size: 1.1rem;
 }
 
-.naming {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex: 1 1 70%;
+.soon {
+  font-family:
+    Onest Variable,
+    sans-serif;
+  font-size: 1.1rem;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  margin: 5rem 0;
 }
 
 @media (max-width: 640px) {
-  .coursesGrid {
-    grid-template-columns: 1fr;
+  .course {
+    flex-direction: column;
+    align-items: flex-start;
+    align-items: center;
+  }
+
+  .courseHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .courseTitle {
+    justify-content: center;
+  }
+
+  .course img {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 0.5rem;
+  }
+
+  .description {
+    margin-top: 0.5rem;
+    text-align: center;
   }
 }

@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 
-import HTMLLogoPng from "@/assets/html-logo.png";
-import CSSLogoPng from "@/assets/css-logo.png";
-import JavaScriptLogoPng from "@/assets/JavaScript-logo.png";
-import ReactLogoPng from "@/assets/react-logo.png";
+import { courseIcons } from "@/data/courses/courseIcons";
+import { groupCoursesByCategory } from "@/utils/groupCoursesByCategory";
 
 import styles from "./styles/Courses.module.css";
 
 export const Courses = () => {
+  const categories = groupCoursesByCategory();
+
   return (
     <section className={styles.coursesWrapper}>
       <p className={styles.coursesHeader}>
@@ -15,42 +15,32 @@ export const Courses = () => {
         напрямки: від веб-розробки до сучасних фреймворків і мов програмування.
         Деякі курси ще в розробці, але незабаром будуть доступні для навчання.
       </p>
-      <h3 className={styles.courseSectionTitle}>Frontend</h3>
 
-      <Link to="/courses" className={styles.course}>
-        <img src={HTMLLogoPng} alt="HTML logo" />
-        <div className={styles.naming}>
-          <h3 className={styles.courseTitle}>HTML</h3>
-          <p className={styles.description}>Скоро буде!</p>
-        </div>
-      </Link>
+      {Object.entries(categories).map(([categorySlug, category]) => (
+        <div key={categorySlug} className={styles.categoryBlock}>
+          <h3 className={styles.courseSectionTitle}>{category.title}</h3>
 
-      <Link to="/courses" className={styles.course}>
-        <img src={CSSLogoPng} alt="CSS logo" />
-        <div className={styles.naming}>
-          <h3 className={styles.courseTitle}>CSS</h3>
-          <p className={styles.description}>Скоро буде!</p>
-        </div>
-      </Link>
+          <div className={styles.coursesGrid}>
+            {category.courses.map((course) => (
+              <Link
+                key={course.slug}
+                to={`/courses/${course.slug}`}
+                className={styles.course}
+              >
+                <img
+                  src={courseIcons[course.icon]}
+                  alt={`${course.title} logo`}
+                />
 
-      <Link to="/courses/java-script" className={styles.course}>
-        <img src={JavaScriptLogoPng} alt="JavaScript logo" />
-        <div className={styles.naming}>
-          <h3 className={styles.courseTitle}>JavaScript</h3>
-          <p className={styles.description}>
-            Основний інструмент для роботи з вебом та сучасними додатками. Додає
-            життя вашому сайту: кнопки, анімації та динамічний контент
-          </p>
+                <div className={styles.naming}>
+                  <h3 className={styles.courseTitle}>{course.title}</h3>
+                  <p className={styles.description}>{course.description}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </Link>
-
-      <Link to="/courses" className={styles.course}>
-        <img src={ReactLogoPng} alt="React logo" />
-        <div className={styles.naming}>
-          <h3 className={styles.courseTitle}>React</h3>
-          <p className={styles.description}>Скоро буде!</p>
-        </div>
-      </Link>
+      ))}
     </section>
   );
 };
