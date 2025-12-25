@@ -10,10 +10,15 @@
     "format": "prettier --write .",
     "postinstall": "npm install --prefix client && npm install --prefix server",
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
-  "lint-staged": {
-    "**/*.{js,jsx,ts,tsx,css,json,md}": "prettier --write"
+ "lint-staged": {
+    "client/**/*.{js,jsx,ts,tsx,css}": [
+      "npx --prefix ./client prettier --write"
+    ],
+    "server/**/*.{js,ts}": [
+      "npx --prefix ./server prettier --write"
+    ]
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
