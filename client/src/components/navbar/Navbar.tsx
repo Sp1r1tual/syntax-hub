@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import NavbarHeaderPng from "@/assets/navbar-header.png";
 import DownArrowSvg from "@/assets/down-arrow.svg";
@@ -17,6 +17,9 @@ export const Navbar = () => {
   const [communityOpen, setCommunityOpen] = useState(false);
   const [mobileLearningOpen, setMobileLearningOpen] = useState(false);
   const [mobileCommunityOpen, setMobileCommunityOpen] = useState(false);
+
+  const location = useLocation();
+  const isActive = (path: string) => location.pathname === path;
 
   const toggleMobileMenu = () => {
     setMobileOpen((prev) => !prev);
@@ -53,17 +56,27 @@ export const Navbar = () => {
                 onMouseEnter={() => setLearningOpen(true)}
                 onMouseLeave={() => setLearningOpen(false)}
               >
-                <button className={styles.link}>
+                <button
+                  className={styles.link}
+                  onClick={() => setLearningOpen((prev) => !prev)}
+                >
                   Навчання
                   <img src={DownArrowSvg} alt="" className={styles.arrow} />
                 </button>
                 {learningOpen && (
                   <div className={styles.dropdown}>
-                    <Link to="/courses" className={styles.dropdownItem}>
+                    <Link
+                      to="/courses"
+                      className={`${styles.dropdownItem} ${isActive("/courses") ? styles.active : ""}`}
+                      onClick={() => setLearningOpen(false)}
+                    >
                       Курси
                     </Link>
-
-                    <Link to="/roadmaps" className={styles.dropdownItem}>
+                    <Link
+                      to="/roadmaps"
+                      className={`${styles.dropdownItem} ${isActive("/roadmaps") ? styles.active : ""}`}
+                      onClick={() => setLearningOpen(false)}
+                    >
                       Роадмапи
                     </Link>
                   </div>
@@ -75,16 +88,27 @@ export const Navbar = () => {
                 onMouseEnter={() => setCommunityOpen(true)}
                 onMouseLeave={() => setCommunityOpen(false)}
               >
-                <button className={styles.link}>
+                <button
+                  className={styles.link}
+                  onClick={() => setCommunityOpen((prev) => !prev)}
+                >
                   Спільнота
                   <img src={DownArrowSvg} alt="" className={styles.arrow} />
                 </button>
                 {communityOpen && (
                   <div className={styles.dropdown}>
-                    <Link to="/forum" className={styles.dropdownItem}>
+                    <Link
+                      to="/forum"
+                      className={`${styles.dropdownItem} ${isActive("/forum") ? styles.active : ""}`}
+                      onClick={() => setCommunityOpen(false)}
+                    >
                       Форум
                     </Link>
-                    <Link to="/events" className={styles.dropdownItem}>
+                    <Link
+                      to="/news"
+                      className={`${styles.dropdownItem} ${isActive("/news") ? styles.active : ""}`}
+                      onClick={() => setCommunityOpen(false)}
+                    >
                       Новини
                     </Link>
                   </div>
@@ -97,7 +121,7 @@ export const Navbar = () => {
             <button className={styles.themeToggler}>
               <img
                 src={LightModeSvg}
-                alt=""
+                alt="theme toggler"
                 className={styles.themeTogglerImg}
               />
             </button>
@@ -157,7 +181,7 @@ export const Navbar = () => {
               </button>
               <Link
                 to="/courses"
-                className={styles.link}
+                className={`${styles.dropdownItem} ${isActive("/courses") ? styles.active : ""}`}
                 onClick={() => setMobileOpen(false)}
               >
                 Курси
@@ -165,7 +189,7 @@ export const Navbar = () => {
 
               <Link
                 to="/roadmaps"
-                className={styles.link}
+                className={`${styles.dropdownItem} ${isActive("/roadmaps") ? styles.active : ""}`}
                 onClick={() => setMobileOpen(false)}
               >
                 Роадмапи
@@ -187,15 +211,15 @@ export const Navbar = () => {
                 Назад
               </button>
               <Link
-                to="/"
-                className={styles.link}
+                to="/forum"
+                className={`${styles.dropdownItem} ${isActive("/forum") ? styles.active : ""}`}
                 onClick={() => setMobileOpen(false)}
               >
                 Форум
               </Link>
               <Link
-                to="/"
-                className={styles.link}
+                to="/news"
+                className={`${styles.dropdownItem} ${isActive("/news") ? styles.active : ""}`}
                 onClick={() => setMobileOpen(false)}
               >
                 Новини

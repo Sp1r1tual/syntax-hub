@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-import { courseIcons } from "@/data/courses/courseIcons";
 import { groupCoursesByCategory } from "@/utils/groupCoursesByCategory";
 
 import styles from "./styles/Courses.module.css";
@@ -27,10 +26,7 @@ export const Courses = () => {
                 to={`/courses/${course.slug}`}
                 className={styles.course}
               >
-                <img
-                  src={courseIcons[course.icon]}
-                  alt={`${course.title} logo`}
-                />
+                <img src={course.icon} alt={`${course.title} logo`} />
 
                 <div className={styles.naming}>
                   <h3 className={styles.courseTitle}>{course.title}</h3>
