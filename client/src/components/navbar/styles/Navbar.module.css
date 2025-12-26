@@ -211,6 +211,9 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .authBtnImg {
@@ -227,6 +230,7 @@ a {
 
 .authBtn:hover {
   background-color: var(--bg-hover-strong);
+  transform: scale(1.02);
 }
 
 .burgerBtn {

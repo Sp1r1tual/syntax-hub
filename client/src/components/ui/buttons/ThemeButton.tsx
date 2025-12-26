@@ -1,7 +1,10 @@
 import { useRef } from "react";
+
 import { useThemeStore } from "@/store/theme/useThemeStore";
+
 import LightModeSvg from "@/assets/light-mode.svg";
 import DarkModeSvg from "@/assets/dark-mode.svg";
+
 import styles from "./styles/ThemeButton.module.css";
 
 export const ThemeButton = () => {

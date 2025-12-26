@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import { useAuthModalStore } from "@/store/modal/useAuthModalStore";
+
 import { ThemeButton } from "../ui/buttons/ThemeButton";
 
 import NavbarHeaderPng from "@/assets/navbar-header.png";
@@ -20,6 +22,9 @@ export const Navbar = () => {
   const [mobileCommunityOpen, setMobileCommunityOpen] = useState(false);
 
   const location = useLocation();
+
+  const { openAuthModal } = useAuthModalStore();
+
   const isActive = (path: string) => location.pathname === path;
 
   const toggleMobileMenu = () => {
@@ -123,8 +128,12 @@ export const Navbar = () => {
               <ThemeButton />
             </div>
 
-            <button className={styles.authBtn}>
-              <img src={GoogleLogoPng} alt="" className={styles.authBtnImg} />
+            <button className={styles.authBtn} onClick={openAuthModal}>
+              <img
+                src={GoogleLogoPng}
+                alt="Google logo"
+                className={styles.authBtnImg}
+              />
               <span className={styles.authBtnText}>Увійти</span>
             </button>
 

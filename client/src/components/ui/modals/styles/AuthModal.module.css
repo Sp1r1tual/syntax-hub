@@ -1,0 +1,47 @@
+.authBtn {
+  border-radius: 0.75rem;
+  padding: 1rem 1rem;
+  background-color: var(--bg-active);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.authBtnImg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.authBtnText {
+  font-family:
+    Onest Variable,
+    sans-serif;
+  display: inline;
+}
+
+.authBtn:hover {
+  background-color: var(--bg-hover-strong);
+  transform: scale(1.02);
+}
+
+.termsOfuse {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.termsLink {
+  color: var(--link-color, #1a73e8);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.termsLink:hover {
+  opacity: 0.8;
+}
