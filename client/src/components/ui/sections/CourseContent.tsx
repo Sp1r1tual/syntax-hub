@@ -1,16 +1,16 @@
 import { useState } from "react";
 
-import { Course, Question } from "@/types/index";
+import { ICourse, IQuestion } from "@/types/index";
 
 import DownArrowSvg from "@/assets/down-arrow.svg";
 
 import styles from "./styles/CourseContent.module.css";
 
-type CourseContentProps = {
-  course: Course;
-};
+interface ICourseContentProps {
+  course: ICourse;
+}
 
-export const CourseContent = ({ course }: CourseContentProps) => {
+export const CourseContent = ({ course }: ICourseContentProps) => {
   const [openTopics, setOpenTopics] = useState<Record<string, boolean>>({});
 
   const toggleTopic = (id: string, hasQuestions: boolean) => {
@@ -19,15 +19,17 @@ export const CourseContent = ({ course }: CourseContentProps) => {
     }
   };
 
-  const getTopicState = (topicId: string, questions: Question[]) => {
+  const getTopicState = (topicId: string, questions: IQuestion[]) => {
     return {
       hasQuestions: questions.length > 0,
-      isOpen: openTopics[topicId] ?? false,
+      isOpen: !!openTopics[topicId],
     };
   };
 
   return (
     <section className={styles.courseWrapper}>
+      <h3 className={styles.topicsHeader}>Деталі курсу</h3>
+
       <div className={styles.course}>
         <img src={course.icon} alt={`${course.title} logo`} />
         <div className={styles.naming}>
@@ -35,6 +37,23 @@ export const CourseContent = ({ course }: CourseContentProps) => {
           <p className={styles.description}>{course.description}</p>
         </div>
       </div>
+
+      <h3 className={styles.topicsHeader}>Дорожня карта</h3>
+
+      <div className={styles.roadmapIntro}>
+        <p>
+          Дорожні карти допомагають структурувати процес навчання та бачити
+          повну картину курсу. Вони покажуть, з чого почати, які теми вивчати
+          далі і як закріплювати знання за допомогою практичних запитань.
+          Використовуючи дорожні карти, ви зможете впевнено рухатися від
+          базового рівня до складніших тем, не пропускаючи важливі кроки.
+        </p>
+        <button className={styles.openRoadmapBtn} onClick={undefined}>
+          Відкрити дорожню карту по {course.title}
+        </button>
+      </div>
+
+      <h3 className={styles.topicsHeader}>Теми для вивчення</h3>
 
       {course.topics ? (
         <article className={styles.topics}>

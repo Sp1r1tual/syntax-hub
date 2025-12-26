@@ -1,20 +1,20 @@
-export type Question = {
+export interface IQuestion {
   id: string;
   text: string;
-};
+}
 
-export type Topic = {
+export interface ITopic {
   id: string;
   title: string;
-  questions: Question[];
-};
+  questions: IQuestion[];
+}
 
-export type Course = {
+export interface ICourse {
   slug: string;
   title: string;
   description: string;
   category: string;
   categoryTitle: string;
   icon: string;
-  topics?: Topic[];
-};
+  topics?: ITopic[];
+}

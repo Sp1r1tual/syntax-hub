@@ -19,7 +19,7 @@ export const Footer = () => {
           </a>
 
           <a className={styles.footerLink} href="/">
-            Угода користувача
+            Користувацька угода
           </a>
         </div>
 

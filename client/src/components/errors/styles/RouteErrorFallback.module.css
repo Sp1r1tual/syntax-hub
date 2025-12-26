@@ -51,7 +51,7 @@
   word-break: break-word;
 }
 
-.button {
+.retryButton {
   border-radius: 0.75rem;
   padding: 0.5rem 1rem;
   background-color: var(--bg-active);
@@ -61,7 +61,28 @@
   gap: 0.5rem;
 }
 
-.button:hover {
+.retryButton:hover {
+  background-color: var(--bg-hover-strong);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.backButton {
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-active);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.backButton:hover {
   background-color: var(--bg-hover-strong);
 }
 

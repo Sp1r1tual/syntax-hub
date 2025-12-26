@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-type ThemeState = {
+interface IThemeState {
   isDarkTheme: boolean;
   toggleTheme: () => void;
-};
+}
 
-export const useThemeStore = create<ThemeState>((set) => ({
+export const useThemeStore = create<IThemeState>((set) => ({
   isDarkTheme: localStorage.getItem("theme") !== "light",
 
   toggleTheme: () =>

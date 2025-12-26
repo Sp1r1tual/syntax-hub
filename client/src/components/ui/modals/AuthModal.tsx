@@ -33,7 +33,7 @@ export const AuthModal = () => {
           rel="noopener noreferrer"
           className={styles.termsLink}
         >
-          користувацькї угоди
+          користувацької угоди
         </a>
       </span>
     </ModalWrapper>

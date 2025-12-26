@@ -4,13 +4,13 @@ import { CloseButton } from "../buttons/CloseButton";
 
 import styles from "./styles/ModalWrapper.module.css";
 
-type ModalWrapperProps = {
+interface IModalWrapperProps {
   isOpen: boolean;
   children: ReactNode;
   title?: string;
   widthRem?: number;
   onClose: () => void;
-};
+}
 
 export const ModalWrapper = ({
   isOpen,
@@ -18,7 +18,7 @@ export const ModalWrapper = ({
   title,
   widthRem,
   children,
-}: ModalWrapperProps) => {
+}: IModalWrapperProps) => {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -54,6 +54,7 @@ export const ModalWrapper = ({
       <div
         className={`${styles.overlay} ${isVisible ? styles.visible : ""}`}
         onClick={onClose}
+        role="button"
       />
       <div
         className={`${styles.modal} ${isVisible ? styles.visible : ""}`}

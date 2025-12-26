@@ -8,68 +8,40 @@ interface IErrorBoundaryWrapperProps {
   children: ReactNode;
 }
 
-interface IErrorFallbackProps extends FallbackProps {
-  onRetry: () => void;
-  onGoBack: () => void;
-  errorText: string;
-  tryAgainText: string;
-  goBackText: string;
-}
-
-const ErrorFallback = ({
-  error,
-  resetErrorBoundary,
-  onRetry,
-  onGoBack,
-  errorText,
-  tryAgainText,
-  goBackText,
-}: IErrorFallbackProps) => {
-  return (
-    <div className={styles.errorWrapper}>
-      <div role="alert" className={styles.errorAlert}>
-        <p className={styles.errorText}>{errorText}:</p>
-        <pre className={styles.errorMessage}>{error?.message}</pre>
-
-        <div className={styles.buttonGroup}>
-          <button
-            onClick={() => {
-              onRetry();
-              resetErrorBoundary();
-            }}
-            className={styles.retryButton}
-          >
-            {tryAgainText}
-          </button>
-          <button onClick={onGoBack} className={styles.backButton}>
-            {goBackText}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const ErrorBoundaryWrapper = ({ children }: IErrorBoundaryWrapperProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [resetKey, setResetKey] = useState(0);
 
-  const fallbackRender = (props: FallbackProps) => (
-    <ErrorFallback
-      {...props}
-      onRetry={() => setResetKey((prev) => prev + 1)}
-      onGoBack={() => navigate(-1)}
-      errorText="Щось пішло не так"
-      tryAgainText="Спробувати знову"
-      goBackText="Назад"
-    />
-  );
-
   return (
     <ErrorBoundary
-      fallbackRender={fallbackRender}
+      fallbackRender={({ error, resetErrorBoundary }: FallbackProps) => (
+        <div className={styles.errorWrapper}>
+          <div role="alert" className={styles.errorAlert}>
+            <p className={styles.errorText}>Щось пішло не так:</p>
+            <pre className={styles.errorMessage}>{error?.message}</pre>
+
+            <div className={styles.buttonGroup}>
+              <button
+                onClick={() => {
+                  setResetKey((prev) => prev + 1);
+                  resetErrorBoundary();
+                }}
+                className={styles.retryButton}
+              >
+                Спробувати знову
+              </button>
+              <button
+                onClick={() => navigate(-1)}
+                className={styles.backButton}
+              >
+                Назад
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       resetKeys={[resetKey, location.pathname]}
     >
       {children}

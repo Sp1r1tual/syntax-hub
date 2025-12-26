@@ -1,11 +1,11 @@
-import { Course } from "@/types/index";
+import { ICourse } from "@/types/index";
 
 import HTMLLogoPng from "@/assets/html-logo.png";
 import CSSLogoPng from "@/assets/css-logo.png";
 import JavaScriptLogoPng from "@/assets/JavaScript-logo.png";
 import ReactLogoPng from "@/assets/react-logo.png";
 
-export const courses: Course[] = [
+export const courses: ICourse[] = [
   {
     slug: "html",
     title: "HTML",

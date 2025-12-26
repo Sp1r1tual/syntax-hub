@@ -26,9 +26,18 @@ const RouteErrorFallback = () => {
         <p className={styles.errorText}>Щось пішло не так:</p>
         <pre className={styles.errorMessage}>{message}</pre>
 
-        <button onClick={() => navigate("/")} className={styles.button}>
-          Повернутись на головну
-        </button>
+        <div className={styles.buttonGroup}>
+          <button
+            onClick={() => window.location.reload()}
+            className={styles.retryButton}
+          >
+            Спробувати знову
+          </button>
+
+          <button onClick={() => navigate(-1)} className={styles.backButton}>
+            Назад
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
-type AuthModalState = {
+interface IAuthModalState {
   isAuthModalOpen: boolean;
   openAuthModal: () => void;
   closeAuthModal: () => void;
-};
+}
 
-export const useAuthModalStore = create<AuthModalState>((set) => ({
+export const useAuthModalStore = create<IAuthModalState>((set) => ({
   isAuthModalOpen: false,
 
   openAuthModal: () => set({ isAuthModalOpen: true }),
