@@ -12,7 +12,7 @@
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
     "prepare": "husky"
   },
- "lint-staged": {
+  "lint-staged": {
     "client/**/*.{js,jsx,ts,tsx,css}": [
       "npx --prefix ./client prettier --write"
     ],
