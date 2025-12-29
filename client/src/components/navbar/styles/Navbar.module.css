@@ -48,34 +48,8 @@
 .rightSide {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   margin-left: auto;
-}
-
-.authBtn {
-  border-radius: 0.75rem;
-  padding: 0.5rem 1rem;
-  background-color: var(--bg-active);
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.authBtnImg {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.authBtnText {
-  font-family:
-    Onest Variable,
-    sans-serif;
-  display: inline;
-}
-
-.authBtn:hover {
-  background-color: var(--bg-hover-strong);
 }
 
 .burgerBtn {
@@ -188,16 +162,11 @@ a {
     display: inline-flex;
   }
 
-  .authBtn {
-    width: 2.5rem;
-    border-radius: 50%;
-  }
-
-  .authBtnText {
-    display: none;
-  }
-
   .themeButtonWrapper {
     display: none;
+  }
+
+  .rightSide {
+    gap: 0.5rem;
   }
 }

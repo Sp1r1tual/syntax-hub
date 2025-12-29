@@ -1,4 +1,4 @@
-import { courses } from "@/data/courses/courses";
+import { courses } from "@/common/data/courses/courses";
 
 export const groupCoursesByCategory = () => {
   return courses.reduce(

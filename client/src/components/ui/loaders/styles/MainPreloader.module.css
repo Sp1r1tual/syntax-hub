@@ -1,0 +1,58 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--overlay-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  transition:
+    opacity 0.5s ease,
+    background-color 0.5s ease;
+}
+
+.fadeOut {
+  opacity: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preloaderGif {
+  width: 15rem;
+  height: 15rem;
+  margin-bottom: 1rem;
+}
+
+.loadingText {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+  color: var(--text-main);
+  transition: color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .preloaderGif {
+    width: 12rem;
+    height: 12rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .preloaderGif {
+    width: 11rem;
+    height: 11rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .loadingText {
+    font-size: 1.15rem;
+  }
+}

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { groupCoursesByCategory } from "@/utils/groupCoursesByCategory";
+import { groupCoursesByCategory } from "@/common/utils/groupCoursesByCategory";
 
 import styles from "./styles/Courses.module.css";
 

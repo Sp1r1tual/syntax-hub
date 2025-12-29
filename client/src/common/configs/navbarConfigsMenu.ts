@@ -1,4 +1,4 @@
-import { IMenuConfig } from "@/types";
+import { IMenuConfig } from "@/common/types";
 
 export const MENU_CONFIG: Record<string, IMenuConfig> = {
   learning: {

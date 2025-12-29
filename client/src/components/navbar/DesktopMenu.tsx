@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { IMenuConfig } from "@/types";
+import { IMenuConfig } from "@/common/types";
 
 import DownArrowSvg from "@/assets/down-arrow.svg";
 

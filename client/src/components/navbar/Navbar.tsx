@@ -1,17 +1,18 @@
 import { useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { useAuthModalStore } from "@/store/modal/useAuthModalStore";
 import { useNavbarStore } from "@/store/ui/navbarStore";
+import { useAuthStore } from "@/store/auth/useAuthStore";
 
 import { DesktopMenu } from "./DesktopMenu";
 import { MobileMenu } from "./MobileMenu";
 import { ThemeButton } from "../ui/buttons/ThemeButton";
+import { GoogleAuthButton } from "../ui/buttons/GoogleAuthButton";
+import { ProfileBtn } from "../ui/buttons/ProfileBtn";
 
-import { MENU_CONFIG } from "@/configs/navbarConfigsMenu";
+import { MENU_CONFIG } from "@/common/configs/navbarConfigsMenu";
 
 import NavbarHeaderPng from "@/assets/navbar-header.png";
-import GoogleLogoPng from "@/assets/google-logo.png";
 import BurgerMenuSvg from "@/assets/burger-menu.svg";
 import CloseSvg from "@/assets/close.svg";
 
@@ -27,9 +28,9 @@ export const Navbar = () => {
   const { toggleMobile, toggleDesktopMenu, toggleMobileSubmenu, closeMobile } =
     useNavbarStore();
 
-  const location = useLocation();
+  const { user } = useAuthStore();
 
-  const { openAuthModal } = useAuthModalStore();
+  const location = useLocation();
 
   const isActive = useCallback(
     (path: string) => location.pathname === path,
@@ -79,14 +80,7 @@ export const Navbar = () => {
               <ThemeButton />
             </div>
 
-            <button className={styles.authBtn} onClick={openAuthModal}>
-              <img
-                src={GoogleLogoPng}
-                alt="Google logo"
-                className={styles.authBtnImg}
-              />
-              <span className={styles.authBtnText}>Увійти</span>
-            </button>
+            {!user ? <GoogleAuthButton /> : <ProfileBtn />}
 
             <button className={styles.burgerBtn} onClick={toggleMobile}>
               <img

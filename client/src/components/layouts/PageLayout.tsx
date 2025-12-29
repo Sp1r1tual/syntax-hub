@@ -4,7 +4,7 @@ import { Outlet, useMatches, useParams } from "react-router-dom";
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
 
-import { courses } from "@/data/courses/courses";
+import { courses } from "@/common/data/courses/courses";
 
 import styles from "./styles/PageLyout.module.css";
 

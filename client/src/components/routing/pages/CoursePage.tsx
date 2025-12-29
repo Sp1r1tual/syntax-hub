@@ -2,7 +2,7 @@ import { useParams, Navigate } from "react-router-dom";
 
 import { CourseContent } from "@/components/ui/sections/CourseContent";
 
-import { courses } from "@/data/courses/courses";
+import { courses } from "@/common/data/courses/courses";
 
 export const CoursePage = () => {
   const { courseSlug } = useParams();

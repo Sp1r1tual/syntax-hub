@@ -1,13 +1,19 @@
 import { ModalWrapper } from "./ModalWrapper";
 
-import { useAuthModalStore } from "@/store/modal/useAuthModalStore";
+import { useModalsStore } from "@/store/modal/useModalsStore";
+import { useAuthStore } from "@/store/auth/useAuthStore";
 
 import GoogleLogoPng from "@/assets/google-logo.png";
 
 import styles from "./styles/AuthModal.module.css";
 
 export const AuthModal = () => {
-  const { isAuthModalOpen, closeAuthModal } = useAuthModalStore();
+  const { isAuthModalOpen, closeAuthModal } = useModalsStore();
+  const { login, isLoading } = useAuthStore();
+
+  const handleGoogleLogin = () => {
+    login();
+  };
 
   return (
     <ModalWrapper
@@ -16,7 +22,11 @@ export const AuthModal = () => {
       isOpen={isAuthModalOpen}
       onClose={closeAuthModal}
     >
-      <button className={styles.authBtn}>
+      <button
+        className={`${styles.authBtn} ${isLoading ? styles.active : ""}`}
+        onClick={handleGoogleLogin}
+        disabled={isLoading}
+      >
         <img
           src={GoogleLogoPng}
           alt="Google logo"
@@ -26,7 +36,7 @@ export const AuthModal = () => {
       </button>
 
       <span className={styles.termsOfuse}>
-        При натисканні на кнопку ви погоджуєтесь з умовами{" "}
+        При натисканні на кнопку ви погоджуєтесь з умовами
         <a
           href="#"
           target="_blank"

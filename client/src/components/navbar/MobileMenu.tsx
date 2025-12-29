@@ -1,6 +1,6 @@
 import { MobileSubmenu } from "./MobileSubmenu";
 
-import { IMenuConfig } from "@/types";
+import { IMenuConfig } from "@/common/types";
 
 import RightArrowSvg from "@/assets/arrow-right.svg";
 

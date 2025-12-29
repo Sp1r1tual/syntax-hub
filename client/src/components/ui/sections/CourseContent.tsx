@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { ICourse, IQuestion } from "@/types/index";
+import { ICourse, IQuestion } from "@/common/types/index";
 
 import DownArrowSvg from "@/assets/down-arrow.svg";
 

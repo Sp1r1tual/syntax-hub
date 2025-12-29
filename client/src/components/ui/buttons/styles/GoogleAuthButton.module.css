@@ -1,0 +1,33 @@
+.authBtn {
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-active);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.authBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.authBtn * {
+  pointer-events: none;
+}
+
+.authBtnImg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.authBtnText {
+  font-family:
+    Onest Variable,
+    sans-serif;
+}

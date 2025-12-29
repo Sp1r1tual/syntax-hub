@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import App from "./App";
-import { PageLayout } from "./layouts/PageLayout";
+import App from "@/App";
+import { PageLayout } from "../layouts/PageLayout";
 import { MainPage } from "./pages/MainPage";
 import { CoursesPage } from "./pages/CoursesPage";
 import { CoursePage } from "./pages/CoursePage";
-import { RouteErrorFallback } from "./components/errors/RouteErrorFallback";
+import { AuthCallbackPage } from "./pages/AuthCallbackPage";
+import { RouteErrorFallback } from "../errors/RouteErrorFallback";
 
 export const Router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ export const Router = createBrowserRouter([
           },
         ],
       },
+      { path: "/auth/callback", element: <AuthCallbackPage /> },
     ],
   },
 ]);

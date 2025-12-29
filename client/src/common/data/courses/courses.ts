@@ -1,4 +1,4 @@
-import { ICourse } from "@/types/index";
+import { ICourse } from "@/common/types/index";
 
 import HTMLLogoPng from "@/assets/html-logo.png";
 import CSSLogoPng from "@/assets/css-logo.png";
