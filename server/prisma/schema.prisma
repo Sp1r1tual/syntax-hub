@@ -10,6 +10,7 @@ model User {
   id            String         @id @default(uuid())
   email         String         @unique
   name          String?
+  avatar        String?
   roles         UserRole[]
   refreshTokens RefreshToken[]
   createdAt     DateTime       @default(now())

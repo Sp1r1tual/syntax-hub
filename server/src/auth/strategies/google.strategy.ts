@@ -1,14 +1,13 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ConfigService } from "@nestjs/config";
 import {
   Strategy,
   StrategyOptions,
   VerifyCallback,
-  Profile,
 } from "passport-google-oauth20";
 
-import { IGoogleProfile } from "../types/auth";
+import { IGoogleProfile, IGoogleAuthUser } from "../types/auth";
 
 import { AuthService } from "../auth.service";
 
@@ -19,8 +18,6 @@ interface ExtendedStrategyOptions extends StrategyOptions {
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
-  private readonly logger = new Logger(GoogleStrategy.name);
-
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
@@ -37,8 +34,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
       accessType: "offline",
       prompt: "consent",
     } as ExtendedStrategyOptions);
-
-    this.logger.log("Google OAuth Strategy initialized");
   }
 
   async validate(
@@ -48,10 +43,22 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
     done: VerifyCallback,
   ): Promise<void> {
     try {
-      const user = await this.authService.validateOAuthLogin(profile);
+      const result = await this.authService.validateOAuthLogin(profile);
+
+      const user: IGoogleAuthUser = {
+        id: result.user.id,
+        email: result.user.email,
+        name: result.user.name,
+        avatar: result.user.avatar,
+        roles: result.user.roles,
+        createdAt: result.user.createdAt,
+        updatedAt: result.user.updatedAt,
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken,
+      };
+
       done(null, user);
     } catch (err) {
-      this.logger.error("Google OAuth validation failed", err);
       done(err, false);
     }
   }

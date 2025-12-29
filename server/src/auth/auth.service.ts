@@ -7,11 +7,7 @@ import { IGoogleProfile } from "./types/auth";
 import { UsersService } from "src/user/users.service";
 import { PrismaService } from "src/prisma/prisma.service";
 
-import {
-  ValidateOAuthDto,
-  AuthResponseDto,
-  RefreshTokenResponseDto,
-} from "./dto";
+import { RefreshTokenResponseDto } from "./dto";
 
 @Injectable()
 export class AuthService {
@@ -21,13 +17,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateOAuthLogin(profile: IGoogleProfile): Promise<AuthResponseDto> {
-    const dto: ValidateOAuthDto = {
+  async validateOAuthLogin(profile: IGoogleProfile) {
+    const user = await this.usersService.upsertFromOAuth({
       email: profile.emails[0].value,
       name: profile.displayName,
-    };
+      avatar: profile.photos?.[0]?.value || undefined,
+    });
 
-    const user = await this.usersService.upsertFromOAuth(dto);
+    await this.cleanupUserTokens(user.id);
 
     const accessToken = this.createAccessToken(
       user.id,
@@ -39,7 +36,10 @@ export class AuthService {
   }
 
   createAccessToken(userId: string, roles: string[]): string {
-    return this.jwtService.sign({ sub: userId, roles });
+    return this.jwtService.sign(
+      { userId: userId, roles },
+      { expiresIn: "15m" },
+    );
   }
 
   async createRefreshToken(userId: string): Promise<string> {
@@ -63,15 +63,37 @@ export class AuthService {
       throw new UnauthorizedException("Invalid or expired refresh token");
     }
 
+    await this.prisma.refreshToken.delete({ where: { id: dbToken.id } });
+
+    await this.cleanupExpiredTokens(dbToken.user.id);
+
+    const newRefreshToken = await this.createRefreshToken(dbToken.user.id);
     const accessToken = this.createAccessToken(
       dbToken.user.id,
       dbToken.user.roles.map((r) => r.role.key),
     );
 
-    return { accessToken };
+    return { accessToken, refreshToken: newRefreshToken };
   }
 
   async revokeRefreshToken(token: string): Promise<void> {
     await this.prisma.refreshToken.deleteMany({ where: { token } });
+  }
+
+  async cleanupUserTokens(userId: string): Promise<void> {
+    await this.prisma.refreshToken.deleteMany({
+      where: { userId },
+    });
+  }
+
+  async cleanupExpiredTokens(userId: string): Promise<void> {
+    await this.prisma.refreshToken.deleteMany({
+      where: {
+        userId,
+        expiresAt: {
+          lt: new Date(),
+        },
+      },
+    });
   }
 }

@@ -11,10 +11,11 @@ export class UsersService {
   async upsertFromOAuth(dto: CreateUserOAuthDto): Promise<UserResponseDto> {
     return this.prisma.user.upsert({
       where: { email: dto.email },
-      update: { name: dto.name },
+      update: { name: dto.name, avatar: dto.avatar },
       create: {
         email: dto.email,
         name: dto.name,
+        avatar: dto.avatar,
         roles: {
           create: {
             role: { connect: { key: "user" } },
