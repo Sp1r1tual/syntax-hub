@@ -1,0 +1,24 @@
+.errorWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.error {
+  text-align: center;
+  font-weight: 600;
+  font-family:
+    Onest Variable,
+    sans-serif;
+  font-size: 1.3rem;
+  color: red;
+}
+
+@media (max-width: 320px) {
+  .error {
+    font-size: 1rem;
+    width: 95%;
+  }
+}

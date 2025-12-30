@@ -1,106 +1,51 @@
 import { useState } from "react";
 
-import { ICourse, IQuestion } from "@/common/types/index";
+import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
-import DownArrowSvg from "@/assets/down-arrow.svg";
+import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
+import { CourseHeader } from "./CourseHeader";
+import { RoadmapSection } from "./RoadmapSection";
+import { TopicsList } from "./TopicsList";
 
 import styles from "./styles/CourseContent.module.css";
 
-interface ICourseContentProps {
-  course: ICourse;
-}
+export const CourseContent = () => {
+  const { selectedCourse, error } = useCoursesStore();
 
-export const CourseContent = ({ course }: ICourseContentProps) => {
   const [openTopics, setOpenTopics] = useState<Record<string, boolean>>({});
 
-  const toggleTopic = (id: string, hasQuestions: boolean) => {
+  const toggleTopic = (topicId: string, hasQuestions: boolean) => {
     if (hasQuestions) {
-      setOpenTopics((prev) => ({ ...prev, [id]: !prev[id] }));
+      setOpenTopics((prev) => ({ ...prev, [topicId]: !prev[topicId] }));
     }
   };
 
-  const getTopicState = (topicId: string, questions: IQuestion[]) => {
-    return {
-      hasQuestions: questions.length > 0,
-      isOpen: !!openTopics[topicId],
-    };
-  };
+  const handleOpenRoadmap = () => {};
+
+  if (error || !selectedCourse) {
+    return <ErrorWrapper error={error || "Курс не знайдено"} />;
+  }
+
+  const hasTopics = selectedCourse.topics && selectedCourse.topics.length > 0;
 
   return (
     <section className={styles.courseWrapper}>
-      <h3 className={styles.topicsHeader}>Деталі курсу</h3>
+      <CourseHeader course={selectedCourse} />
 
-      <div className={styles.course}>
-        <img src={course.icon} alt={`${course.title} logo`} />
-        <div className={styles.naming}>
-          <h1 className={styles.courseTitle}>{course.title}</h1>
-          <p className={styles.description}>{course.description}</p>
-        </div>
-      </div>
-
-      <h3 className={styles.topicsHeader}>Дорожня карта</h3>
-
-      <div className={styles.roadmapIntro}>
-        <p>
-          Дорожні карти допомагають структурувати процес навчання та бачити
-          повну картину курсу. Вони покажуть, з чого почати, які теми вивчати
-          далі і як закріплювати знання за допомогою практичних запитань.
-          Використовуючи дорожні карти, ви зможете впевнено рухатися від
-          базового рівня до складніших тем, не пропускаючи важливі кроки.
-        </p>
-        <button className={styles.openRoadmapBtn} onClick={undefined}>
-          Відкрити дорожню карту по {course.title}
-        </button>
-      </div>
+      <RoadmapSection
+        courseName={selectedCourse.title}
+        onOpenRoadmap={handleOpenRoadmap}
+      />
 
       <h3 className={styles.topicsHeader}>Теми для вивчення</h3>
 
-      {course.topics ? (
-        <article className={styles.topics}>
-          {course.topics.map((topic, topicIndex) => {
-            const { hasQuestions, isOpen } = getTopicState(
-              topic.id,
-              topic.questions,
-            );
-
-            return (
-              <div key={topic.id} className={styles.topic}>
-                <button
-                  onClick={() => toggleTopic(topic.id, hasQuestions)}
-                  className={`${styles.topicTitle} ${!hasQuestions ? styles.noQuestions : ""}`}
-                >
-                  <span
-                    className={styles.topicTitleText}
-                    data-index={topicIndex + 1}
-                  >
-                    {topic.title}
-                  </span>
-                  <img
-                    src={DownArrowSvg}
-                    alt="toggle"
-                    className={`${styles.arrowIcon} ${isOpen ? styles.open : ""} ${!hasQuestions ? styles.hidden : ""}`}
-                  />
-                </button>
-
-                {hasQuestions && (
-                  <div
-                    className={`${styles.questionsWrapper} ${isOpen ? styles.open : ""}`}
-                  >
-                    <div className={styles.questionsInner}>
-                      <ul className={styles.questions}>
-                        {topic.questions.map((q, qIndex) => (
-                          <li key={q.id} data-index={qIndex + 1}>
-                            <a href="#">{q.text}</a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </article>
+      {hasTopics ? (
+        <TopicsList
+          topics={selectedCourse.topics!}
+          courseSlug={selectedCourse.slug}
+          openTopics={openTopics}
+          onToggleTopic={toggleTopic}
+        />
       ) : (
         <p className={styles.soon}>Курс у розробці</p>
       )}

@@ -1,17 +1,23 @@
-import { useParams, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import { CourseContent } from "@/components/ui/sections/CourseContent";
-
-import { courses } from "@/common/data/courses/courses";
+import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
 export const CoursePage = () => {
   const { courseSlug } = useParams();
 
-  const course = courses.find((course) => course.slug === courseSlug);
+  const { fetchCourse, clearSelectedCourse } = useCoursesStore();
 
-  if (!course) {
-    return <Navigate to="/courses" replace />;
-  }
+  useEffect(() => {
+    if (courseSlug) {
+      fetchCourse(courseSlug);
+    }
 
-  return <CourseContent course={course} />;
+    return () => {
+      clearSelectedCourse();
+    };
+  }, [courseSlug, fetchCourse, clearSelectedCourse]);
+
+  return <CourseContent />;
 };

@@ -1,10 +1,6 @@
 declare module "*.module.css" {
-  const classes: { [key: string]: string };
+  const classes: Record<string, string>;
   export default classes;
-}
-
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
 }
 
 declare module "*.png";

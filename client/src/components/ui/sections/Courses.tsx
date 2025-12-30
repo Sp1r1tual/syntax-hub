@@ -1,11 +1,22 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { groupCoursesByCategory } from "@/common/utils/groupCoursesByCategory";
+import { useCoursesStore } from "@/store/courses/useCoursesStore";
+
+import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
 
 import styles from "./styles/Courses.module.css";
 
 export const Courses = () => {
-  const categories = groupCoursesByCategory();
+  const { coursesList, isLoadingList, error, fetchCoursesList } =
+    useCoursesStore();
+
+  useEffect(() => {
+    fetchCoursesList();
+  }, [fetchCoursesList]);
+
+  if (isLoadingList) return <div style={{ minHeight: "100dvh" }} />;
+  if (error) return <ErrorWrapper error={error} />;
 
   return (
     <section className={styles.coursesWrapper}>
@@ -15,22 +26,29 @@ export const Courses = () => {
         Деякі курси ще в розробці, але незабаром будуть доступні для навчання.
       </p>
 
-      {Object.entries(categories).map(([categorySlug, category]) => (
-        <div key={categorySlug} className={styles.categoryBlock}>
-          <h3 className={styles.courseSectionTitle}>{category.title}</h3>
+      {coursesList.map((group) => (
+        <div key={group.key} className={styles.groupSection}>
+          <h2 className={styles.groupTitle}>
+            {group.icon && <span>{group.icon}</span>}
+            {group.title}
+          </h2>
 
           <div className={styles.coursesGrid}>
-            {category.courses.map((course) => (
+            {group.courses.map((course) => (
               <Link
                 key={course.slug}
                 to={`/courses/${course.slug}`}
                 className={styles.course}
               >
-                <img src={course.icon} alt={`${course.title} logo`} />
+                {course.icon && (
+                  <img src={course.icon} alt={`${course.title} logo`} />
+                )}
 
                 <div className={styles.naming}>
-                  <h3 className={styles.courseTitle}>{course.title}</h3>
-                  <p className={styles.description}>{course.description}</p>
+                  <h4 className={styles.courseTitle}>{course.title}</h4>
+                  {course.description && (
+                    <p className={styles.description}>{course.description}</p>
+                  )}
                 </div>
               </Link>
             ))}

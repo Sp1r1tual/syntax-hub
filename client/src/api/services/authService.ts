@@ -1,6 +1,6 @@
 import { $apiMain } from "@/api";
 
-class AuthService {
+export class AuthService {
   static googleLogin() {
     const currentPath = window.location.pathname + window.location.search;
     sessionStorage.setItem("redirectAfterLogin", currentPath);
@@ -16,5 +16,3 @@ class AuthService {
     return $apiMain.post<{ success: boolean; message: string }>("/auth/logout");
   }
 }
-
-export { AuthService };
