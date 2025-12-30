@@ -3,41 +3,46 @@ import { plainToInstance } from "class-transformer";
 
 import { PrismaService } from "src/prisma/prisma.service";
 
-import { CoursesListResponseDto, CourseDetailsResponseDto } from "./dto";
+import { CoursesGroupedListResponseDto, CourseDetailsResponseDto } from "./dto";
 
 @Injectable()
 export class CoursesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getCoursesList(): Promise<CoursesListResponseDto> {
-    const courseList = await this.prisma.courseCategory.findMany({
+  async getCoursesList(): Promise<CoursesGroupedListResponseDto> {
+    const categoryGroups = await this.prisma.categoryGroup.findMany({
       orderBy: { order: "asc" },
       include: {
-        courses: {
-          select: {
-            slug: true,
-            title: true,
-            description: true,
-            icon: true,
+        categories: {
+          orderBy: { order: "asc" },
+          include: {
+            courses: {
+              select: {
+                slug: true,
+                title: true,
+                description: true,
+                icon: true,
+              },
+            },
           },
         },
       },
     });
 
-    const courses = courseList.flatMap((category) =>
-      category.courses.map((course) => ({
-        ...course,
-        category: {
-          key: category.key,
-          title: category.title,
-          icon: category.icon,
-        },
+    const groups = categoryGroups.map((group) => ({
+      key: group.key,
+      title: group.title,
+      categories: group.categories.map((category) => ({
+        key: category.key,
+        title: category.title,
+        icon: category.icon,
+        courses: category.courses,
       })),
-    );
+    }));
 
     return plainToInstance(
-      CoursesListResponseDto,
-      { courses },
+      CoursesGroupedListResponseDto,
+      { groups },
       { excludeExtraneousValues: true },
     );
   }
@@ -48,7 +53,11 @@ export class CoursesService {
     const course = await this.prisma.course.findUnique({
       where: { slug },
       include: {
-        category: true,
+        category: {
+          include: {
+            group: true,
+          },
+        },
         topics: {
           orderBy: { order: "asc" },
           include: {
@@ -73,6 +82,10 @@ export class CoursesService {
         key: course.category.key,
         title: course.category.title,
         icon: course.category.icon,
+      },
+      group: {
+        key: course.category.group.key,
+        title: course.category.group.title,
       },
       topics: course.topics.map((topic) => ({
         id: topic.id,

@@ -1,17 +1,6 @@
 import { Expose, Type } from "class-transformer";
 
-class CourseCategoryDto {
-  @Expose()
-  key: string;
-
-  @Expose()
-  title: string;
-
-  @Expose()
-  icon?: string;
-}
-
-class CoursePreviewDto {
+class CourseInCategoryDto {
   @Expose()
   slug: string;
 
@@ -23,14 +12,37 @@ class CoursePreviewDto {
 
   @Expose()
   icon?: string;
-
-  @Expose()
-  @Type(() => CourseCategoryDto)
-  category: CourseCategoryDto;
 }
 
-export class CoursesListResponseDto {
+class CategoryWithCoursesDto {
   @Expose()
-  @Type(() => CoursePreviewDto)
-  courses: CoursePreviewDto[];
+  key: string;
+
+  @Expose()
+  title: string;
+
+  @Expose()
+  icon?: string;
+
+  @Expose()
+  @Type(() => CourseInCategoryDto)
+  courses: CourseInCategoryDto[];
+}
+
+class CategoryGroupWithDataDto {
+  @Expose()
+  key: string;
+
+  @Expose()
+  title: string;
+
+  @Expose()
+  @Type(() => CategoryWithCoursesDto)
+  categories: CategoryWithCoursesDto[];
+}
+
+export class CoursesGroupedListResponseDto {
+  @Expose()
+  @Type(() => CategoryGroupWithDataDto)
+  groups: CategoryGroupWithDataDto[];
 }

@@ -32,8 +32,8 @@ model Role {
 model UserRole {
   userId String
   roleId String
-  user                  User             @relation(fields: [userId],            references: [id], onDelete: Cascade)
-  role                  Role             @relation(fields: [roleId],            references: [id], onDelete: Cascade)
+  user                  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role                  Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
   
   @@id([userId, roleId])
   @@map("user_roles")
@@ -43,23 +43,39 @@ model RefreshToken {
   id                    String            @id @default(uuid())
   token                 String            @unique
   userId                String
-  user                  User              @relation(fields: [userId],           references: [id], onDelete: Cascade)
+  user                  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt             DateTime
   createdAt             DateTime          @default(now())
 
   @@map("refresh_tokens")
 }
 
+model CategoryGroup {
+  id                    String            @id @default(uuid())
+  key                   String            @unique
+  title                 String
+  order                 Int               @default(999)
+  categories            CourseCategory[]
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  @@index([order])
+  @@map("category_groups")
+}
+
 model CourseCategory {
   id                    String            @id @default(uuid())
   key                   String            @unique 
-  title                 String           
+  title                 String
+  groupId               String            
+  group                 CategoryGroup     @relation(fields: [groupId], references: [id], onDelete: Restrict)
   order                 Int               @default(999)
   icon                  String?
   courses               Course[]
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
 
+  @@index([groupId])
   @@index([order])
   @@map("course_categories")
 }
@@ -68,7 +84,7 @@ model Course {
   id                    String            @id @default(uuid())
   slug                  String            @unique
   categoryId            String
-  category              CourseCategory    @relation(fields: [categoryId],       references: [id], onDelete: Restrict)
+  category              CourseCategory    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   title                 String
   description           String?
   topics                Topic[]
@@ -84,7 +100,7 @@ model Topic {
   id                    String            @id @default(uuid())
   title                 String
   courseId              String
-  course                Course            @relation(fields: [courseId],          references: [id], onDelete: Cascade)
+  course                Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
   questions             Question[]
   order                 Int               @default(999)
   createdAt             DateTime          @default(now())
@@ -98,7 +114,7 @@ model Question {
   id                    String            @id @default(uuid())
   text                  String            @db.Text
   topicId               String
-  topic                 Topic             @relation(fields: [topicId],           references: [id], onDelete: Cascade)
+  topic                 Topic             @relation(fields: [topicId], references: [id], onDelete: Cascade)
   explanation           String            @db.Text
   order                 Int               @default(999)
   createdAt             DateTime          @default(now())

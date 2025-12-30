@@ -1,15 +1,6 @@
 import { Expose, Type } from "class-transformer";
 
-class CourseCategoryDto {
-  @Expose()
-  key: string;
-
-  @Expose()
-  title: string;
-
-  @Expose()
-  icon?: string;
-}
+import { CourseCategoryDto, CategoryGroupDto } from "./course.dto";
 
 class QuestionDto {
   @Expose()
@@ -58,6 +49,10 @@ class CourseStructureDto {
   @Expose()
   @Type(() => CourseCategoryDto)
   category: CourseCategoryDto;
+
+  @Expose()
+  @Type(() => CategoryGroupDto)
+  group: CategoryGroupDto;
 
   @Expose()
   @Type(() => TopicDto)
