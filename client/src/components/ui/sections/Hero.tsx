@@ -49,11 +49,13 @@ export const Hero = () => {
         </span>
       </div>
 
-      <img
-        src={HeroLogoLightPng}
-        alt="SyntaxHub logo"
-        className={styles.logoImg}
-      />
+      <div className={styles.imgWrapper}>
+        <img
+          src={HeroLogoLightPng}
+          alt="SyntaxHub logo"
+          className={styles.logoImg}
+        />
+      </div>
 
       <p className={styles.text}>
         Розвивай свої навички, відкривай нові можливості та напрямки для

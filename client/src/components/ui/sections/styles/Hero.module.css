@@ -46,10 +46,20 @@
   }
 }
 
-.logoImg {
+.imgWrapper {
   max-width: 25rem;
-  height: auto;
-  filter: var(--icon-filter);
+  width: 100%;
+  height: 15rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.logoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .text {
@@ -72,8 +82,15 @@
     text-align: center;
   }
 
+  .imgWrapper {
+    height: auto;
+    max-width: 18rem;
+  }
+
   .logoImg {
+    height: auto;
     max-width: 100%;
+    object-fit: contain;
   }
 
   .text {
