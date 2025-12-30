@@ -2,30 +2,21 @@ import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const prisma = new PrismaClient({
+import { seedRoles } from "./seeders/roles";
+import { seedCategories } from "./seeders/categories";
+
+export const prisma = new PrismaClient({
   adapter: new PrismaPg({
     connectionString: process.env.DATABASE_URL!,
   }),
 });
 
 async function seed() {
-  console.log("Seeding database...");
+  console.log("Seeding roles...");
+  await seedRoles();
 
-  const roles = [
-    { key: "user", title: "User" },
-    { key: "admin", title: "Administrator" },
-    { key: "moderator", title: "Moderator" },
-  ];
-
-  for (const role of roles) {
-    const created = await prisma.role.upsert({
-      where: { key: role.key },
-      update: { title: role.title },
-      create: role,
-    });
-
-    console.log(`Seeded ${created.title} (${created.key})`);
-  }
+  console.log("Seeding categories...");
+  await seedCategories();
 
   console.log("Seed complete!");
 }
