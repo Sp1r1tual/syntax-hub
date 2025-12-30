@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
 
-class CourseInCategoryDto {
+class CourseInGroupDto {
   @Expose()
   slug: string;
 
@@ -14,7 +14,7 @@ class CourseInCategoryDto {
   icon?: string;
 }
 
-class CategoryWithCoursesDto {
+class CategoryGroupWithCoursesDto {
   @Expose()
   key: string;
 
@@ -22,27 +22,12 @@ class CategoryWithCoursesDto {
   title: string;
 
   @Expose()
-  icon?: string;
-
-  @Expose()
-  @Type(() => CourseInCategoryDto)
-  courses: CourseInCategoryDto[];
-}
-
-class CategoryGroupWithDataDto {
-  @Expose()
-  key: string;
-
-  @Expose()
-  title: string;
-
-  @Expose()
-  @Type(() => CategoryWithCoursesDto)
-  categories: CategoryWithCoursesDto[];
+  @Type(() => CourseInGroupDto)
+  courses: CourseInGroupDto[];
 }
 
 export class CoursesGroupedListResponseDto {
   @Expose()
-  @Type(() => CategoryGroupWithDataDto)
-  groups: CategoryGroupWithDataDto[];
+  @Type(() => CategoryGroupWithCoursesDto)
+  groups: CategoryGroupWithCoursesDto[];
 }

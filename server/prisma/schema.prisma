@@ -55,7 +55,7 @@ model CategoryGroup {
   key                   String            @unique
   title                 String
   order                 Int               @default(999)
-  categories            CourseCategory[]
+  courses               Course[]
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
 
@@ -63,36 +63,21 @@ model CategoryGroup {
   @@map("category_groups")
 }
 
-model CourseCategory {
+model Course {
   id                    String            @id @default(uuid())
-  key                   String            @unique 
-  title                 String
-  groupId               String            
+  slug                  String            @unique
+  groupId               String
   group                 CategoryGroup     @relation(fields: [groupId], references: [id], onDelete: Restrict)
-  order                 Int               @default(999)
+  title                 String
+  description           String?
+  topics                Topic[]
   icon                  String?
-  courses               Course[]
+  order                 Int               @default(999)
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
 
   @@index([groupId])
   @@index([order])
-  @@map("course_categories")
-}
-
-model Course {
-  id                    String            @id @default(uuid())
-  slug                  String            @unique
-  categoryId            String
-  category              CourseCategory    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-  title                 String
-  description           String?
-  topics                Topic[]
-  icon                  String?
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime          @updatedAt
-
-  @@index([categoryId])
   @@map("courses")
 }
 

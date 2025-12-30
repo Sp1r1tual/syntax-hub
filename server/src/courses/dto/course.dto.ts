@@ -6,14 +6,6 @@ export class CategoryGroupDto {
 
   @Expose()
   title: string;
-}
-
-export class CourseCategoryDto {
-  @Expose()
-  key: string;
-
-  @Expose()
-  title: string;
 
   @Expose()
   icon?: string;

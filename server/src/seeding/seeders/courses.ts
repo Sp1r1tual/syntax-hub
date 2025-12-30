@@ -5,16 +5,18 @@ const coursesData = [
     slug: "html",
     title: "HTML",
     description: "Скоро буде!",
-    categoryKey: "html",
+    groupKey: "frontend",
     icon: "html-logo.png",
+    order: 1,
     topics: [],
   },
   {
     slug: "css",
     title: "CSS",
     description: "Скоро буде!",
-    categoryKey: "css",
+    groupKey: "frontend",
     icon: "css-logo.png",
+    order: 2,
     topics: [],
   },
   {
@@ -22,8 +24,9 @@ const coursesData = [
     title: "JavaScript",
     description:
       "Основний інструмент для роботи з вебом та сучасними додатками. Додає життя вашому сайту: кнопки, анімації та динамічний контент.",
-    categoryKey: "javascript",
+    groupKey: "frontend",
     icon: "javascript-logo.png",
+    order: 3,
     topics: [
       {
         title: "Основи",
@@ -107,21 +110,22 @@ const coursesData = [
     slug: "react",
     title: "React",
     description: "Скоро буде!",
-    categoryKey: "react",
+    groupKey: "frontend",
     icon: "react-logo.png",
+    order: 4,
     topics: [],
   },
 ];
 
 export async function seedCourses() {
   for (const courseData of coursesData) {
-    const category = await prisma.courseCategory.findUnique({
-      where: { key: courseData.categoryKey },
+    const group = await prisma.categoryGroup.findUnique({
+      where: { key: courseData.groupKey },
     });
 
-    if (!category) {
+    if (!group) {
       console.warn(
-        `Category ${courseData.categoryKey} not found, skipping course ${courseData.slug}`,
+        `Group ${courseData.groupKey} not found, skipping course ${courseData.slug}`,
       );
       continue;
     }
@@ -132,14 +136,16 @@ export async function seedCourses() {
         title: courseData.title,
         description: courseData.description,
         icon: courseData.icon,
-        categoryId: category.id,
+        groupId: group.id,
+        order: courseData.order,
       },
       create: {
         slug: courseData.slug,
         title: courseData.title,
         description: courseData.description,
         icon: courseData.icon,
-        categoryId: category.id,
+        groupId: group.id,
+        order: courseData.order,
       },
     });
 

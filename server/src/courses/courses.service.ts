@@ -13,17 +13,13 @@ export class CoursesService {
     const categoryGroups = await this.prisma.categoryGroup.findMany({
       orderBy: { order: "asc" },
       include: {
-        categories: {
+        courses: {
           orderBy: { order: "asc" },
-          include: {
-            courses: {
-              select: {
-                slug: true,
-                title: true,
-                description: true,
-                icon: true,
-              },
-            },
+          select: {
+            slug: true,
+            title: true,
+            description: true,
+            icon: true,
           },
         },
       },
@@ -32,12 +28,7 @@ export class CoursesService {
     const groups = categoryGroups.map((group) => ({
       key: group.key,
       title: group.title,
-      categories: group.categories.map((category) => ({
-        key: category.key,
-        title: category.title,
-        icon: category.icon,
-        courses: category.courses,
-      })),
+      courses: group.courses,
     }));
 
     return plainToInstance(
@@ -53,11 +44,7 @@ export class CoursesService {
     const course = await this.prisma.course.findUnique({
       where: { slug },
       include: {
-        category: {
-          include: {
-            group: true,
-          },
-        },
+        group: true,
         topics: {
           orderBy: { order: "asc" },
           include: {
@@ -78,14 +65,9 @@ export class CoursesService {
       title: course.title,
       description: course.description,
       icon: course.icon,
-      category: {
-        key: course.category.key,
-        title: course.category.title,
-        icon: course.category.icon,
-      },
       group: {
-        key: course.category.group.key,
-        title: course.category.group.title,
+        key: course.group.key,
+        title: course.group.title,
       },
       topics: course.topics.map((topic) => ({
         id: topic.id,
