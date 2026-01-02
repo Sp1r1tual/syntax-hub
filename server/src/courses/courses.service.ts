@@ -5,6 +5,8 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 import { CoursesGroupedListResponseDto, CourseDetailsResponseDto } from "./dto";
 
+import { ContentBlockMapper } from "./utils/content-block.mapper";
+
 @Injectable()
 export class CoursesService {
   constructor(private readonly prisma: PrismaService) {}
@@ -45,11 +47,22 @@ export class CoursesService {
       where: { slug },
       include: {
         group: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         topics: {
           orderBy: { order: "asc" },
           include: {
             questions: {
               orderBy: { order: "asc" },
+              include: {
+                blocks: {
+                  orderBy: { order: "asc" },
+                },
+              },
             },
           },
         },
@@ -69,6 +82,12 @@ export class CoursesService {
         key: course.group.key,
         title: course.group.title,
       },
+      author: course.author
+        ? {
+            id: course.author.id,
+            name: course.author.name,
+          }
+        : null,
       topics: course.topics.map((topic) => ({
         id: topic.id,
         title: topic.title,
@@ -79,6 +98,8 @@ export class CoursesService {
           topicId: q.topicId,
         })),
       })),
+      createdAt: course.createdAt,
+      updatedAt: course.updatedAt,
     };
 
     const content = course.topics.flatMap((topic) =>
@@ -86,7 +107,7 @@ export class CoursesService {
         id: q.id,
         text: q.text,
         topicId: q.topicId,
-        explanation: q.explanation,
+        blocks: q.blocks.map((block) => ContentBlockMapper.mapBlock(block)),
       })),
     );
 

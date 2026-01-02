@@ -13,6 +13,7 @@ model User {
   avatar                String?
   roles                 UserRole[]
   refreshTokens         RefreshToken[]
+  createdCourses        Course[]
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
 
@@ -70,13 +71,16 @@ model Course {
   group                 CategoryGroup     @relation(fields: [groupId], references: [id], onDelete: Restrict)
   title                 String
   description           String?
-  topics                Topic[]
   icon                  String?
+  authorId              String?
+  author                User?             @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  topics                Topic[]
   order                 Int               @default(999)
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
 
   @@index([groupId])
+  @@index([authorId])
   @@index([order])
   @@map("courses")
 }
@@ -92,7 +96,9 @@ model Topic {
   updatedAt             DateTime          @updatedAt
 
   @@index([courseId])
+  @@index([order])
   @@map("topics")
+  @@unique([courseId, order])
 }
 
 model Question {
@@ -100,11 +106,57 @@ model Question {
   text                  String            @db.Text
   topicId               String
   topic                 Topic             @relation(fields: [topicId], references: [id], onDelete: Cascade)
-  explanation           String            @db.Text
+  blocks                ContentBlock[]
   order                 Int               @default(999)
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
 
   @@index([topicId])
+  @@index([order])
   @@map("questions")
+  @@unique([topicId, order])
+}
+
+enum ContentBlockType {
+  TEXT
+  CODE
+  NOTE
+  IMAGE
+  TABLE
+}
+
+enum CodeLanguage {
+  JAVASCRIPT
+  TYPESCRIPT
+  HTML
+  CSS
+  JSON
+  BASH
+  PYTHON
+  JAVA
+  CSHARP
+  SQL
+}
+
+model ContentBlock {
+  id                    String            @id @default(uuid())
+  questionId            String
+  question              Question          @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  type                  ContentBlockType
+  content               String?           @db.Text
+  language              CodeLanguage?
+  src                   String?
+  alt                   String?
+  caption               String?
+  title                 String?
+  headers               String[]
+  rows                  Json
+  order                 Int               @default(999)
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  @@index([questionId])
+  @@index([order])
+  @@map("content_blocks")
+  @@unique([questionId, order])
 }

@@ -1,6 +1,52 @@
 import { Expose, Type } from "class-transformer";
 
-import { CategoryGroupDto } from "./course.dto";
+export class CategoryGroupDto {
+  @Expose()
+  key: string;
+
+  @Expose()
+  title: string;
+}
+
+export class CourseContentDto {
+  @Expose()
+  id: string;
+
+  @Expose()
+  type: string;
+
+  @Expose()
+  content?: string;
+
+  @Expose()
+  language?: string;
+
+  @Expose()
+  src?: string;
+
+  @Expose()
+  alt?: string;
+
+  @Expose()
+  caption?: string;
+
+  @Expose()
+  title?: string;
+
+  @Expose()
+  headers?: string[];
+
+  @Expose()
+  rows?: string[][];
+}
+
+export class CourseAuthorDto {
+  @Expose()
+  id: string;
+
+  @Expose()
+  name: string | null;
+}
 
 class QuestionDto {
   @Expose()
@@ -15,7 +61,8 @@ class QuestionDto {
 
 class QuestionDetailDto extends QuestionDto {
   @Expose()
-  explanation: string;
+  @Type(() => CourseContentDto)
+  blocks: CourseContentDto[];
 }
 
 class TopicDto {
@@ -51,8 +98,18 @@ class CourseStructureDto {
   group: CategoryGroupDto;
 
   @Expose()
+  @Type(() => CourseAuthorDto)
+  author: CourseAuthorDto | null;
+
+  @Expose()
   @Type(() => TopicDto)
   topics: TopicDto[];
+
+  @Expose()
+  createdAt: Date;
+
+  @Expose()
+  updatedAt: Date;
 }
 
 export class CourseDetailsResponseDto {
