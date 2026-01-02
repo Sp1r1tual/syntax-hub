@@ -21,7 +21,7 @@ export const TopicQuestionsList = ({
         <ul className={styles.questions}>
           {questions.map((question, index) => (
             <li key={question.id} data-index={index + 1}>
-              <Link to={`/courses/${courseSlug}/topics/${question.id}`}>
+              <Link to={`/courses/${courseSlug}/questions/${question.id}`}>
                 {question.text}
               </Link>
             </li>

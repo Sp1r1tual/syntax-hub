@@ -1,0 +1,17 @@
+.commonBtn {
+  background-color: var(--bg-active);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 0.5rem 2rem;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.commonBtn:hover {
+  background-color: var(--bg-hover-strong);
+  transform: scale(1.05);
+}

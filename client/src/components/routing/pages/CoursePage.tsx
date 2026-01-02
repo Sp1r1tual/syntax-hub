@@ -1,23 +1,35 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Outlet } from "react-router-dom";
 
-import { CourseContent } from "@/components/ui/sections/CourseContent";
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
-export const CoursePage = () => {
-  const { courseSlug } = useParams();
+import { CourseContent } from "@/components/ui/sections/CourseContent";
 
-  const { fetchCourse, clearSelectedCourse } = useCoursesStore();
+export const CoursePage = () => {
+  const { courseSlug, questionId } = useParams();
+
+  const { selectedCourse, fetchCourse, isLoadingCourse } = useCoursesStore();
 
   useEffect(() => {
-    if (courseSlug) {
+    window.scrollTo(0, 0);
+  }, [questionId]);
+
+  useEffect(() => {
+    if (
+      courseSlug &&
+      (!selectedCourse || selectedCourse.slug !== courseSlug) &&
+      !isLoadingCourse
+    ) {
       fetchCourse(courseSlug);
     }
+  }, [courseSlug, selectedCourse, isLoadingCourse, fetchCourse]);
 
-    return () => {
-      clearSelectedCourse();
-    };
-  }, [courseSlug, fetchCourse, clearSelectedCourse]);
+  if (isLoadingCourse && !selectedCourse)
+    return <div style={{ minHeight: "100dvh" }} />;
+
+  if (questionId) {
+    return <Outlet />;
+  }
 
   return <CourseContent />;
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import HeroLogoLightPng from "@/assets/hero-logo-light.png";
 
@@ -7,44 +7,65 @@ import styles from "./styles/Hero.module.css";
 const WORDS = ["НАВИЧОК", "ЗНАНЬ", "ІДЕЙ"];
 
 export const Hero = () => {
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [displayedText, setDisplayedText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
+  const wordIndexRef = useRef(0);
+  const charIndexRef = useRef(0);
+  const isDeletingRef = useRef(false);
+  const spanRef = useRef<HTMLSpanElement | null>(null);
+  const timeoutRef = useRef<number>(null);
 
   useEffect(() => {
-    const currentWord = WORDS[currentWordIndex];
+    const type = () => {
+      const currentWord = WORDS[wordIndexRef.current] ?? "";
+      if (!spanRef.current) return;
 
-    const timeout = setTimeout(
-      () => {
-        if (!isDeleting) {
-          if (!currentWord) return;
+      if (!isDeletingRef.current) {
+        spanRef.current.textContent = currentWord.slice(
+          0,
+          charIndexRef.current + 1,
+        );
+        charIndexRef.current += 1;
 
-          if (displayedText.length < currentWord.length) {
-            setDisplayedText(currentWord.slice(0, displayedText.length + 1));
-          } else {
-            setTimeout(() => setIsDeleting(true), 2000);
-          }
-        } else {
-          if (displayedText.length > 0) {
-            setDisplayedText(displayedText.slice(0, -1));
-          } else {
-            setIsDeleting(false);
-            setCurrentWordIndex((prev) => (prev + 1) % WORDS.length);
-          }
+        if (charIndexRef.current === currentWord.length) {
+          timeoutRef.current = window.setTimeout(() => {
+            isDeletingRef.current = true;
+            tick();
+          }, 2000);
+          return;
         }
-      },
-      isDeleting ? 50 : 150,
-    );
+      } else {
+        charIndexRef.current -= 1;
+        spanRef.current.textContent = currentWord.slice(
+          0,
+          charIndexRef.current,
+        );
 
-    return () => clearTimeout(timeout);
-  }, [displayedText, isDeleting, currentWordIndex]);
+        if (charIndexRef.current === 0) {
+          isDeletingRef.current = false;
+          wordIndexRef.current = (wordIndexRef.current + 1) % WORDS.length;
+        }
+      }
+
+      tick();
+    };
+
+    const tick = () => {
+      const delay = isDeletingRef.current ? 50 : 150;
+      timeoutRef.current = window.setTimeout(type, delay);
+    };
+
+    tick();
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <section className={styles.hero}>
       <div className={styles.typingContainer}>
         <span className={styles.staticText}>{"> ЗАВАНТАЖЕННЯ_ТВОЇХ_"}</span>
         <span className={styles.typingText}>
-          {displayedText}
+          <span ref={spanRef} />
           <span className={styles.cursor}>_</span>
         </span>
       </div>

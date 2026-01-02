@@ -28,10 +28,7 @@ export const Courses = () => {
 
       {coursesList.map((group) => (
         <div key={group.key} className={styles.groupSection}>
-          <h2 className={styles.groupTitle}>
-            {group.icon && <span>{group.icon}</span>}
-            {group.title}
-          </h2>
+          <h2 className={styles.groupTitle}>{group.title}</h2>
 
           <div className={styles.coursesGrid}>
             {group.courses.map((course) => (
