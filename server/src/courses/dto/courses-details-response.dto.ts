@@ -8,6 +8,40 @@ export class CategoryGroupDto {
   title: string;
 }
 
+export class TableCellDto {
+  @Expose()
+  id: string;
+
+  @Expose()
+  text: string;
+
+  @Expose()
+  order: number;
+}
+
+export class TableRowDto {
+  @Expose()
+  id: string;
+
+  @Expose()
+  @Type(() => TableCellDto)
+  cells: TableCellDto[];
+
+  @Expose()
+  order: number;
+}
+
+export class TableHeaderDto {
+  @Expose()
+  id: string;
+
+  @Expose()
+  text: string;
+
+  @Expose()
+  order: number;
+}
+
 export class CourseContentDto {
   @Expose()
   id: string;
@@ -34,10 +68,12 @@ export class CourseContentDto {
   title?: string;
 
   @Expose()
-  headers?: string[];
+  @Type(() => TableHeaderDto)
+  headers?: TableHeaderDto[];
 
   @Expose()
-  rows?: string[][];
+  @Type(() => TableRowDto)
+  rows?: TableRowDto[];
 }
 
 export class CourseAuthorDto {

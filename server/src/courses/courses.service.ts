@@ -61,6 +61,19 @@ export class CoursesService {
               include: {
                 blocks: {
                   orderBy: { order: "asc" },
+                  include: {
+                    headers: {
+                      orderBy: { order: "asc" },
+                    },
+                    rows: {
+                      orderBy: { order: "asc" },
+                      include: {
+                        cells: {
+                          orderBy: { order: "asc" },
+                        },
+                      },
+                    },
+                  },
                 },
               },
             },

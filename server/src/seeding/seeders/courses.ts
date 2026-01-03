@@ -1,7 +1,22 @@
 import { prisma } from "../seed";
-import { ContentBlockType, CodeLanguage, Prisma } from "@prisma/client";
+import { ContentBlockType, CodeLanguage } from "@prisma/client";
 
-interface ContentBlockData {
+interface ITableCellData {
+  text: string;
+  order: number;
+}
+
+interface ITableRowData {
+  order: number;
+  cells: ITableCellData[];
+}
+
+interface ITableHeaderData {
+  text: string;
+  order: number;
+}
+
+interface IContentBlockData {
   type: ContentBlockType;
   content?: string;
   language?: CodeLanguage;
@@ -9,40 +24,40 @@ interface ContentBlockData {
   alt?: string;
   caption?: string;
   title?: string;
-  headers?: string[];
-  rows?: Prisma.InputJsonValue;
+  headers?: ITableHeaderData[];
+  rows?: ITableRowData[];
   order: number;
 }
 
-interface QuestionData {
+interface IQuestionData {
   text: string;
   order: number;
-  blocks: ContentBlockData[];
+  blocks: IContentBlockData[];
 }
 
-interface TopicData {
+interface ITopicData {
   title: string;
   order: number;
-  questions: QuestionData[];
+  questions: IQuestionData[];
 }
 
-interface CourseData {
+interface ICourseData {
   slug: string;
   title: string;
   description: string;
   groupKey: string;
   icon: string;
   order: number;
-  topics: TopicData[];
+  topics: ITopicData[];
 }
 
-const coursesData: CourseData[] = [
+const coursesData: ICourseData[] = [
   {
     slug: "html",
     title: "HTML",
     description: "Скоро буде!",
     groupKey: "frontend",
-    icon: "html-logo.png",
+    icon: "https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/courses/groups/html-logo.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL2NvdXJzZXMvZ3JvdXBzL2h0bWwtbG9nby5wbmciLCJpYXQiOjE3Njc0MzI0MDEsImV4cCI6NDg4OTQ5NjQwMX0.w9JkQBGvlzPCsnVrJHuAXjRvSp3qtJQggs1VaRmzhgY",
     order: 1,
     topics: [],
   },
@@ -51,7 +66,7 @@ const coursesData: CourseData[] = [
     title: "CSS",
     description: "Скоро буде!",
     groupKey: "frontend",
-    icon: "css-logo.png",
+    icon: "https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/courses/groups/css-logo.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL2NvdXJzZXMvZ3JvdXBzL2Nzcy1sb2dvLnBuZyIsImlhdCI6MTc2NzQzMjM4MCwiZXhwIjo0ODg5NDk2MzgwfQ.jAtNw166do_Ws5Vl9pczeAhNkogEXkt5aLegVlRWBwA",
     order: 2,
     topics: [],
   },
@@ -61,7 +76,7 @@ const coursesData: CourseData[] = [
     description:
       "Основний інструмент для роботи з вебом та сучасними додатками. Додає життя вашому сайту: кнопки, анімації та динамічний контент.",
     groupKey: "frontend",
-    icon: "javascript-logo.png",
+    icon: "https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/courses/groups/javascript-logo.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL2NvdXJzZXMvZ3JvdXBzL2phdmFzY3JpcHQtbG9nby5wbmciLCJpYXQiOjE3Njc0MzI0MTksImV4cCI6NDg4OTQ5NjQxOX0.RczaeKEg4Vc5ga0YrnFmwbIlt_iexwV50YnEoO3kM_M",
     order: 3,
     topics: [
       {
@@ -93,13 +108,52 @@ const coursesData: CourseData[] = [
               {
                 type: ContentBlockType.TABLE,
                 title: "Основні типи даних",
-                headers: ["Тип", "Приклад", "Опис"],
+                headers: [
+                  { text: "Тип", order: 0 },
+                  { text: "Приклад", order: 1 },
+                  { text: "Опис", order: 2 },
+                ],
                 rows: [
-                  ["number", "42", "Числа (цілі та дробові)"],
-                  ["string", '"hello"', "Текстові рядки"],
-                  ["boolean", "true/false", "Логічні значення"],
-                  ["null", "null", "Відсутність значення"],
-                  ["undefined", "undefined", "Невизначене значення"],
+                  {
+                    order: 0,
+                    cells: [
+                      { text: "number", order: 0 },
+                      { text: "42", order: 1 },
+                      { text: "Числа (цілі та дробові)", order: 2 },
+                    ],
+                  },
+                  {
+                    order: 1,
+                    cells: [
+                      { text: "string", order: 0 },
+                      { text: '"hello"', order: 1 },
+                      { text: "Текстові рядки", order: 2 },
+                    ],
+                  },
+                  {
+                    order: 2,
+                    cells: [
+                      { text: "boolean", order: 0 },
+                      { text: "true/false", order: 1 },
+                      { text: "Логічні значення", order: 2 },
+                    ],
+                  },
+                  {
+                    order: 3,
+                    cells: [
+                      { text: "null", order: 0 },
+                      { text: "null", order: 1 },
+                      { text: "Відсутність значення", order: 2 },
+                    ],
+                  },
+                  {
+                    order: 4,
+                    cells: [
+                      { text: "undefined", order: 0 },
+                      { text: "undefined", order: 1 },
+                      { text: "Невизначене значення", order: 2 },
+                    ],
+                  },
                 ],
                 order: 4,
               },
@@ -149,19 +203,42 @@ const coursesData: CourseData[] = [
                 type: ContentBlockType.TABLE,
                 title: "Порівняння способів оголошення",
                 headers: [
-                  "Ключове слово",
-                  "Область видимості",
-                  "Можна змінити",
-                  "Hoisting",
+                  { text: "Ключове слово", order: 0 },
+                  { text: "Область видимості", order: 1 },
+                  { text: "Можна змінити", order: 2 },
+                  { text: "Hoisting", order: 3 },
                 ],
                 rows: [
-                  ["var", "function", "✅ Так", "✅ Так"],
-                  ["let", "block", "✅ Так", "❌ Ні (TDZ)"],
-                  ["const", "block", "❌ Ні", "❌ Ні (TDZ)"],
+                  {
+                    order: 0,
+                    cells: [
+                      { text: "var", order: 0 },
+                      { text: "function", order: 1 },
+                      { text: "✅ Так", order: 2 },
+                      { text: "✅ Так", order: 3 },
+                    ],
+                  },
+                  {
+                    order: 1,
+                    cells: [
+                      { text: "let", order: 0 },
+                      { text: "block", order: 1 },
+                      { text: "✅ Так", order: 2 },
+                      { text: "❌ Ні (TDZ)", order: 3 },
+                    ],
+                  },
+                  {
+                    order: 2,
+                    cells: [
+                      { text: "const", order: 0 },
+                      { text: "block", order: 1 },
+                      { text: "❌ Ні", order: 2 },
+                      { text: "❌ Ні (TDZ)", order: 3 },
+                    ],
+                  },
                 ],
                 order: 3,
               },
-
               {
                 type: ContentBlockType.NOTE,
                 content:
@@ -272,7 +349,7 @@ const coursesData: CourseData[] = [
     title: "React",
     description: "Скоро буде!",
     groupKey: "frontend",
-    icon: "react-logo.png",
+    icon: "https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/courses/groups/react-logo.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL2NvdXJzZXMvZ3JvdXBzL3JlYWN0LWxvZ28ucG5nIiwiaWF0IjoxNzY3NDMyNDM3LCJleHAiOjQ4ODk0OTY0Mzd9.H1Qpa9uj3G4SQMabw9VMqeXAHYDcLSwqZTlBA32PPj8",
     order: 4,
     topics: [],
   },
@@ -339,21 +416,49 @@ export async function seedCourses() {
         console.log(`Created question: ${question.text}`);
 
         for (const blockData of questionData.blocks) {
-          await prisma.contentBlock.create({
-            data: {
-              questionId: question.id,
-              type: blockData.type,
-              content: blockData.content,
-              language: blockData.language,
-              src: blockData.src,
-              alt: blockData.alt,
-              caption: blockData.caption,
-              title: blockData.title,
-              headers: blockData.headers || [],
-              rows: blockData.rows || [],
-              order: blockData.order,
-            },
-          });
+          if (blockData.type === ContentBlockType.TABLE) {
+            await prisma.contentBlock.create({
+              data: {
+                questionId: question.id,
+                type: blockData.type,
+                title: blockData.title,
+                order: blockData.order,
+                headers: {
+                  create:
+                    blockData.headers?.map((header) => ({
+                      text: header.text,
+                      order: header.order,
+                    })) || [],
+                },
+                rows: {
+                  create:
+                    blockData.rows?.map((row) => ({
+                      order: row.order,
+                      cells: {
+                        create: row.cells.map((cell) => ({
+                          text: cell.text,
+                          order: cell.order,
+                        })),
+                      },
+                    })) || [],
+                },
+              },
+            });
+          } else {
+            await prisma.contentBlock.create({
+              data: {
+                questionId: question.id,
+                type: blockData.type,
+                content: blockData.content,
+                language: blockData.language,
+                src: blockData.src,
+                alt: blockData.alt,
+                caption: blockData.caption,
+                title: blockData.title,
+                order: blockData.order,
+              },
+            });
+          }
         }
 
         console.log(`Created ${questionData.blocks.length} content blocks`);

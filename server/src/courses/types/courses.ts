@@ -1,3 +1,21 @@
+export interface ITableCell {
+  id: string;
+  text: string;
+  order: number;
+}
+
+export interface ITableRow {
+  id: string;
+  cells: ITableCell[];
+  order: number;
+}
+
+export interface ITableHeader {
+  id: string;
+  text: string;
+  order: number;
+}
+
 export interface IContentBlockData {
   id: string;
   type: string;
@@ -7,6 +25,6 @@ export interface IContentBlockData {
   alt?: string | null;
   caption?: string | null;
   title?: string | null;
-  headers?: string[];
-  rows?: string[][];
+  headers?: ITableHeader[];
+  rows?: ITableRow[];
 }
