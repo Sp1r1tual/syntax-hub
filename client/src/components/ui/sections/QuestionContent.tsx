@@ -77,31 +77,28 @@ export const QuestionContent = ({ question }: IQuestionContentProps) => {
 
               case "TABLE":
                 return (
-                  <div>
+                  <div key={id}>
                     {block.title && (
                       <div className={styles.tableTitle}>{block.title}</div>
                     )}
-                    <div key={id} className={styles.tableWrapper}>
+                    <div className={styles.tableWrapper}>
                       <table className={styles.tableBlock}>
                         <thead>
                           <tr>
                             {block.headers.map((header) => (
-                              <th key={header}>{header}</th>
+                              <th key={header.id}>{header.text}</th>
                             ))}
                           </tr>
                         </thead>
 
                         <tbody>
-                          {block.rows.map((row) => {
-                            const rowKey = row.join("|");
-                            return (
-                              <tr key={rowKey}>
-                                {row.map((cell) => (
-                                  <td key={cell}>{cell}</td>
-                                ))}
-                              </tr>
-                            );
-                          })}
+                          {block.rows.map((row) => (
+                            <tr key={row.id}>
+                              {row.cells.map((cell) => (
+                                <td key={cell.id}>{cell.text}</td>
+                              ))}
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>

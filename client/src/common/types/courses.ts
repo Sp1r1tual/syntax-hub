@@ -57,12 +57,30 @@ export interface IImageBlock {
   caption?: string;
 }
 
+export interface ITableCell {
+  id: string;
+  text: string;
+  order: number;
+}
+
+export interface ITableRow {
+  id: string;
+  cells: ITableCell[];
+  order: number;
+}
+
+export interface ITableHeader {
+  id: string;
+  text: string;
+  order: number;
+}
+
 export interface ITableBlock {
   id: string;
   type: "TABLE";
-  title: string;
-  headers: string[];
-  rows: string[][];
+  title?: string;
+  headers: ITableHeader[];
+  rows: ITableRow[];
 }
 
 export type ContentBlockType =
