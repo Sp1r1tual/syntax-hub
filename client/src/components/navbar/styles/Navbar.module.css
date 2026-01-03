@@ -5,7 +5,7 @@
   box-sizing: border-box;
   padding: 0.7rem 0;
   background: var(--bg-secondary);
-  backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
   position: fixed;
   z-index: 100;
 }

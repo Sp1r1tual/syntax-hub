@@ -4,6 +4,8 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { UsersService } from "@/api/services/usersService";
 
+import { PageLoader } from "@/components/ui/loaders/PageLoader";
+
 export const AuthCallbackPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -36,9 +38,5 @@ export const AuthCallbackPage = () => {
     }
   }, [searchParams, navigate, setUser, redirectPath]);
 
-  return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      <p>Logging in...</p>
-    </div>
-  );
+  return <PageLoader isLoading={true} />;
 };

@@ -10,8 +10,9 @@
 .content {
   flex: 1;
   padding: 2rem;
-  background: #1e1e1e;
-  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-shadow);
+  background: var(--bg-secondary);
+  backdrop-filter: blur(14px) saturate(140%);
   border-radius: 0.5rem;
   height: fit-content;
   display: flex;

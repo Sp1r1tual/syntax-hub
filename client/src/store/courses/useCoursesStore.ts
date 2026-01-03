@@ -4,6 +4,7 @@ import {
   IGroupCourses,
   ICourseNavigation,
   IQuestionDetail,
+  ITopic,
 } from "@/common/types";
 
 import { CoursesService } from "@/api/services/coursesService";
@@ -21,6 +22,16 @@ interface ICoursesState {
   setError: (message: string | null) => void;
   fetchCoursesList: () => Promise<void>;
   fetchCourse: (courseSlug: string) => Promise<void>;
+  getNavigationState: (
+    navigation: {
+      topicIndex: number;
+      questionIndex: number;
+      topic: ITopic;
+    } | null,
+  ) => {
+    disablePrev: boolean;
+    disableNext: boolean;
+  };
   getQuestionDetail: (questionId: string) => IQuestionDetail | undefined;
   clearSelectedCourse: () => void;
 }
@@ -87,6 +98,48 @@ const useCoursesStore = create<ICoursesState>((set, get) => ({
         isLoadingCourse: false,
       });
     }
+  },
+
+  getNavigationState: (
+    navigation: {
+      topicIndex: number;
+      questionIndex: number;
+      topic: ITopic;
+    } | null,
+  ) => {
+    const state = get();
+
+    if (!navigation || !state.selectedCourse) {
+      return {
+        disablePrev: true,
+        disableNext: true,
+      };
+    }
+
+    const { topicIndex, questionIndex, topic } = navigation;
+    const disablePrev = topicIndex === 0 && questionIndex === 0;
+
+    let nextQuestionExists = false;
+    const nextQ = topic.questions[questionIndex + 1];
+
+    if (nextQ && state.getQuestionDetail(nextQ.id)) {
+      nextQuestionExists = true;
+    } else {
+      const nextTopic = state.selectedCourse.topics[topicIndex + 1];
+
+      if (nextTopic && nextTopic.questions.length > 0) {
+        const firstQ = nextTopic.questions[0];
+
+        if (firstQ && state.getQuestionDetail(firstQ.id)) {
+          nextQuestionExists = true;
+        }
+      }
+    }
+
+    return {
+      disablePrev,
+      disableNext: !nextQuestionExists,
+    };
   },
 
   getQuestionDetail: (questionId: string) => {

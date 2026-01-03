@@ -10,7 +10,7 @@ import { TopicsList } from "./TopicsList";
 import styles from "./styles/CourseContent.module.css";
 
 export const CourseContent = () => {
-  const { selectedCourse, error } = useCoursesStore();
+  const { selectedCourse, isLoadingCourse, error } = useCoursesStore();
 
   const [openTopics, setOpenTopics] = useState<Record<string, boolean>>({});
 
@@ -21,6 +21,10 @@ export const CourseContent = () => {
   };
 
   const handleOpenRoadmap = () => {};
+
+  if (isLoadingCourse) {
+    return null;
+  }
 
   if (error || !selectedCourse) {
     return <ErrorWrapper error={error || "Курс не знайдено"} />;

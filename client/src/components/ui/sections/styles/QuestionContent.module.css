@@ -33,7 +33,7 @@
   gap: 1rem;
   padding: 1rem 1.25rem;
   background: var(--bg-tertiary);
-  border-left: 4px solid var(--terminal-text);
+  border-left: 4px solid var(--text-green);
   border-radius: 0.5rem;
   transition: all 0.3s ease;
   align-items: center;
@@ -45,6 +45,7 @@
 .infoImg {
   height: 1.5rem;
   width: 1.5rem;
+  filter: var(--icon-filter);
 }
 
 .noteContent {
@@ -126,12 +127,12 @@
 }
 
 .tableWrapper::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-hover-strong);
   border-radius: 3px;
 }
 
 .tableWrapper::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--bg-active);
 }
 
 @media (max-width: 768px) {

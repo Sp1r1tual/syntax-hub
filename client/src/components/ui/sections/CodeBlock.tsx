@@ -1,31 +1,52 @@
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {
+  oneDark,
+  oneLight,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
+
+import { useThemeStore } from "@/store/theme/useThemeStore";
 
 import { CopyButton } from "../buttons/CopyButton";
 
 import styles from "./styles/CodeBlock.module.css";
 
-interface CodeBlockProps {
+interface ICodeBlockProps {
   language: string;
   content: string;
 }
 
-export const CodeBlock = ({ language, content }: CodeBlockProps) => {
+export const CodeBlock = ({ language, content }: ICodeBlockProps) => {
   const normalizedLanguage = language.toLowerCase();
+  const { isDarkTheme } = useThemeStore();
+
+  const syntaxStyle = isDarkTheme ? oneDark : oneLight;
 
   return (
     <div className={styles.codeBlock}>
-      <div className={styles.codeHeader}>
-        <span className={styles.language}>{normalizedLanguage}</span>
+      <div className={styles.copyWrapper}>
         <CopyButton text={content} />
       </div>
 
       <SyntaxHighlighter
         language={normalizedLanguage}
-        style={oneDark}
+        style={syntaxStyle}
         className={styles.code}
         codeTagProps={{ style: { fontFamily: "inherit" } }}
-        customStyle={{ margin: 0, lineHeight: "1.5" }}
+        customStyle={{
+          margin: 0,
+          lineHeight: "1.5",
+        }}
+        PreTag={({ children, ...props }) => (
+          <pre {...props}>
+            <div className={styles.codeToolbar}>
+              <span className={styles.inlineLanguageLabel}>
+                {normalizedLanguage.toUpperCase()}
+              </span>
+            </div>
+
+            {children}
+          </pre>
+        )}
       >
         {content}
       </SyntaxHighlighter>

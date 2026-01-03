@@ -20,6 +20,7 @@
 .advantagesItem {
   padding: 1.5rem;
   border-radius: 1rem;
+  box-shadow: 0 0 10px var(--border-shadow);
   background: var(--bg-secondary);
   backdrop-filter: blur(14px) saturate(140%);
   transition:
@@ -43,7 +44,7 @@
 
 .itemText {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: var(--text-secondary);
   font-family:

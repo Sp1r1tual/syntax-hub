@@ -5,13 +5,16 @@ import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
+import { PageLoader } from "../ui/loaders/PageLoader";
 
 import styles from "./styles/PageLyout.module.css";
 
 export const PageLayout = () => {
   const matches = useMatches();
   const { courseSlug } = useParams();
-  const { selectedCourse, coursesList } = useCoursesStore();
+
+  const { selectedCourse, coursesList, isLoadingList, isLoadingCourse } =
+    useCoursesStore();
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -48,12 +51,16 @@ export const PageLayout = () => {
   }, [matches, courseSlug, selectedCourse, coursesList]);
 
   return (
-    <div className={styles.page}>
-      <Navbar />
-      <main className={styles.content}>
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+    <>
+      <PageLoader isLoading={isLoadingList || isLoadingCourse} />
+
+      <div className={styles.page}>
+        <Navbar />
+        <main className={styles.content}>
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 };

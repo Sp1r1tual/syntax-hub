@@ -10,6 +10,7 @@
     var(--bg-tertiary) 100%
   );
   color: var(--text-main);
+  box-shadow: 0 0 10px var(--border-shadow);
 }
 
 .roadmapIntro p {
@@ -39,6 +40,12 @@
 
 .openRoadmapBtn:hover {
   background-color: var(--bg-hover-strong);
+}
+
+.topicsHeader {
+  font-family:
+    Onest Variable,
+    sans-serif;
 }
 
 @media (max-width: 640px) {

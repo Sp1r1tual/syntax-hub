@@ -12,6 +12,7 @@
     transform 0.15s ease;
   box-sizing: border-box;
   overflow: hidden;
+  box-shadow: 0 0 10px var(--border-shadow);
 }
 
 .topic:hover {

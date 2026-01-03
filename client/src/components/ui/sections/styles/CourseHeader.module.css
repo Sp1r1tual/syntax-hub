@@ -19,6 +19,7 @@
     transform 0.15s ease,
     color 0.4s ease;
   box-sizing: border-box;
+  box-shadow: 0 0 10px var(--border-shadow);
 }
 
 .topicsHeader {

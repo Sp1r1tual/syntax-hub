@@ -24,12 +24,13 @@ export const CoursePage = () => {
     }
   }, [courseSlug, selectedCourse, isLoadingCourse, fetchCourse]);
 
-  if (isLoadingCourse && !selectedCourse)
-    return <div style={{ minHeight: "100dvh" }} />;
-
   if (questionId) {
     return <Outlet />;
   }
 
-  return <CourseContent />;
+  return (
+    <>
+      <CourseContent />
+    </>
+  );
 };
