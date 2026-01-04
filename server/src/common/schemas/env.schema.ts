@@ -15,4 +15,8 @@ export const envSchema = z.object({
 
   JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
   JWT_EXPIRATION: z.string().default("3600"),
+
+  CLOUDINARY_CLOUD_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 });
