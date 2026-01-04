@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
 import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
-import { CourseHeader } from "./CourseHeader";
+import { CourseHeader } from "../main/CourseHeader";
 import { RoadmapSection } from "./RoadmapSection";
 import { TopicsList } from "./TopicsList";
 
@@ -22,12 +22,14 @@ export const CourseContent = () => {
 
   const handleOpenRoadmap = () => {};
 
-  if (isLoadingCourse) {
-    return null;
+  if (isLoadingCourse) return null;
+
+  if (error) {
+    return <ErrorWrapper error={error} />;
   }
 
-  if (error || !selectedCourse) {
-    return <ErrorWrapper error={error || "Курс не знайдено"} />;
+  if (!selectedCourse) {
+    return null;
   }
 
   const hasTopics = selectedCourse.topics && selectedCourse.topics.length > 0;

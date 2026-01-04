@@ -8,3 +8,9 @@
   padding-top: 2.5rem;
   flex: 1;
 }
+
+@media (max-width: 480px) {
+  .content {
+    padding-top: 1rem;
+  }
+}

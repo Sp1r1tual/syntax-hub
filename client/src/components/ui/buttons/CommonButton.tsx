@@ -1,4 +1,4 @@
-import styles from "./styles/CommonBtn.module.css";
+import styles from "./styles/CommonButton.module.css";
 
 interface ICommonButtonProp {
   text: string;

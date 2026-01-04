@@ -8,7 +8,7 @@ import { DesktopMenu } from "./DesktopMenu";
 import { MobileMenu } from "./MobileMenu";
 import { ThemeButton } from "../ui/buttons/ThemeButton";
 import { GoogleAuthButton } from "../ui/buttons/GoogleAuthButton";
-import { ProfileBtn } from "../ui/buttons/ProfileBtn";
+import { ProfileButton } from "../ui/buttons/ProfileButton";
 
 import { MENU_CONFIG } from "@/common/configs/navbarConfigsMenu";
 
@@ -80,7 +80,7 @@ export const Navbar = () => {
               <ThemeButton />
             </div>
 
-            {!user ? <GoogleAuthButton /> : <ProfileBtn />}
+            {!user ? <GoogleAuthButton /> : <ProfileButton />}
 
             <button className={styles.burgerBtn} onClick={toggleMobile}>
               <img

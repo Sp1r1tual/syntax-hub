@@ -4,9 +4,10 @@ import App from "@/App";
 import { PageLayout } from "../layouts/PageLayout";
 import { QuestionDetailLayout } from "../layouts/QuestionDetailLayout";
 import { MainPage } from "./pages/MainPage";
-import { CoursesPage } from "./pages/CoursesPage";
+import { CoursesListPage } from "./pages/CoursesListPage";
 import { CoursePage } from "./pages/CoursePage";
 import { QuestionDetailPage } from "./pages/QuestionDetailPage";
+import { NewsPage } from "./pages/NewsPage";
 import { AuthCallbackPage } from "./pages/AuthCallbackPage";
 import { RouteErrorFallback } from "../errors/RouteErrorFallback";
 
@@ -26,7 +27,7 @@ export const Router = createBrowserRouter([
           },
           {
             path: "/courses",
-            element: <CoursesPage />,
+            element: <CoursesListPage />,
             handle: { title: "Курси | SyntaxHub" },
           },
           {
@@ -43,6 +44,11 @@ export const Router = createBrowserRouter([
                 ],
               },
             ],
+          },
+          {
+            path: "/news",
+            element: <NewsPage />,
+            handle: { title: "Новини | SyntaxHub" },
           },
         ],
       },

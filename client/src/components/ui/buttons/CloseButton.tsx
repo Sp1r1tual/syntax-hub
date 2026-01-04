@@ -1,6 +1,6 @@
 import closeCircleSvg from "@/assets/close.svg";
 
-import styles from "./styles/CloseBtn.module.css";
+import styles from "./styles/CloseButton.module.css";
 
 interface ICloseBtnProps {
   onClick: () => void;

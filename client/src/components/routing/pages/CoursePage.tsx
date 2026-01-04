@@ -3,7 +3,7 @@ import { useParams, Outlet } from "react-router-dom";
 
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
-import { CourseContent } from "@/components/ui/sections/CourseContent";
+import { CourseContent } from "@/components/ui/sections/courses/CourseContent";
 
 export const CoursePage = () => {
   const { courseSlug, questionId } = useParams();
@@ -23,6 +23,10 @@ export const CoursePage = () => {
       fetchCourse(courseSlug);
     }
   }, [courseSlug, selectedCourse, isLoadingCourse, fetchCourse]);
+
+  if (isLoadingCourse) {
+    return <div style={{ minHeight: "100dvh" }} />;
+  }
 
   if (questionId) {
     return <Outlet />;

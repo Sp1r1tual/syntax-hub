@@ -1,0 +1,49 @@
+.favoriteBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.favoriteBtn:hover {
+  background-color: var(--bg-hover);
+}
+
+.favoriteBtn:active {
+  background-color: var(--bg-active);
+}
+
+.favoriteBtn img {
+  width: 1.5rem;
+  height: 1.5rem;
+  filter: var(--icon-filter);
+  transition: transform 0.2s ease;
+  display: block;
+}
+
+.favoriteBtn img.heartFilled {
+  filter: none;
+}
+
+.favoriteBtn:active img {
+  transform: scale(1.2);
+}
+
+.likesCount {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}

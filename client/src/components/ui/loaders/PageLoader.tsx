@@ -7,7 +7,7 @@ interface IPageLoaderProps {
   delay?: number;
 }
 
-export const PageLoader = ({ isLoading, delay = 100 }: IPageLoaderProps) => {
+export const PageLoader = ({ isLoading, delay = 200 }: IPageLoaderProps) => {
   const [shouldRender, setShouldRender] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 

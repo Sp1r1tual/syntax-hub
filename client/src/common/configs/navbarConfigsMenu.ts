@@ -7,6 +7,6 @@ export const MENU_CONFIG: Record<string, IMenuConfig> = {
   },
   community: {
     label: "Спільнота",
-    items: [{ path: "/forum", label: "Форум" }],
+    items: [{ path: "/news", label: "Новини" }],
   },
 };

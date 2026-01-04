@@ -6,7 +6,7 @@ import { useQuestionNavigation } from "@/hooks/ui/useQuestionNavigation";
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 import { useCourseSidebarStore } from "@/store/ui/useCourseSidebarStore";
 
-import { QuestionContent } from "@/components/ui/sections/QuestionContent";
+import { QuestionContent } from "@/components/ui/sections/courses/QuestionContent";
 import { PrevNextButtons } from "@/components/ui/buttons/PrevNextButtons";
 import { MobileTopicsModal } from "@/components/ui/modals/MobileTopicsModal";
 import { ErrorWrapper } from "@/components/errors/ErrorWpapper";

@@ -3,9 +3,9 @@ import { useAuthStore } from "@/store/auth/useAuthStore";
 
 import ProfileSvg from "@/assets/profile.svg";
 
-import styles from "./styles/ProfileBtn.module.css";
+import styles from "./styles/ProfileButton.module.css";
 
-export const ProfileBtn = () => {
+export const ProfileButton = () => {
   const { openProfileModal } = useModalsStore();
 
   const { user } = useAuthStore();

@@ -1,25 +1,11 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
-import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
-
 import styles from "./styles/Courses.module.css";
 
 export const Courses = () => {
-  const { coursesList, error, fetchCoursesList, isLoadingList } =
-    useCoursesStore();
-
-  useEffect(() => {
-    fetchCoursesList();
-  }, [fetchCoursesList]);
-
-  if (isLoadingList) {
-    return <div style={{ minHeight: "100dvh" }} />;
-  }
-
-  if (error) return <ErrorWrapper error={error} />;
+  const { coursesList } = useCoursesStore();
 
   return (
     <>

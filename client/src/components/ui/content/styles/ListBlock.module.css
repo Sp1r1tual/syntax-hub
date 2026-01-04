@@ -1,0 +1,24 @@
+.listBlockWrapper {
+  margin-bottom: 1rem;
+}
+
+.listTitle {
+  font-size: 1rem;
+  color: var(--text-main);
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.listBlock {
+  padding-left: 1.2rem;
+  color: var(--text-secondary);
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.listBlock li {
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+}

@@ -1,0 +1,20 @@
+.textBlock {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+@media (max-width: 768px) {
+  .textBlock {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .textBlock {
+    font-size: 0.9rem;
+  }
+}
