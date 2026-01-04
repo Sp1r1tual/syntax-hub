@@ -16,7 +16,7 @@ export const Courses = () => {
   }, [fetchCoursesList]);
 
   if (isLoadingList) {
-    return null;
+    return <div style={{ minHeight: "100dvh" }} />;
   }
 
   if (error) return <ErrorWrapper error={error} />;

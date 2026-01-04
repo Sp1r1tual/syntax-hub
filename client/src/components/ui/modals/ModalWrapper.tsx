@@ -23,22 +23,28 @@ export const ModalWrapper = ({
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const scrollBarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
     if (isOpen) {
       const renderTimer = setTimeout(() => setShouldRender(true), 0);
       const showTimer = setTimeout(() => setIsVisible(true), 10);
 
       document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
 
       return () => {
         clearTimeout(renderTimer);
         clearTimeout(showTimer);
         document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
       };
     } else {
       const hideTimer = setTimeout(() => setIsVisible(false), 0);
       const removeTimer = setTimeout(() => setShouldRender(false), 300);
 
       document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
 
       return () => {
         clearTimeout(hideTimer);

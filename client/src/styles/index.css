@@ -2,3 +2,26 @@ body {
   margin: 0;
   padding: 0;
 }
+
+body,
+html {
+  background: var(--bg-tertiary);
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--bg-hover-strong);
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-active);
+}

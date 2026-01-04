@@ -5,12 +5,6 @@
 }
 
 .content {
-  padding-top: 6rem;
+  padding-top: 2.5rem;
   flex: 1;
-}
-
-@media (max-width: 768px) {
-  .content {
-    padding-top: 5rem;
-  }
 }

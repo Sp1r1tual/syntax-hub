@@ -1,0 +1,146 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.avatarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  border: 2px solid black;
+  background-color: var(--bg-secondary);
+}
+
+.changeAvatarBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family:
+    Onest Variable,
+    sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.changeAvatarBtn:hover {
+  color: var(--text-main);
+}
+
+.avatarInput {
+  display: none;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.label {
+  font-weight: 600;
+  font-family:
+    Onest Variable,
+    sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-main);
+  font-family:
+    Onest Variable,
+    sans-serif;
+  font-size: 1rem;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--bg-active);
+  background-color: var(--bg-hover-strong);
+}
+
+.input:hover:not(:disabled) {
+  background-color: var(--bg-hover);
+}
+
+.input:disabled {
+  background-color: var(--bg-hover);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.inputError {
+  border-color: #fc6363;
+  color: var(--text-main);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.error {
+  font-size: 0.75rem;
+  color: #fc6363;
+  font-family:
+    Onest Variable,
+    sans-serif;
+  font-weight: 600;
+  text-align: center;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease,
+    margin 0.3s ease;
+  margin: 0;
+}
+
+.error.show {
+  max-height: 3rem;
+  opacity: 1;
+  margin-top: 0.25rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .avatar {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

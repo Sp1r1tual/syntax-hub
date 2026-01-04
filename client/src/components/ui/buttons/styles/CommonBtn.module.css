@@ -9,9 +9,17 @@
   font-family:
     Onest Variable,
     sans-serif;
+  cursor: pointer;
 }
 
-.commonBtn:hover {
+.commonBtn:hover:not(:disabled) {
   background-color: var(--bg-hover-strong);
   transform: scale(1.05);
+}
+
+.commonBtn:disabled {
+  background-color: var(--bg-hover);
+  color: var(--text-muted);
+  opacity: 0.5;
+  transform: none;
 }

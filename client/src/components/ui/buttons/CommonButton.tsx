@@ -2,12 +2,24 @@ import styles from "./styles/CommonBtn.module.css";
 
 interface ICommonButtonProp {
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
-export const CommonButton = ({ text, onClick }: ICommonButtonProp) => {
+export const CommonButton = ({
+  text,
+  onClick,
+  disabled = false,
+  type = "button",
+}: ICommonButtonProp) => {
   return (
-    <button className={styles.commonBtn} onClick={onClick}>
+    <button
+      type={type}
+      className={styles.commonBtn}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {text}
     </button>
   );

@@ -4,13 +4,13 @@ import { ITopic } from "@/types/courses";
 
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
-interface Navigation {
+interface INavigation {
   topicIndex: number;
   questionIndex: number;
   topic: ITopic;
 }
 
-export const useQuestionNavigation = (navigation: Navigation | null) => {
+export const useQuestionNavigation = (navigation: INavigation | null) => {
   const navigate = useNavigate();
 
   const { selectedCourse, getNavigationState } = useCoursesStore();

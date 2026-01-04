@@ -1,12 +1,12 @@
 .sidebar {
-  width: 320px;
+  width: 20rem;
   box-shadow: 4px 4px 12px var(--border-shadow);
   background: var(--bg-secondary);
   backdrop-filter: blur(14px) saturate(140%);
   border-radius: 8px;
   padding: 1.5rem;
   position: sticky;
-  top: 7rem;
+  top: 8.3rem;
   height: fit-content;
   max-height: calc(100dvh - 13rem);
   overflow-y: auto;

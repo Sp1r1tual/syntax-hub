@@ -6,7 +6,8 @@
   padding: 0.7rem 0;
   background: var(--bg-secondary);
   backdrop-filter: blur(10px) saturate(140%);
-  position: fixed;
+  position: sticky;
+  top: 0;
   z-index: 100;
 }
 
