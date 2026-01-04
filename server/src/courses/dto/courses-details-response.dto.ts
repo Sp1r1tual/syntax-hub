@@ -1,4 +1,5 @@
-import { Expose, Type } from "class-transformer";
+import { Expose, Type, Transform } from "class-transformer";
+import { ContentBlockType } from "@prisma/client";
 
 export class CategoryGroupDto {
   @Expose()
@@ -66,6 +67,12 @@ export class CourseContentDto {
 
   @Expose()
   title?: string;
+
+  @Expose()
+  ordered?: boolean;
+
+  @Expose()
+  items?: string[];
 
   @Expose()
   @Type(() => TableHeaderDto)

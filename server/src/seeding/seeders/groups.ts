@@ -7,16 +7,6 @@ export async function seedGroups() {
       title: "Frontend",
       order: 1,
     },
-    {
-      key: "backend",
-      title: "Backend",
-      order: 2,
-    },
-    {
-      key: "other",
-      title: "Інше",
-      order: 999,
-    },
   ];
 
   for (const group of groups) {

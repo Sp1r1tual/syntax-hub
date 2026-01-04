@@ -1,15 +1,17 @@
 import { ContentBlockType } from "@prisma/client";
-import { IContentBlockData, ITableHeader, ITableRow } from "../types";
+import { IContentBlockData, ITableHeader, ITableRow } from "src/courses/types";
 
 interface IBlockWithRelations {
   id: string;
   type: ContentBlockType;
-  content: string | null;
-  language: string | null;
-  src: string | null;
-  alt: string | null;
-  caption: string | null;
-  title: string | null;
+  content?: string | null;
+  language?: string | null;
+  src?: string | null;
+  alt?: string | null;
+  caption?: string | null;
+  title?: string | null;
+  ordered?: boolean;
+  items?: string[];
   headers?: Array<{
     id: string;
     text: string;
@@ -82,8 +84,22 @@ export class ContentBlockMapper {
           rows,
         };
 
+      case ContentBlockType.LIST:
+        return {
+          ...base,
+          title: block.title ?? undefined,
+          items: block.content
+            ? block.content.split("\n").filter((item) => item.trim())
+            : [],
+          ordered: block.ordered ?? false,
+        };
+
       default:
         return base;
     }
+  }
+
+  static mapBlocks(blocks: IBlockWithRelations[]): IContentBlockData[] {
+    return blocks.map((block) => this.mapBlock(block));
   }
 }

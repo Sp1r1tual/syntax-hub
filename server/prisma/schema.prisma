@@ -14,6 +14,7 @@ model User {
   roles                 UserRole[]
   refreshTokens         RefreshToken[]
   createdCourses        Course[]
+  newsLikes             NewsLike[]
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
 
@@ -123,6 +124,7 @@ enum ContentBlockType {
   NOTE
   IMAGE
   TABLE
+  LIST
 }
 
 enum CodeLanguage {
@@ -198,4 +200,49 @@ model TableCell {
   @@index([order])
   @@map("table_cells")
   @@unique([rowId, order])
+}
+
+model News {
+  id                    String            @id @default(uuid())
+  title                 String
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  likes                 Int               @default(0)
+  likedBy               NewsLike[]     
+  blocks                NewsBlock[]    
+
+  @@map("news")
+}
+
+model NewsBlock {
+  id                    String            @id @default(uuid())
+  newsId                String
+  news                  News              @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  type                  ContentBlockType
+  content               String?           @db.Text
+  title                 String?
+  src                   String?
+  alt                   String?
+  caption               String?
+  order                 Int         @default(999)
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  @@index([newsId])
+  @@index([order])
+  @@map("news_blocks")
+}
+
+model NewsLike {
+  id                    String      @id @default(uuid())
+  newsId                String
+  userId                String
+  news                  News        @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  user                  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt             DateTime    @default(now())
+
+  @@unique([newsId, userId])
+  @@index([userId])
+  @@index([newsId])
+  @@map("news_likes")
 }

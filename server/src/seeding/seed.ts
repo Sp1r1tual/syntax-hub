@@ -5,6 +5,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { seedRoles } from "./seeders/roles";
 import { seedGroups } from "./seeders/groups";
 import { seedCourses } from "./seeders/courses";
+import { seedNews } from "./seeders/news";
 
 export const prisma = new PrismaClient({
   adapter: new PrismaPg({
@@ -21,6 +22,9 @@ async function seed() {
 
   console.log("Seeding courses, topics and questions...");
   await seedCourses();
+
+  console.log("Seeding news...");
+  await seedNews();
 
   console.log("Seed complete!");
 }

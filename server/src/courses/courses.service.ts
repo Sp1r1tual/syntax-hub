@@ -5,7 +5,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 
 import { CoursesGroupedListResponseDto, CourseDetailsResponseDto } from "./dto";
 
-import { ContentBlockMapper } from "./utils/content-block.mapper";
+import { ContentBlockMapper } from "src/common/utils/content-block-mapper";
 
 @Injectable()
 export class CoursesService {
@@ -120,7 +120,7 @@ export class CoursesService {
         id: q.id,
         text: q.text,
         topicId: q.topicId,
-        blocks: q.blocks.map((block) => ContentBlockMapper.mapBlock(block)),
+        blocks: ContentBlockMapper.mapBlocks(q.blocks),
       })),
     );
 

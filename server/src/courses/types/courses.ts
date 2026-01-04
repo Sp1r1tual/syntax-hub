@@ -27,4 +27,6 @@ export interface IContentBlockData {
   title?: string | null;
   headers?: ITableHeader[];
   rows?: ITableRow[];
+  items?: string[];
+  ordered?: boolean;
 }

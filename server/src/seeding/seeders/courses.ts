@@ -26,6 +26,7 @@ interface IContentBlockData {
   title?: string;
   headers?: ITableHeaderData[];
   rows?: ITableRowData[];
+  items?: string[];
   order: number;
 }
 
@@ -76,7 +77,7 @@ const coursesData: ICourseData[] = [
     description:
       "Основний інструмент для роботи з вебом та сучасними додатками. Додає життя вашому сайту: кнопки, анімації та динамічний контент.",
     groupKey: "frontend",
-    icon: "https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/courses/groups/javascript-logo.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL2NvdXJzZXMvZ3JvdXBzL2phdmFzY3JpcHQtbG9nby5wbmciLCJpYXQiOjE3Njc0MzI0MTksImV4cCI6NDg4OTQ5NjQxOX0.RczaeKEg4Vc5ga0YrnFmwbIlt_iexwV50YnEoO3kM_M",
+    icon: "https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/courses/groups/javascript-logo.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL2NvdXJzZXMvZ3JvdXBzL2phdmFzY3JpcHQtbG9nby5wbmciLCJpYXQiOjE3Njc1MzQ3ODAsImV4cCI6NDg4OTU5ODc4MH0.TqQOpquP1Q0mO3x73NIoXpDB0OvtJAKzg-e17UVE3E4",
     order: 3,
     topics: [
       {
@@ -102,7 +103,7 @@ const coursesData: ICourseData[] = [
               {
                 type: ContentBlockType.NOTE,
                 content:
-                  "typeof null === 'object' — це історичний баг в JavaScript, який залишився для зворотної сумісності.",
+                  "typeof null === 'object' — історичний баг в JS, залишився для зворотної сумісності.",
                 order: 3,
               },
               {
@@ -119,7 +120,7 @@ const coursesData: ICourseData[] = [
                     cells: [
                       { text: "number", order: 0 },
                       { text: "42", order: 1 },
-                      { text: "Числа (цілі та дробові)", order: 2 },
+                      { text: "Цілі та дробові числа", order: 2 },
                     ],
                   },
                   {
@@ -157,190 +158,71 @@ const coursesData: ICourseData[] = [
                 ],
                 order: 4,
               },
-            ],
-          },
-          {
-            text: "== vs ===",
-            order: 2,
-            blocks: [
               {
-                type: ContentBlockType.TEXT,
-                content:
-                  "Оператор === (строга рівність) порівнює значення без приведення типів, тоді як == (нестрога рівність) виконує приведення типів перед порівнянням.",
-                order: 1,
-              },
-              {
-                type: ContentBlockType.CODE,
-                language: CodeLanguage.JAVASCRIPT,
-                content: `// Нестрога рівність (з приведенням типів)\n0 == "0"    // true\n0 == false  // true\nnull == undefined  // true\n\n// Строга рівність (без приведення типів)\n0 === "0"   // false\n0 === false // false\nnull === undefined  // false`,
-                order: 2,
-              },
-              {
-                type: ContentBlockType.NOTE,
-                content:
-                  "Рекомендується завжди використовувати === для уникнення неочікуваної поведінки.",
-                order: 3,
-              },
-            ],
-          },
-          {
-            text: "Способи оголошення змінної",
-            order: 3,
-            blocks: [
-              {
-                type: ContentBlockType.TEXT,
-                content:
-                  "В JavaScript є три способи оголошення змінних: var, let та const. Кожен має свої особливості.",
-                order: 1,
-              },
-              {
-                type: ContentBlockType.CODE,
-                language: CodeLanguage.JAVASCRIPT,
-                content: `// var - старий спосіб (function scope)\nvar x = 10;\n\n// let - змінна зі зміною значення (block scope)\nlet y = 20;\ny = 30; // можна змінити\n\n// const - константа (block scope)\nconst z = 40;\n// z = 50; // помилка! не можна змінити`,
-                order: 2,
-              },
-              {
-                type: ContentBlockType.TABLE,
-                title: "Порівняння способів оголошення",
-                headers: [
-                  { text: "Ключове слово", order: 0 },
-                  { text: "Область видимості", order: 1 },
-                  { text: "Можна змінити", order: 2 },
-                  { text: "Hoisting", order: 3 },
+                type: ContentBlockType.LIST,
+                title: "Приклади типів",
+                items: [
+                  "Number: 42",
+                  "String: 'hello'",
+                  "Boolean: true",
+                  "null",
+                  "undefined",
                 ],
-                rows: [
-                  {
-                    order: 0,
-                    cells: [
-                      { text: "var", order: 0 },
-                      { text: "function", order: 1 },
-                      { text: "✅ Так", order: 2 },
-                      { text: "✅ Так", order: 3 },
-                    ],
-                  },
-                  {
-                    order: 1,
-                    cells: [
-                      { text: "let", order: 0 },
-                      { text: "block", order: 1 },
-                      { text: "✅ Так", order: 2 },
-                      { text: "❌ Ні (TDZ)", order: 3 },
-                    ],
-                  },
-                  {
-                    order: 2,
-                    cells: [
-                      { text: "const", order: 0 },
-                      { text: "block", order: 1 },
-                      { text: "❌ Ні", order: 2 },
-                      { text: "❌ Ні (TDZ)", order: 3 },
-                    ],
-                  },
-                ],
-                order: 3,
+                order: 5,
               },
               {
-                type: ContentBlockType.NOTE,
-                content:
-                  "Використовуйте const за замовчуванням, let — коли потрібно змінити значення, var — краще не використовувати в сучасному коді.",
-                order: 4,
-              },
-            ],
-          },
-          {
-            text: "Різниця між null і undefined",
-            order: 4,
-            blocks: [
-              {
-                type: ContentBlockType.TEXT,
-                content:
-                  "null та undefined — це два різні типи, які позначають відсутність значення, але з різними значеннями.",
-                order: 1,
-              },
-              {
-                type: ContentBlockType.CODE,
-                language: CodeLanguage.JAVASCRIPT,
-                content: `// undefined - змінна оголошена, але не присвоєно значення\nlet a;\nconsole.log(a); // undefined\n\n// null - явна відсутність значення\nlet b = null;\nconsole.log(b); // null\n\n// Типи\ntypeof undefined; // "undefined"\ntypeof null;      // "object" (історичний баг)`,
-                order: 2,
-              },
-              {
-                type: ContentBlockType.NOTE,
-                content:
-                  "undefined означає, що значення ще не було встановлено, а null — що значення явно відсутнє.",
-                order: 3,
-              },
-            ],
-          },
-          {
-            text: "Hoisting (Піднімання)",
-            order: 5,
-            blocks: [
-              {
-                type: ContentBlockType.TEXT,
-                content:
-                  "Hoisting — це механізм JavaScript, при якому оголошення змінних та функцій переміщуються на початок їх області видимості під час компіляції.",
-                order: 1,
-              },
-              {
-                type: ContentBlockType.CODE,
-                language: CodeLanguage.JAVASCRIPT,
-                content: `// Функції підіймаються повністю\nsayHello(); // Працює!\n\nfunction sayHello() {\n  console.log("Hello!");\n}\n\n// var підіймається, але без значення\nconsole.log(x); // undefined\nvar x = 5;\n\n// let і const не підіймаються (TDZ)\n// console.log(y); // ReferenceError!\nlet y = 10;`,
-                order: 2,
-              },
-              {
-                type: ContentBlockType.NOTE,
-                content:
-                  "TDZ (Temporal Dead Zone) — період між входом в область видимості та оголошенням змінної, де доступ до неї заборонений.",
-                order: 3,
+                type: ContentBlockType.IMAGE,
+                src: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/JavaScript-logo.png/320px-JavaScript-logo.png",
+                alt: "JavaScript Logo",
+                caption: "Логотип JavaScript",
+                order: 6,
               },
             ],
           },
         ],
       },
       {
-        title: "Функції",
-        order: 2,
-        questions: [],
-      },
-      {
-        title: "Об'єкти",
-        order: 3,
-        questions: [],
-      },
-      {
         title: "Масиви",
-        order: 4,
-        questions: [],
-      },
-      {
-        title: "Цикли",
-        order: 5,
-        questions: [],
-      },
-      {
-        title: "Асинхронність",
-        order: 6,
-        questions: [],
-      },
-      {
-        title: "Класи",
-        order: 7,
-        questions: [],
-      },
-      {
-        title: "DOM",
-        order: 8,
-        questions: [],
-      },
-      {
-        title: "Дебагінг",
-        order: 9,
-        questions: [],
-      },
-      {
-        title: "Просунуті теми",
-        order: 10,
-        questions: [],
+        order: 2,
+        questions: [
+          {
+            text: "Створення масивів",
+            order: 1,
+            blocks: [
+              {
+                type: ContentBlockType.TEXT,
+                content: "Масиви — це списки значень у JavaScript.",
+                order: 1,
+              },
+              {
+                type: ContentBlockType.CODE,
+                language: CodeLanguage.JAVASCRIPT,
+                content: `const arr = [1, 2, 3, 4];\nconsole.log(arr[0]); // 1`,
+                order: 2,
+              },
+              {
+                type: ContentBlockType.LIST,
+                title: "Методи масивів",
+                items: [
+                  "push()",
+                  "pop()",
+                  "shift()",
+                  "unshift()",
+                  "map()",
+                  "filter()",
+                ],
+                order: 3,
+              },
+              {
+                type: ContentBlockType.IMAGE,
+                src: "https://upload.wikimedia.org/wikipedia/commons/0/0a/JavaScript-array.png",
+                alt: "Масиви в JS",
+                caption: "Приклад масиву в JavaScript",
+                order: 4,
+              },
+            ],
+          },
+        ],
       },
     ],
   },
@@ -356,29 +238,17 @@ const coursesData: ICourseData[] = [
 ];
 
 export async function seedCourses() {
-  console.log("Seeding courses...");
-
   for (const courseData of coursesData) {
     const group = await prisma.categoryGroup.findUnique({
       where: { key: courseData.groupKey },
     });
-
-    if (!group) {
-      console.warn(
-        `Group ${courseData.groupKey} not found, skipping course ${courseData.slug}`,
-      );
-      continue;
-    }
+    if (!group) continue;
 
     const existingCourse = await prisma.course.findUnique({
       where: { slug: courseData.slug },
     });
-
-    if (existingCourse) {
-      await prisma.course.delete({
-        where: { slug: courseData.slug },
-      });
-    }
+    if (existingCourse)
+      await prisma.course.delete({ where: { slug: courseData.slug } });
 
     const course = await prisma.course.create({
       data: {
@@ -391,8 +261,6 @@ export async function seedCourses() {
       },
     });
 
-    console.log(`Created course: ${course.title}`);
-
     for (const topicData of courseData.topics) {
       const topic = await prisma.topic.create({
         data: {
@@ -402,8 +270,6 @@ export async function seedCourses() {
         },
       });
 
-      console.log(`Created topic: ${topic.title}`);
-
       for (const questionData of topicData.questions) {
         const question = await prisma.question.create({
           data: {
@@ -412,8 +278,6 @@ export async function seedCourses() {
             topicId: topic.id,
           },
         });
-
-        console.log(`Created question: ${question.text}`);
 
         for (const blockData of questionData.blocks) {
           if (blockData.type === ContentBlockType.TABLE) {
@@ -425,23 +289,33 @@ export async function seedCourses() {
                 order: blockData.order,
                 headers: {
                   create:
-                    blockData.headers?.map((header) => ({
-                      text: header.text,
-                      order: header.order,
+                    blockData.headers?.map((h) => ({
+                      text: h.text,
+                      order: h.order,
                     })) || [],
                 },
                 rows: {
                   create:
-                    blockData.rows?.map((row) => ({
-                      order: row.order,
+                    blockData.rows?.map((r) => ({
+                      order: r.order,
                       cells: {
-                        create: row.cells.map((cell) => ({
-                          text: cell.text,
-                          order: cell.order,
+                        create: r.cells.map((c) => ({
+                          text: c.text,
+                          order: c.order,
                         })),
                       },
                     })) || [],
                 },
+              },
+            });
+          } else if (blockData.type === ContentBlockType.LIST) {
+            await prisma.contentBlock.create({
+              data: {
+                questionId: question.id,
+                type: blockData.type,
+                title: blockData.title,
+                order: blockData.order,
+                content: blockData.items?.join("\n"),
               },
             });
           } else {
@@ -460,8 +334,6 @@ export async function seedCourses() {
             });
           }
         }
-
-        console.log(`Created ${questionData.blocks.length} content blocks`);
       }
     }
   }
