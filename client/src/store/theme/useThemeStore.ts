@@ -5,21 +5,29 @@ interface IThemeState {
   toggleTheme: () => void;
 }
 
-export const useThemeStore = create<IThemeState>((set) => ({
-  isDarkTheme: localStorage.getItem("theme") !== "light",
+export const useThemeStore = create<IThemeState>((set) => {
+  const initialTheme = localStorage.getItem("theme") || "dark";
 
-  toggleTheme: () =>
-    set((state) => {
-      const newTheme = !state.isDarkTheme;
+  if (typeof document !== "undefined") {
+    document.body.classList.toggle("light-theme", initialTheme === "light");
+  }
 
-      document.body.classList.add("theme-transitioning");
-      document.body.classList.toggle("light-theme", !newTheme);
-      localStorage.setItem("theme", newTheme ? "dark" : "light");
+  return {
+    isDarkTheme: initialTheme === "dark",
 
-      setTimeout(() => {
-        document.body.classList.remove("theme-transitioning");
-      }, 400);
+    toggleTheme: () =>
+      set((state) => {
+        const newTheme = !state.isDarkTheme;
 
-      return { isDarkTheme: newTheme };
-    }),
-}));
+        document.body.classList.add("theme-transitioning");
+        document.body.classList.toggle("light-theme", !newTheme);
+        localStorage.setItem("theme", newTheme ? "dark" : "light");
+
+        setTimeout(() => {
+          document.body.classList.remove("theme-transitioning");
+        }, 400);
+
+        return { isDarkTheme: newTheme };
+      }),
+  };
+});
