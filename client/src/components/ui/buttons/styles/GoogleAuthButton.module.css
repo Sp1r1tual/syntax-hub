@@ -31,3 +31,14 @@
     Onest Variable,
     sans-serif;
 }
+
+@media (max-width: 480px) {
+  .authBtnText {
+    display: none;
+  }
+
+  .authBtn {
+    border-radius: 100%;
+    padding: 0.5rem;
+  }
+}

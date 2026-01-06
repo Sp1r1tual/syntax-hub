@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { ITopic } from "@/types/courses";
+import { ITopic } from "@/common/types/courses/courses";
 
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 

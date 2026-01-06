@@ -1,0 +1,14 @@
+.imageCount {
+  position: absolute;
+  background: var(--text-main);
+  color: var(--bg-main);
+  font-size: 0.65rem;
+  font-weight: 600;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-secondary);
+}

@@ -1,19 +1,26 @@
 import { Outlet } from "react-router-dom";
 
 import { QuestionSidebar } from "../ui/side/QuestionSidebar";
+import { CommentsSection } from "../ui/sections/courses/comments/CommentsSection";
 
 import styles from "./styles/QuestionDetailLayout.module.css";
 
 export const QuestionDetailLayout = () => {
   return (
     <div className={styles.layout}>
-      <div className={styles.sideBarWrapper}>
-        <QuestionSidebar />
+      <div className={styles.contentWrapper}>
+        <div className={styles.sideBarWrapper}>
+          <QuestionSidebar />
+        </div>
+
+        <main className={styles.content}>
+          <Outlet />
+        </main>
       </div>
 
-      <main className={styles.content}>
-        <Outlet />
-      </main>
+      <section className={styles.comments}>
+        <CommentsSection />
+      </section>
     </div>
   );
 };

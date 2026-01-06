@@ -1,0 +1,8 @@
+.limitCounter {
+  text-align: end;
+  font-family:
+    Onest Variable,
+    sans-serif;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
