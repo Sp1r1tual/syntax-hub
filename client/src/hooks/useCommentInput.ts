@@ -135,10 +135,13 @@ export const useCommentInput = () => {
     const before = text.slice(0, cursor);
     const after = text.slice(cursor);
 
-    const insert = `\n\n\`\`\`\n\n\`\`\`\n`;
+    const prefix = before.trim() ? "\n\n" : "";
+    const suffix = after.trim() ? "\n" : "";
+
+    const insert = `${prefix}\`\`\`\n\n\`\`\`${suffix}`;
     const newText = before + insert + after;
 
-    const newCursor = before.length + insert.indexOf("\n\n") + 6;
+    const newCursor = before.length + prefix.length + 4;
 
     setText(newText);
 
