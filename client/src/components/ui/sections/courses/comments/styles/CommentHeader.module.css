@@ -1,0 +1,50 @@
+.commentHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-family:
+    Onest Variable,
+    sans-serif;
+  margin-bottom: 0.75rem;
+}
+
+.username {
+  font-weight: 600;
+  font-size: 0.95rem;
+  max-width: 70%;
+  color: var(--text-main);
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.createdAt {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.edited {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+@media (max-width: 720px) {
+  .commentHeader {
+    flex-direction: column;
+    align-items: start;
+    gap: 0.25rem;
+  }
+
+  .createdAt {
+    font-size: 0.75rem;
+  }
+}

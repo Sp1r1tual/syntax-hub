@@ -1,0 +1,30 @@
+.downRow {
+  margin-top: 0.5rem;
+  margin-left: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toggleRepliesBtn,
+.reply {
+  font-size: 0.85rem;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.reply:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .downRow {
+    gap: 0.5rem;
+  }
+
+  .toggleRepliesBtn,
+  .reply {
+    font-size: 0.7rem;
+  }
+}

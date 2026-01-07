@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 
 interface IImageItem {
   id: string;
@@ -20,113 +20,132 @@ export const useCommentInput = () => {
   const codeBlockStartRef = useRef<number | null>(null);
   const dragCounterRef = useRef(0);
 
-  const autoResizeTextarea = () => {
+  const autoResizeTextarea = useCallback(() => {
     const textarea = textareaRef.current;
     if (!textarea) return;
 
     textarea.style.height = "auto";
+
     const height = Math.min(textarea.scrollHeight, MAX_TEXTAREA_HEIGHT);
+
     textarea.style.height = `${height}px`;
     textarea.style.overflowY =
       textarea.scrollHeight > MAX_TEXTAREA_HEIGHT ? "auto" : "hidden";
-  };
+  }, []);
 
-  const handleImageFiles = (files: File[] | FileList) => {
-    const availableSlots = MAX_IMAGES - images.length;
+  const setInitialImages = useCallback((initialImages: IImageItem[]) => {
+    setImages(initialImages);
+  }, []);
 
-    if (availableSlots <= 0) return;
-    const validFiles = Array.from(files)
-      .filter((f) => f.type.startsWith("image/"))
-      .slice(0, availableSlots);
+  const handleImageFiles = useCallback(
+    (files: File[] | FileList) => {
+      const availableSlots = MAX_IMAGES - images.length;
 
-    if (!validFiles.length) return;
+      if (availableSlots <= 0) return;
 
-    validFiles.forEach((file) => {
-      const reader = new FileReader();
+      const validFiles = Array.from(files)
+        .filter((f) => f.type.startsWith("image/"))
+        .slice(0, availableSlots);
 
-      reader.onload = (event) => {
-        setImages((prev) => [
-          ...prev,
-          {
-            id: crypto.randomUUID(),
-            file,
-            preview: event.target?.result as string,
-            name: file.name,
-          },
-        ]);
-      };
+      if (!validFiles.length) return;
 
-      reader.readAsDataURL(file);
-    });
-  };
+      validFiles.forEach((file) => {
+        const reader = new FileReader();
 
-  const removeImage = (id: string) => {
+        reader.onload = (event) => {
+          setImages((prev) => [
+            ...prev,
+            {
+              id: crypto.randomUUID(),
+              file,
+              preview: event.target?.result as string,
+              name: file.name,
+            },
+          ]);
+        };
+
+        reader.readAsDataURL(file);
+      });
+    },
+    [images],
+  );
+
+  const removeImage = useCallback((id: string) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
-  };
+  }, []);
 
-  const handleImageClick = () => {
+  const handleImageClick = useCallback(() => {
     fileInputRef.current?.click();
-  };
+  }, []);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      handleImageFiles(event.target.files);
-    }
-    event.target.value = "";
-  };
-
-  const handlePaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    const items = event.clipboardData.items;
-    const imageFiles: File[] = [];
-
-    for (const item of items) {
-      if (item.type.startsWith("image/")) {
-        event.preventDefault();
-
-        const file = item.getAsFile();
-
-        if (file) imageFiles.push(file);
+  const handleFileChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files) {
+        handleImageFiles(event.target.files);
       }
-    }
+      event.target.value = "";
+    },
+    [handleImageFiles],
+  );
 
-    if (imageFiles.length) handleImageFiles(imageFiles);
-  };
+  const handlePaste = useCallback(
+    (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
+      const items = event.clipboardData.items;
+      const imageFiles: File[] = [];
 
-  const handleDragEnter = (event: React.DragEvent) => {
+      for (const item of items) {
+        if (item.type.startsWith("image/")) {
+          event.preventDefault();
+
+          const file = item.getAsFile();
+
+          if (file) imageFiles.push(file);
+        }
+      }
+
+      if (imageFiles.length) handleImageFiles(imageFiles);
+    },
+    [handleImageFiles],
+  );
+
+  const handleDragEnter = useCallback((event: React.DragEvent) => {
     event.preventDefault();
     dragCounterRef.current += 1;
     setIsDragging(true);
-  };
+  }, []);
 
-  const handleDragLeave = (event: React.DragEvent) => {
+  const handleDragLeave = useCallback((event: React.DragEvent) => {
     event.preventDefault();
     dragCounterRef.current -= 1;
 
     if (dragCounterRef.current === 0) {
       setIsDragging(false);
     }
-  };
+  }, []);
 
-  const handleDragOver = (event: React.DragEvent) => {
+  const handleDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
-  };
+  }, []);
 
-  const handleDrop = (event: React.DragEvent) => {
-    event.preventDefault();
+  const handleDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault();
 
-    dragCounterRef.current = 0;
-    setIsDragging(false);
+      dragCounterRef.current = 0;
+      setIsDragging(false);
 
-    if (event.dataTransfer.files.length) {
-      handleImageFiles(event.dataTransfer.files);
-    }
+      if (event.dataTransfer.files.length) {
+        handleImageFiles(event.dataTransfer.files);
+      }
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    },
+    [handleImageFiles],
+  );
 
-  const handleCodeClick = () => {
+  const handleCodeClick = useCallback(() => {
     if (!textareaRef.current) return;
 
     const textarea = textareaRef.current;
@@ -158,9 +177,9 @@ export const useCommentInput = () => {
 
       textarea.scrollTop = scrollPos > 0 ? scrollPos : 0;
     });
-  };
+  }, [text, autoResizeTextarea]);
 
-  const resetInput = () => {
+  const resetInput = useCallback(() => {
     setText("");
     setImages([]);
     codeBlockStartRef.current = null;
@@ -173,7 +192,7 @@ export const useCommentInput = () => {
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  };
+  }, []);
 
   return {
     text,
@@ -193,5 +212,6 @@ export const useCommentInput = () => {
     handleDrop,
     handleCodeClick,
     resetInput,
+    setInitialImages,
   };
 };

@@ -4,3 +4,4 @@ export * from "./auth/auth.js";
 export * from "./users/users.js";
 export * from "./community/community.js";
 export * from "./ui/contentBlocks.js";
+export * from "./comments/comments.js";

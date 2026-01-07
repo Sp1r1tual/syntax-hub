@@ -8,5 +8,5 @@ export interface INewsResponse {
   likes: number;
   liked: boolean;
   content: NewsContentBlockType[];
-  createdAt: Date;
+  createdAt: string;
 }

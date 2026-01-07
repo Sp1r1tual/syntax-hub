@@ -65,8 +65,8 @@ export interface ICourseNavigation {
   group: ICategoryGroup;
   author: ICourseAuthor | null;
   topics: ITopic[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ICoursesListResponse {
