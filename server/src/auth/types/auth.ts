@@ -1,8 +1,10 @@
 import type { Request } from "express";
 
+import { UserRole } from "@prisma/client";
+
 export interface IJwtUser {
   userId: string;
-  roles: string[];
+  role: UserRole;
 }
 
 export interface IGoogleProfile {
@@ -38,7 +40,7 @@ export interface IGoogleAuthUser {
   email: string;
   name: string | null;
   avatar: string | null;
-  roles: Array<{ role: { key: string; title: string } }>;
+  role: UserRole;
   createdAt: Date;
   updatedAt: Date;
   accessToken: string;
@@ -47,7 +49,7 @@ export interface IGoogleAuthUser {
 
 export interface IJwtPayload {
   userId: string;
-  roles: string[];
+  role: UserRole;
   iat?: number;
   exp?: number;
 }

@@ -1,18 +1,5 @@
-import { Expose, Type } from "class-transformer";
-
-class RoleDto {
-  @Expose()
-  key: string;
-
-  @Expose()
-  title: string;
-}
-
-class UserRoleDto {
-  @Expose()
-  @Type(() => RoleDto)
-  role: RoleDto;
-}
+import { Expose } from "class-transformer";
+import type { UserRole } from "@prisma/client";
 
 export class UserResponseDto {
   @Expose()
@@ -28,8 +15,7 @@ export class UserResponseDto {
   avatar: string | null;
 
   @Expose()
-  @Type(() => UserRoleDto)
-  roles: UserRoleDto[];
+  role: UserRole;
 
   @Expose()
   createdAt: Date;

@@ -6,39 +6,28 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  USER
+  ADMIN
+  MODERATOR
+  TEACHER
+}
+
 model User {
   id                    String           @id @default(uuid())
   email                 String           @unique
   name                  String?
   avatar                String?
-  roles                 UserRole[]
+  role                  UserRole         @default(USER)
   refreshTokens         RefreshToken[]
   createdCourses        Course[]
   newsLikes             NewsLike[]
+  comments              Comment[]
+  commentLikes          CommentLike[]
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
 
   @@map("users")
-}
-
-model Role {
-  id                    String           @id @default(uuid())
-  key                   String           @unique 
-  title                 String
-  users                 UserRole[]
-  createdAt             DateTime         @default(now())
-
-  @@map("roles")
-}
-
-model UserRole {
-  userId String
-  roleId String
-  user                  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role                  Role             @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  
-  @@id([userId, roleId])
-  @@map("user_roles")
 }
 
 model RefreshToken {
@@ -108,6 +97,7 @@ model Question {
   topicId               String
   topic                 Topic             @relation(fields: [topicId], references: [id], onDelete: Cascade)
   blocks                ContentBlock[]
+  comments              Comment[]
   order                 Int               @default(999)
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
@@ -224,9 +214,9 @@ model NewsBlock {
   src                   String?
   alt                   String?
   caption               String?
-  order                 Int         @default(999)
-  createdAt             DateTime    @default(now())
-  updatedAt             DateTime    @updatedAt
+  order                 Int               @default(999)
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
 
   @@index([newsId])
   @@index([order])
@@ -245,4 +235,55 @@ model NewsLike {
   @@index([userId])
   @@index([newsId])
   @@map("news_likes")
+}
+
+model Comment {
+  id                    String            @id @default(uuid())
+  questionId            String
+  question              Question          @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userId                String
+  user                  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId              String?
+  parent                Comment?          @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies               Comment[]         @relation("CommentReplies")
+  text                  String            @db.Text
+  images                CommentImage[]
+  likes                 CommentLike[]
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  deletedAt             DateTime?
+
+  @@index([questionId])
+  @@index([userId])
+  @@index([parentId])
+  @@index([createdAt])
+  @@map("comments")
+}
+
+model CommentImage {
+  id                    String            @id @default(uuid())
+  commentId             String
+  comment               Comment           @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  src                   String
+  order                 Int               @default(0)
+  createdAt             DateTime          @default(now())
+
+  @@index([commentId])
+  @@index([order])
+  @@map("comment_images")
+  @@unique([commentId, order])
+}
+
+model CommentLike {
+  id                    String            @id @default(uuid())
+  commentId             String
+  userId                String
+  comment               Comment           @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user                  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt             DateTime          @default(now())
+
+  @@unique([commentId, userId])
+  @@index([userId])
+  @@index([commentId])
+  @@map("comment_likes")
 }

@@ -50,7 +50,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
         email: result.user.email,
         name: result.user.name,
         avatar: result.user.avatar,
-        roles: result.user.roles,
+        role: result.user.role,
         createdAt: result.user.createdAt,
         updatedAt: result.user.updatedAt,
         accessToken: result.accessToken,

@@ -1,7 +1,7 @@
 import { InternalServerErrorException } from "@nestjs/common";
 import { UploadApiResponse } from "cloudinary";
 
-import { cloudinary } from "../providers/cloudinary";
+import { cloudinary } from "../../common/providers/cloudinary";
 
 const uploadAvatarToCloudinary = async (
   fileBuffer: Buffer,

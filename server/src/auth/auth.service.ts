@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { randomBytes } from "crypto";
 
+import { UserRole } from "@prisma/client";
 import { IGoogleProfile } from "./types/auth";
 
 import { UsersService } from "src/user/users.service";
@@ -26,20 +27,14 @@ export class AuthService {
 
     await this.cleanupUserTokens(user.id);
 
-    const accessToken = this.createAccessToken(
-      user.id,
-      user.roles.map((r) => r.role.key),
-    );
+    const accessToken = this.createAccessToken(user.id, user.role);
     const refreshToken = await this.createRefreshToken(user.id);
 
     return { user, accessToken, refreshToken };
   }
 
-  createAccessToken(userId: string, roles: string[]): string {
-    return this.jwtService.sign(
-      { userId: userId, roles },
-      { expiresIn: "15m" },
-    );
+  createAccessToken(userId: string, role: UserRole): string {
+    return this.jwtService.sign({ userId, role }, { expiresIn: "15m" });
   }
 
   async createRefreshToken(userId: string): Promise<string> {
@@ -56,7 +51,7 @@ export class AuthService {
   async refreshToken(oldToken: string): Promise<RefreshTokenResponseDto> {
     const dbToken = await this.prisma.refreshToken.findUnique({
       where: { token: oldToken },
-      include: { user: { include: { roles: { include: { role: true } } } } },
+      include: { user: true },
     });
 
     if (!dbToken || dbToken.expiresAt < new Date()) {
@@ -70,7 +65,7 @@ export class AuthService {
     const newRefreshToken = await this.createRefreshToken(dbToken.user.id);
     const accessToken = this.createAccessToken(
       dbToken.user.id,
-      dbToken.user.roles.map((r) => r.role.key),
+      dbToken.user.role,
     );
 
     return { accessToken, refreshToken: newRefreshToken };

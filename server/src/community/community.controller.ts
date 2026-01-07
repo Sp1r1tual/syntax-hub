@@ -1,6 +1,7 @@
 import { Controller, Get, Req, UseGuards, Patch, Param } from "@nestjs/common";
-import { Request } from "express";
 import z from "zod";
+
+import type { IRequestWithUser } from "src/common/types";
 
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { GetUserId } from "src/auth/decorators/get-user-id.decorator";
@@ -8,18 +9,6 @@ import { NewsResponseSchema } from "./schemas/news-response.schema";
 import { NewsResponseDto } from "./dto";
 
 import { CommunityService } from "./community.service";
-
-export interface IUser {
-  userId: string;
-  email: string;
-  roles?: string[];
-  iat?: number;
-  exp?: number;
-}
-
-export interface IRequestWithUser extends Request {
-  user?: IUser;
-}
 
 @Controller("community")
 export class CommunityController {

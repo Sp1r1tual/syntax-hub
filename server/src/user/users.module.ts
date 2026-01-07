@@ -9,7 +9,7 @@ import { FileValidationMiddleware } from "./middlewares/file-validation.middlewa
 import { NameValidationMiddleware } from "./middlewares/name-validation.middleware";
 
 import { PrismaModule } from "src/prisma/prisma.module";
-import { CloudinaryProvider } from "src/user/providers/cloudinary";
+import { CloudinaryProvider } from "src/common/providers/cloudinary";
 import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";
 

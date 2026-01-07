@@ -14,14 +14,12 @@ export class UsersService {
   private async findByEmail(email: string): Promise<UserResponseDto | null> {
     return this.prisma.user.findUnique({
       where: { email },
-      include: { roles: { include: { role: true } } },
     });
   }
 
   async findById(id: string): Promise<UserResponseDto | null> {
     return this.prisma.user.findUnique({
       where: { id },
-      include: { roles: { include: { role: true } } },
     });
   }
 
@@ -37,13 +35,8 @@ export class UsersService {
         email: dto.email,
         name: dto.name,
         avatar: dto.avatar,
-        roles: {
-          create: {
-            role: { connect: { key: "user" } },
-          },
-        },
+        role: "USER",
       },
-      include: { roles: { include: { role: true } } },
     });
   }
 
@@ -81,7 +74,6 @@ export class UsersService {
     return this.prisma.user.update({
       where: { id: userId },
       data: updateData,
-      include: { roles: { include: { role: true } } },
     });
   }
 }

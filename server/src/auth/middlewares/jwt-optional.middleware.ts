@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Response, NextFunction } from "express";
 
-import { IRequestWithUser } from "src/community/community.controller";
+import { IRequestWithUser } from "src/common/types";
 
 @Injectable()
 export class JwtOptionalMiddleware implements NestMiddleware {
