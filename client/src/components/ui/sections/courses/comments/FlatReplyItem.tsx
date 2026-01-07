@@ -1,5 +1,7 @@
 import { ICommentData } from "@/common/types";
 
+import { useAuthStore } from "@/store/auth/useAuthStore";
+
 import { CloseButton } from "@/components/ui/buttons/CloseButton";
 import { EditButton } from "@/components/ui/buttons/EditButton";
 import { CommentTextarea } from "./CommentTextarea";
@@ -7,18 +9,19 @@ import { CommentHeader } from "./CommentHeader";
 import { CommentContent } from "./CommentContent";
 import { CommentActions } from "./CommentActions";
 
+import { formatDateTime } from "@/common/utils/formatDateTime";
+
 import defaultAvatarSvg from "@/assets/avatar-default.svg";
 
 import styles from "./styles/FlatReplyItem.module.css";
 
 interface IFlatReplyItemProps {
   reply: ICommentData;
-  currentUserId: string;
   isEditing: boolean;
   isReplyActive: boolean;
   onDelete: (id: string) => void;
   onReply: (text: string, images: File[]) => void;
-  onEdit: (text: string, images: File[]) => void;
+  onEdit: (text: string, images?: File[]) => void;
   onLike: (id: string) => void;
   onReplyClick: () => void;
   onEditClick: () => void;
@@ -27,7 +30,6 @@ interface IFlatReplyItemProps {
 
 export const FlatReplyItem = ({
   reply,
-  currentUserId,
   isEditing,
   isReplyActive,
   onDelete,
@@ -38,27 +40,14 @@ export const FlatReplyItem = ({
   onEditClick,
   onEditCancel,
 }: IFlatReplyItemProps) => {
+  const currentUserId = useAuthStore((state) => state.user?.id);
+
   const isDeleted = Boolean(reply.deletedAt);
   const isEdited = Boolean(reply.editedAt);
-  const isOwn = currentUserId.toString() === reply.userId;
+  const isOwn = currentUserId === reply.userId;
 
-  const formattedDate = new Date(reply.createdAt).toLocaleString("uk-UA", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  const formattedEditedDate = reply.editedAt
-    ? new Date(reply.editedAt).toLocaleString("uk-UA", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    : null;
+  const formattedDate = formatDateTime(reply.createdAt);
+  const formattedEditedDate = formatDateTime(reply.editedAt);
 
   return (
     <div className={styles.commentWrapper}>
@@ -85,7 +74,7 @@ export const FlatReplyItem = ({
               <div className={styles.commentBody}>
                 {!isDeleted && isOwn && (
                   <div className={styles.deleteWrapper}>
-                    {isOwn && <EditButton onClick={onEditClick} />}
+                    <EditButton onClick={onEditClick} />
                     <CloseButton onClick={() => onDelete(reply.id)} />
                   </div>
                 )}
@@ -110,7 +99,7 @@ export const FlatReplyItem = ({
                   repliesCount={0}
                   areRepliesVisible={false}
                   likesCount={reply.likes}
-                  isLiked={false}
+                  isLiked={reply.liked}
                   onToggleReplies={() => {}}
                   onReply={onReplyClick}
                   onLike={() => onLike(reply.id)}

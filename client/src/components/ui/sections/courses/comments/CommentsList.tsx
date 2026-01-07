@@ -8,9 +8,8 @@ import styles from "./styles/CommentsList.module.css";
 
 interface ICommentsListProps {
   comments: ICommentData[];
-  currentUserId: string;
   level?: number;
-  onEdit: (id: string, text: string) => void;
+  onEdit: (id: string, text: string, images?: File[]) => void;
   onDelete: (id: string) => void;
   onReply: (parentId: string, text: string, images: File[]) => void;
   onLike: (id: string) => void;
@@ -18,7 +17,6 @@ interface ICommentsListProps {
 
 export const CommentsList = ({
   comments,
-  currentUserId,
   onDelete,
   onReply,
   onLike,
@@ -33,7 +31,6 @@ export const CommentsList = ({
         <CommentItem
           key={comment.id}
           comment={comment}
-          currentUserId={currentUserId}
           onDelete={onDelete}
           onReply={onReply}
           onLike={onLike}

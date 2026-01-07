@@ -1,6 +1,7 @@
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import { ICommentData } from "@/common/types";
+import { IEditComment } from "@/common/types";
 
 import { useCommentsStore } from "@/store/courses/useCommentsStore";
 
@@ -12,60 +13,56 @@ import commentSvg from "@/assets/comment.svg";
 import styles from "./styles/CommentsSection.module.css";
 
 export const CommentsSection = () => {
-  const currentUserId = "1";
+  const { questionId } = useParams<{ questionId: string }>();
 
   const comments = useCommentsStore((state) => state.comments);
-  const setComments = useCommentsStore((state) => state.setComments);
+  const fetchComments = useCommentsStore((state) => state.fetchComments);
+  const deleteComment = useCommentsStore((state) => state.deleteComment);
+  const replyToComment = useCommentsStore((state) => state.replyToComment);
+  const toggleLike = useCommentsStore((state) => state.toggleLike);
+  const editComment = useCommentsStore((state) => state.editComment);
+  const isLoading = useCommentsStore((state) => state.isLoading);
+  const error = useCommentsStore((state) => state.error);
 
   useEffect(() => {
-    const mockComments: ICommentData[] = [
-      {
-        id: "1",
-        userId: "1",
-        username: "Олександр Коваленко",
-        avatar: "https://i.pravatar.cc/150?img=12",
-        text: "Дуже цікава стаття! Особливо сподобалась частина про архітектуру системи.",
-        createdAt: new Date(2024, 0, 5, 14, 30),
-        likes: 12,
-        images: [],
-        replies: [],
-      },
-    ];
-    setComments(mockComments);
-  }, [setComments]);
+    if (questionId) {
+      fetchComments(questionId);
+    }
+  }, [questionId, fetchComments]);
 
-  const handleDelete = (id: string) => {
-    setComments(comments.filter((c) => c.id !== id));
+  const handleDelete = async (id: string) => {
+    await deleteComment(id);
   };
 
-  const handleReply = (parentId: string, text: string, _images: File[]) => {
-    const newComment: ICommentData = {
-      id: Date.now().toString(),
-      userId: currentUserId,
-      username: "Я",
-      text,
-      createdAt: new Date(),
-      likes: 0,
-      images: [],
-      replies: [],
-    };
-
-    setComments(
-      comments.map((c) =>
-        c.id === parentId ? { ...c, replies: [...c.replies, newComment] } : c,
-      ),
-    );
+  const handleReply = async (
+    parentId: string,
+    text: string,
+    images: File[],
+  ) => {
+    await replyToComment(parentId, { text, images });
   };
 
-  const handleLike = (id: string) => {
-    setComments(
-      comments.map((c) => (c.id === id ? { ...c, likes: c.likes + 1 } : c)),
-    );
+  const handleLike = async (id: string) => {
+    await toggleLike(id);
   };
 
-  const handleEdit = (id: string, text: string) => {
-    setComments(comments.map((c) => (c.id === id ? { ...c, text } : c)));
+  const handleEdit = async (id: string, text: string, images?: File[]) => {
+    const editData: IEditComment = { text };
+
+    if (images !== undefined) {
+      editData.images = images;
+    }
+
+    await editComment(id, editData);
   };
+
+  if (isLoading) {
+    return <div>Завантаження коментарів...</div>;
+  }
+
+  if (error) {
+    return <div>Помилка: {error}</div>;
+  }
 
   return (
     <section className={styles.section}>
@@ -86,13 +83,12 @@ export const CommentsSection = () => {
       </div>
 
       <div className={styles.input}>
-        <CommentInput />
+        {questionId && <CommentInput questionId={questionId} />}
       </div>
 
       <div className={styles.commentsList}>
         <CommentsList
           comments={comments}
-          currentUserId={currentUserId}
           onDelete={handleDelete}
           onReply={handleReply}
           onLike={handleLike}

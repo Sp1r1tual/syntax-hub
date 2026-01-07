@@ -1,27 +1,33 @@
 import { create } from "zustand";
 
 import { ICommentData, ISendComment, IEditComment } from "@/common/types";
+
 import { CourseCommentsService } from "@/api/services/courseCommentsService";
 
 interface ICommentsStoreState {
   comments: ICommentData[];
   isLoading: boolean;
+  isSubmitting: boolean;
   error: string | null;
   setComments: (comments: ICommentData[]) => void;
   fetchComments: (questionId: string) => Promise<void>;
-  sendComment: (data: ISendComment) => Promise<void>;
+  sendComment: (
+    questionId: string,
+    data: Omit<ISendComment, "questionId">,
+  ) => Promise<void>;
   replyToComment: (
     commentId: string,
     data: Omit<ISendComment, "questionId">,
   ) => Promise<void>;
   editComment: (commentId: string, data: IEditComment) => Promise<void>;
   toggleLike: (commentId: string) => Promise<void>;
-  deleteComment: (commentId: string) => void;
+  deleteComment: (commentId: string) => Promise<void>;
 }
 
 export const useCommentsStore = create<ICommentsStoreState>((set) => ({
   comments: [],
   isLoading: false,
+  isSubmitting: false,
   error: null,
 
   setComments: (comments) => set({ comments }),
@@ -40,21 +46,29 @@ export const useCommentsStore = create<ICommentsStoreState>((set) => ({
     }
   },
 
-  async sendComment(data) {
+  async sendComment(questionId, data) {
     try {
-      const { data: newComment } =
-        await CourseCommentsService.sendComment(data);
+      set({ isSubmitting: true, error: null });
+
+      const { data: newComment } = await CourseCommentsService.sendComment(
+        questionId,
+        data,
+      );
 
       set((state) => ({
         comments: [newComment, ...state.comments],
       }));
     } catch {
       set({ error: "Не вдалося додати коментар" });
+    } finally {
+      set({ isSubmitting: false });
     }
   },
 
   async replyToComment(commentId, data) {
     try {
+      set({ isSubmitting: true, error: null });
+
       const { data: reply } = await CourseCommentsService.replyToComment(
         commentId,
         data,
@@ -80,11 +94,15 @@ export const useCommentsStore = create<ICommentsStoreState>((set) => ({
       }));
     } catch {
       set({ error: "Не вдалося відповісти на коментар" });
+    } finally {
+      set({ isSubmitting: false });
     }
   },
 
   async editComment(commentId, data) {
     try {
+      set({ isSubmitting: true, error: null });
+
       const { data: updated } = await CourseCommentsService.editComment(
         commentId,
         data,
@@ -105,44 +123,61 @@ export const useCommentsStore = create<ICommentsStoreState>((set) => ({
       }));
     } catch {
       set({ error: "Не вдалося відредагувати коментар" });
+    } finally {
+      set({ isSubmitting: false });
     }
   },
 
   async toggleLike(commentId) {
     try {
-      const { data } = await CourseCommentsService.toggleLike(commentId);
+      const { data: updated } =
+        await CourseCommentsService.toggleLike(commentId);
 
-      const updateLikes = (comments: ICommentData[]): ICommentData[] =>
+      const updateComment = (comments: ICommentData[]): ICommentData[] =>
         comments.map((comment) =>
           comment.id === commentId
-            ? { ...comment, likes: data.likes }
+            ? updated
             : {
                 ...comment,
-                replies: updateLikes(comment.replies),
+                replies: updateComment(comment.replies),
               },
         );
 
       set((state) => ({
-        comments: updateLikes(state.comments),
+        comments: updateComment(state.comments),
       }));
     } catch {
       set({ error: "Не вдалося поставити лайк" });
     }
   },
 
-  deleteComment(commentId) {
-    const markDeleted = (comments: ICommentData[]): ICommentData[] =>
-      comments.map((comment) =>
-        comment.id === commentId
-          ? { ...comment, deletedAt: new Date() }
-          : {
-              ...comment,
-              replies: markDeleted(comment.replies),
-            },
-      );
+  async deleteComment(commentId) {
+    try {
+      set({ isSubmitting: true, error: null });
 
-    set((state) => ({
-      comments: markDeleted(state.comments),
-    }));
+      await CourseCommentsService.deleteComment(commentId);
+
+      const markDeleted = (comments: ICommentData[]): ICommentData[] =>
+        comments.map((comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                deletedAt: new Date().toISOString(),
+                text: "[Deleted]",
+              }
+            : {
+                ...comment,
+                replies: markDeleted(comment.replies),
+              },
+        );
+
+      set((state) => ({
+        comments: markDeleted(state.comments),
+      }));
+    } catch {
+      set({ error: "Не вдалося видалити коментар" });
+    } finally {
+      set({ isSubmitting: false });
+    }
   },
 }));

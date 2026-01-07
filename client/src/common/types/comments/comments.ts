@@ -10,10 +10,11 @@ export interface ICommentData {
   username: string;
   avatar?: string;
   text: string;
-  createdAt: Date;
-  editedAt?: Date;
-  deletedAt?: Date;
+  createdAt: string;
+  editedAt?: string;
+  deletedAt?: string;
   likes: number;
+  liked: boolean;
   images: IImage[];
   replies: ICommentData[];
 }

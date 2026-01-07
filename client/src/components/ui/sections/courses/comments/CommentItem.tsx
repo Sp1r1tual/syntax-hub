@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import { ICommentData } from "@/common/types";
 
+import { useAuthStore } from "@/store/auth/useAuthStore";
+
 import { CloseButton } from "@/components/ui/buttons/CloseButton";
 import { EditButton } from "@/components/ui/buttons/EditButton";
 import { CommentTextarea } from "./CommentTextarea";
@@ -18,19 +20,17 @@ import styles from "./styles/CommentItem.module.css";
 
 interface ICommentItemProps {
   comment: ICommentData;
-  currentUserId: string;
   activeReplyId: string | null;
   level?: number;
   onDelete: (id: string) => void;
   onReply: (parentId: string, text: string, images: File[]) => void;
-  onEdit: (id: string, text: string, images: File[]) => void;
+  onEdit: (id: string, text: string, images?: File[]) => void;
   onLike: (id: string) => void;
   onSetActiveReply: (id: string | null) => void;
 }
 
 export const CommentItem = ({
   comment,
-  currentUserId,
   onDelete,
   onReply,
   onEdit,
@@ -39,7 +39,8 @@ export const CommentItem = ({
   onSetActiveReply,
   level = 1,
 }: ICommentItemProps) => {
-  const [isLiked, setIsLiked] = useState(false);
+  const currentUserId = useAuthStore((state) => state.user?.id);
+
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [flatEditingIds, setFlatEditingIds] = useState<Set<string>>(new Set());
@@ -49,7 +50,7 @@ export const CommentItem = ({
 
   const isDeleted = Boolean(comment.deletedAt);
   const isEdited = Boolean(comment.editedAt);
-  const isOwn = currentUserId.toString() === comment.userId;
+  const isOwn = currentUserId === comment.userId;
   const hasReplies = comment.replies && comment.replies.length > 0;
   const showReplyInput = activeReplyId === comment.id;
 
@@ -67,7 +68,7 @@ export const CommentItem = ({
     onSetActiveReply(null);
   };
 
-  const handleEditSubmit = (text: string, images: File[]) => {
+  const handleEditSubmit = (text: string, images?: File[]) => {
     onEdit(comment.id, text, images);
     setIsEditing(false);
   };
@@ -77,7 +78,6 @@ export const CommentItem = ({
   };
 
   const handleLike = () => {
-    setIsLiked(!isLiked);
     onLike(comment.id);
   };
 
@@ -89,7 +89,6 @@ export const CommentItem = ({
         <div className={styles.connectorLine} />
         <CommentItem
           comment={reply}
-          currentUserId={currentUserId}
           onDelete={onDelete}
           onReply={onReply}
           onEdit={onEdit}
@@ -111,7 +110,6 @@ export const CommentItem = ({
           <FlatReplyItem
             key={reply.id}
             reply={reply}
-            currentUserId={currentUserId}
             isEditing={flatEditingIds.has(reply.id)}
             isReplyActive={activeReplyId === reply.id}
             onDelete={onDelete}
@@ -173,7 +171,7 @@ export const CommentItem = ({
             <div className={styles.commentBody}>
               {!isDeleted && isOwn && (
                 <div className={styles.deleteWrapper}>
-                  {isOwn && <EditButton onClick={handleEditClick} />}
+                  <EditButton onClick={handleEditClick} />
                   <CloseButton onClick={() => onDelete(comment.id)} />
                 </div>
               )}
@@ -198,7 +196,7 @@ export const CommentItem = ({
                 repliesCount={comment.replies?.length || 0}
                 areRepliesVisible={areRepliesVisible}
                 likesCount={comment.likes}
-                isLiked={isLiked}
+                isLiked={comment.liked}
                 onToggleReplies={() => setAreRepliesVisible(!areRepliesVisible)}
                 onReply={handleReplyClick}
                 onLike={handleLike}
