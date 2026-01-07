@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useId } from "react";
 import { useCommentInput } from "@/hooks/useCommentInput";
 
 import { useAuthStore } from "@/store/auth/useAuthStore";
@@ -32,6 +32,8 @@ export const CommentTextarea = ({
   initialText = "",
   initialImages = [],
 }: ICommentTextareaProps) => {
+  const generatedId = useId();
+
   const {
     text,
     setText,
@@ -147,6 +149,7 @@ export const CommentTextarea = ({
 
         <div className={styles.textareaWrapper}>
           <textarea
+            id={generatedId}
             ref={textareaRef}
             className={styles.input}
             placeholder={placeholder}

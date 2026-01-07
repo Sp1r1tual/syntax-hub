@@ -130,7 +130,7 @@ export const EditProfileForm = ({ onClose }: IEditProfileFormProps) => {
       </div>
 
       <div className={styles.fieldGroup}>
-        <label htmlFor="username" className={styles.label}>
+        <label htmlFor="name" className={styles.label}>
           Ім&apos;я
         </label>
 
@@ -142,6 +142,7 @@ export const EditProfileForm = ({ onClose }: IEditProfileFormProps) => {
           className={`${styles.input} ${nameError ? styles.inputError : ""}`}
           maxLength={32}
           disabled={isLoading}
+          autoComplete="name"
         />
 
         <p className={`${styles.error} ${nameError ? styles.show : ""}`}>

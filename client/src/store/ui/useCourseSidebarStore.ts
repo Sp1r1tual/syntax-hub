@@ -10,13 +10,16 @@ export const useCourseSidebarStore = create<ICourseSidebarStore>((set) => ({
   openTopics: {},
 
   setTopic: (topicId, value) =>
-    set((state) => ({ openTopics: { ...state.openTopics, [topicId]: value } })),
+    set((state) => {
+      if (state.openTopics[topicId] === value) {
+        return state;
+      }
+      return { openTopics: { ...state.openTopics, [topicId]: value } };
+    }),
 
   toggleTopic: (topicId) =>
-    set((state) => ({
-      openTopics: {
-        ...state.openTopics,
-        [topicId]: !state.openTopics[topicId],
-      },
-    })),
+    set((state) => {
+      const newValue = !state.openTopics[topicId];
+      return { openTopics: { ...state.openTopics, [topicId]: newValue } };
+    }),
 }));

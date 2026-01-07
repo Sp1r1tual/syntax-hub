@@ -9,6 +9,7 @@ interface ICommentsStoreState {
   isLoading: boolean;
   isSubmitting: boolean;
   error: string | null;
+  currentQuestionId: string | null;
   setComments: (comments: ICommentData[]) => void;
   fetchComments: (questionId: string) => Promise<void>;
   sendComment: (
@@ -24,23 +25,33 @@ interface ICommentsStoreState {
   deleteComment: (commentId: string) => Promise<void>;
 }
 
-export const useCommentsStore = create<ICommentsStoreState>((set) => ({
+export const useCommentsStore = create<ICommentsStoreState>((set, get) => ({
   comments: [],
   isLoading: false,
   isSubmitting: false,
   error: null,
+  currentQuestionId: null,
 
   setComments: (comments) => set({ comments }),
 
   async fetchComments(questionId) {
+    const { isLoading, currentQuestionId } = get();
+
+    if (isLoading || currentQuestionId === questionId) {
+      return;
+    }
+
     try {
-      set({ isLoading: true, error: null });
+      set({ isLoading: true, error: null, currentQuestionId: questionId });
 
       const { data } = await CourseCommentsService.getComments(questionId);
 
       set({ comments: data });
     } catch {
-      set({ error: "Не вдалося завантажити коментарі" });
+      set({
+        error: "Не вдалося завантажити коментарі",
+        currentQuestionId: null,
+      });
     } finally {
       set({ isLoading: false });
     }
