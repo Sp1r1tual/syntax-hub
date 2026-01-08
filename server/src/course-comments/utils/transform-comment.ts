@@ -40,3 +40,41 @@ export const transformComment = (
     ),
   };
 };
+
+export const flattenDeepReplies = (
+  comment: TransformedComment,
+  currentLevel: number = 1,
+): TransformedComment => {
+  if (currentLevel === 3) {
+    const flatReplies: TransformedComment[] = [];
+
+    const collectReplies = (replies: TransformedComment[]) => {
+      replies.forEach((reply) => {
+        flatReplies.push({
+          ...reply,
+          replies: [],
+        });
+
+        if (reply.replies && reply.replies.length > 0) {
+          collectReplies(reply.replies);
+        }
+      });
+    };
+
+    if (comment.replies && comment.replies.length > 0) {
+      collectReplies(comment.replies);
+    }
+
+    return {
+      ...comment,
+      replies: flatReplies,
+    };
+  }
+
+  return {
+    ...comment,
+    replies: comment.replies.map((reply) =>
+      flattenDeepReplies(reply, currentLevel + 1),
+    ),
+  };
+};

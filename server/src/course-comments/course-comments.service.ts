@@ -16,7 +16,10 @@ import {
   commentIncludeBasic,
 } from "./entities/comment-includes";
 import { deleteOldCommentImagesIfNeeded } from "./utils/delete-old-images";
-import { transformComment } from "./utils/transform-comment";
+import {
+  transformComment,
+  flattenDeepReplies,
+} from "./utils/transform-comment";
 
 @Injectable()
 export class CommentsService {
@@ -37,7 +40,9 @@ export class CommentsService {
     });
 
     return comments.map((comment) =>
-      CommentsResponseDto.create(transformComment(comment, userId)),
+      CommentsResponseDto.create(
+        flattenDeepReplies(transformComment(comment, userId)),
+      ),
     );
   }
 
@@ -137,6 +142,11 @@ export class CommentsService {
       where: { id: commentId },
       include: {
         images: true,
+        replies: {
+          include: {
+            images: true,
+          },
+        },
       },
     });
 
@@ -150,21 +160,54 @@ export class CommentsService {
       );
     }
 
-    if (comment.images.length > 0) {
-      await deleteOldCommentImagesIfNeeded(comment.images);
+    const getAllChildIds = async (parentId: string): Promise<string[]> => {
+      const children = await this.prisma.comment.findMany({
+        where: { parentId },
+        select: { id: true },
+      });
+
+      const childIds = children.map((child) => child.id);
+
+      const nestedChildIds = await Promise.all(
+        childIds.map((id) => getAllChildIds(id)),
+      );
+
+      return [...childIds, ...nestedChildIds.flat()];
+    };
+
+    const allChildIds = await getAllChildIds(commentId);
+    const allCommentIds = [commentId, ...allChildIds];
+
+    const allComments = await this.prisma.comment.findMany({
+      where: { id: { in: allCommentIds } },
+      include: { images: true },
+    });
+
+    const allImages = allComments.flatMap((c) => c.images);
+
+    if (allImages.length > 0) {
+      await deleteOldCommentImagesIfNeeded(allImages);
     }
 
-    const deletedComment = await this.prisma.comment.update({
-      where: { id: commentId },
+    await this.prisma.commentImage.deleteMany({
+      where: { commentId: { in: allCommentIds } },
+    });
+
+    await this.prisma.commentLike.deleteMany({
+      where: { commentId: { in: allCommentIds } },
+    });
+
+    await this.prisma.comment.updateMany({
+      where: { id: { in: allCommentIds } },
       data: {
         deletedAt: new Date(),
         text: "[Deleted]",
       },
-      include: commentIncludeWithReplies(userId),
     });
 
-    await this.prisma.commentImage.deleteMany({
-      where: { commentId },
+    const deletedComment = await this.prisma.comment.findUnique({
+      where: { id: commentId },
+      include: commentIncludeWithReplies(userId),
     });
 
     return CommentsResponseDto.create(transformComment(deletedComment, userId));

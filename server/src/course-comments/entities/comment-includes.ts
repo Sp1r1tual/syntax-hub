@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-const baseCommentInclude = (userId?: string) => ({
+export const commentIncludeBasic = (userId?: string) => ({
   user: {
     select: {
       id: true,
@@ -9,42 +9,61 @@ const baseCommentInclude = (userId?: string) => ({
     },
   },
   images: {
-    orderBy: { order: "asc" as const },
+    orderBy: {
+      order: "asc" as const,
+    },
   },
-  likes: userId ? { where: { userId } } : false,
+  likes: userId
+    ? {
+        where: {
+          userId,
+        },
+        select: {
+          userId: true,
+        },
+      }
+    : false,
   _count: {
-    select: { likes: true },
+    select: {
+      likes: true,
+    },
   },
 });
 
-export const commentIncludeWithReplies = (
-  userId?: string,
-): Prisma.CommentInclude => ({
-  ...baseCommentInclude(userId),
+export const commentIncludeWithReplies = (userId?: string) => ({
+  ...commentIncludeBasic(userId),
   replies: {
-    where: { deletedAt: null },
-    include: baseCommentInclude(userId),
-    orderBy: { createdAt: "asc" as const },
+    where: {
+      deletedAt: null,
+    },
+    include: commentIncludeBasic(userId),
+    orderBy: {
+      createdAt: "asc" as const,
+    },
   },
 });
 
-export const commentIncludeWithNestedReplies = (
+const createNestedRepliesInclude = (
   userId?: string,
-): Prisma.CommentInclude => ({
-  ...baseCommentInclude(userId),
-  replies: {
-    where: { deletedAt: null },
-    include: {
-      ...baseCommentInclude(userId),
-      replies: {
-        where: { deletedAt: null },
-        include: baseCommentInclude(userId),
-        orderBy: { createdAt: "asc" as const },
+  depth: number = 3,
+): Prisma.CommentInclude => {
+  if (depth === 0) {
+    return commentIncludeBasic(userId);
+  }
+
+  return {
+    ...commentIncludeBasic(userId),
+    replies: {
+      where: {
+        deletedAt: null,
+      },
+      include: createNestedRepliesInclude(userId, depth - 1),
+      orderBy: {
+        createdAt: "asc" as const,
       },
     },
-    orderBy: { createdAt: "asc" as const },
-  },
-});
+  };
+};
 
-export const commentIncludeBasic = (userId?: string): Prisma.CommentInclude =>
-  baseCommentInclude(userId);
+export const commentIncludeWithNestedReplies = (userId?: string) =>
+  createNestedRepliesInclude(userId, 4);
