@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { ModalWrapper } from "./ModalWrapper";
 
 import { useModalsStore } from "@/store/modal/useModalsStore";
@@ -37,14 +39,14 @@ export const AuthModal = () => {
 
       <span className={styles.termsOfuse}>
         При натисканні на кнопку ви погоджуєтесь з умовами
-        <a
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to="/terms-of-use"
+          state={{ fromAuthModal: true }}
           className={styles.termsLink}
+          onClick={closeAuthModal}
         >
           користувацької угоди
-        </a>
+        </Link>
       </span>
     </ModalWrapper>
   );

@@ -1,9 +1,8 @@
 .cookieBanner {
-  display: fle;
   position: fixed;
   bottom: 0;
   left: 50%;
-  transform: translate(-50%, 100%);
+  transform: translate(-50%, 0);
   width: 25rem;
   background-color: var(--bg-secondary);
   color: var(--text-main);
@@ -14,13 +13,12 @@
   z-index: 10000;
   font-size: 0.9rem;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transform: translateY(100%);
-  animation: slideUp 0.5s forwards;
   border-top: 1px solid var(--border-color);
   border-radius: 0.5rem 0.5rem 0 0;
   box-sizing: border-box;
   gap: 1rem;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
 .cookieBanner p {
@@ -36,6 +34,11 @@
   font-family:
     Onest Variable,
     sans-serif;
+  transition: color 0.2s ease;
+}
+
+.cookieBanner a:hover {
+  color: var(--terminal-border);
 }
 
 .cookieBanner button {
@@ -46,32 +49,53 @@
   font-weight: bold;
   cursor: pointer;
   border-radius: 0.3rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   font-family:
     Onest Variable,
     sans-serif;
+  white-space: nowrap;
 }
 
 .cookieBanner button:hover {
-  background-color: var(--bg-hover-strong);
+  background-color: var(--terminal-border);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 255, 65, 0.2);
 }
 
-@keyframes slideUp {
+.cookieBanner button:active {
+  transform: translateY(0);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 100%);
+  }
   to {
     opacity: 1;
     transform: translate(-50%, 0);
   }
 }
 
-.cookieBanner.fade-out {
-  animation: slideDown 0.5s forwards;
+.cookieBanner.fadeOut {
+  animation: fadeOutDown 0.4s ease-in forwards;
 }
 
-@keyframes slideDown {
-  to {
-    opacity: 0;
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
     transform: translate(-50%, 0);
   }
+  to {
+    opacity: 0;
+    transform: translate(-50%, 100%);
+  }
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 @media (max-width: 480px) {
@@ -83,17 +107,16 @@
   }
 
   .textWrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 100%;
+    margin-bottom: 0.5rem;
   }
 
   .cookieBanner p {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .cookieBanner button {
-    padding: 1rem 0.8rem;
+    padding: 0.75rem 1rem;
     font-size: 0.85rem;
     width: 100%;
   }

@@ -8,27 +8,41 @@ interface INewsState {
   newsList: INewsResponse[];
   isLoadingNews: boolean;
   error: string | null;
+  isFetched: boolean;
 
-  fetchNews: () => Promise<void>;
+  fetchNews: (force?: boolean) => Promise<void>;
   toggleLike: (newsId: string) => void;
 }
 
-const useNewsStore = create<INewsState>((set) => ({
+const useNewsStore = create<INewsState>((set, get) => ({
   newsList: [],
   isLoadingNews: false,
   error: null,
+  isFetched: false,
 
   fetchNews: async () => {
+    const { isFetched } = get();
+
+    if (isFetched) {
+      return;
+    }
+
     set({ isLoadingNews: true, error: null });
 
     try {
       const response = await CommunityService.getNews();
-      set({ newsList: response.data, isLoadingNews: false });
+      set({
+        newsList: response.data,
+        isLoadingNews: false,
+        isFetched: true,
+        error: null,
+      });
     } catch (error) {
       console.error(error);
       set({
         error: "Не вдалося завантажити список новин",
         isLoadingNews: false,
+        isFetched: false,
       });
     }
   },

@@ -4,10 +4,10 @@ import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useNewsStore } from "@/store/news/useNewsStore";
 import { useModalsStore } from "@/store/modal/useModalsStore";
 
-import { LikeButton } from "../../buttons/LikeButton";
-import { ListBlock } from "../../content/ListBlock";
-import { ImageBlock } from "../../content/ImageBlock";
-import { TextBlock } from "../../content/TextBlock";
+import { LikeButton } from "@/components/ui/buttons/LikeButton";
+import { ListBlock } from "@/components/ui/content/ListBlock";
+import { ImageBlock } from "@/components/ui/content/ImageBlock";
+import { TextBlock } from "@/components/ui/content/TextBlock";
 
 import styles from "./styles/NewsContent.module.css";
 

@@ -2,19 +2,20 @@ import { useEffect } from "react";
 
 import { useNewsStore } from "@/store/news/useNewsStore";
 
-import { NewsContent } from "@/components/ui/sections/community/NewsContent";
+import { NewsContent } from "@/components/sections/community/NewsContent";
 import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
 
 import { sortByDate } from "@/common/utils/sortByDate";
 
 export const NewsPage = () => {
-  const { error, fetchNews, isLoadingNews, newsList } = useNewsStore();
+  const { error, fetchNews, isLoadingNews, newsList, isFetched } =
+    useNewsStore();
 
   useEffect(() => {
     fetchNews();
   }, [fetchNews]);
 
-  if (isLoadingNews) {
+  if (isLoadingNews && !isFetched) {
     return <div style={{ minHeight: "100dvh" }} />;
   }
 

@@ -1,0 +1,85 @@
+.terms {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background-color: var(--bg-lite);
+  min-height: 100dvh;
+}
+
+.terms h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: -0.02em;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.terms section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background-color: var(--bg-secondary);
+  border-radius: 7px;
+  border: 1px solid var(--border-color);
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.terms section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.terms section p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin: 0;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+@media (max-width: 768px) {
+  .terms {
+    padding: 2rem 1rem;
+  }
+
+  .terms h1 {
+    font-size: 2rem;
+  }
+
+  .terms section {
+    padding: 1rem;
+  }
+
+  .terms section h2 {
+    font-size: 1.25rem;
+  }
+
+  .terms section p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .terms {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .terms h1 {
+    font-size: 1.75rem;
+  }
+}

@@ -2,12 +2,12 @@ import { IQuestionDetail } from "@/common/types";
 
 import { useModalsStore } from "@/store/modal/useModalsStore";
 
-import { CodeBlock } from "../../content/CodeBlock";
-import { ListBlock } from "../../content/ListBlock";
-import { ImageBlock } from "../../content/ImageBlock";
-import { TextBlock } from "../../content/TextBlock";
-import { TableBlock } from "../../content/TableBlock";
-import { NoteBlock } from "../../content/NoteBlock";
+import { CodeBlock } from "@/components/ui/content/CodeBlock";
+import { ListBlock } from "@/components/ui/content/ListBlock";
+import { ImageBlock } from "@/components/ui/content/ImageBlock";
+import { TextBlock } from "@/components/ui/content/TextBlock";
+import { TableBlock } from "@/components/ui/content/TableBlock";
+import { NoteBlock } from "@/components/ui/content/NoteBlock";
 import { CommonButton } from "@/components/ui/buttons/CommonButton";
 
 import styles from "./styles/QuestionContent.module.css";

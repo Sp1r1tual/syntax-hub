@@ -1,5 +1,5 @@
-import { Hero } from "@/components/ui/sections/main/Hero";
-import { Advantages } from "@/components/ui/sections/main/Advantages";
+import { Hero } from "@/components/sections/main/Hero";
+import { Advantages } from "@/components/sections/main/Advantages";
 
 export const MainPage = () => {
   return (

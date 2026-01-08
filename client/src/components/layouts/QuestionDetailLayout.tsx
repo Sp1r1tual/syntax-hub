@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import { QuestionSidebar } from "../ui/side/QuestionSidebar";
-import { CommentsSection } from "../ui/sections/courses/comments/CommentsSection";
+import { CommentsSection } from "../sections/courses/comments/CommentsSection";
 
 import styles from "./styles/QuestionDetailLayout.module.css";
 

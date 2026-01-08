@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
-import { Courses } from "@/components/ui/sections/courses/Courses";
+import { Courses } from "@/components/sections/courses/Courses";
 import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
 
 export const CoursesListPage = () => {

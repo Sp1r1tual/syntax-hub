@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import { IEditComment } from "@/common/types";
 
@@ -78,7 +78,7 @@ export const CommentsSection = () => {
               <img src={commentSvg} alt="Comments" />
               <h3>Коментарі</h3>
             </div>
-            <a href="#">Прочитайте це, перш ніж коментувати</a>
+            <Link to="/comment-rules">Прочитайте це, перш ніж коментувати</Link>
           </div>
         </header>
 

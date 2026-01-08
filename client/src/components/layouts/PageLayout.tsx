@@ -61,9 +61,11 @@ export const PageLayout = () => {
 
       <div className={styles.page}>
         <Navbar />
+
         <main className={styles.content}>
           <Outlet />
         </main>
+
         <Footer />
       </div>
     </>

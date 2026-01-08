@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { CONTACTS } from "@/common/data/contacts";
 
 import styles from "./styles/Footer.module.css";
@@ -18,9 +20,9 @@ export const Footer = () => {
             Про проєкт
           </a>
 
-          <a className={styles.footerLink} href="/">
+          <Link to="/terms-of-use" className={styles.footerLink}>
             Користувацька угода
-          </a>
+          </Link>
         </div>
 
         <div className={styles.right}>

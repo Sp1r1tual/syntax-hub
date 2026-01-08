@@ -3,7 +3,7 @@ import { useParams, Outlet } from "react-router-dom";
 
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
-import { CourseContent } from "@/components/ui/sections/courses/CourseContent";
+import { CourseContent } from "@/components/sections/courses/CourseContent";
 
 export const CoursePage = () => {
   const { courseSlug, questionId } = useParams();
