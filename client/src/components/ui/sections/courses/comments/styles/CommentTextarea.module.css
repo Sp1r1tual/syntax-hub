@@ -224,6 +224,7 @@
 }
 
 .submit {
+  position: relative;
   padding: 6px 12px;
   font-size: 0.9rem;
   font-weight: 500;
@@ -235,7 +236,28 @@
   font-family:
     Onest Variable,
     sans-serif;
-  transition: all 0.2s;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+}
+
+.submit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  opacity: 0.8;
+  pointer-events: none;
 }
 
 .submit:hover:not(:disabled) {
@@ -245,6 +267,19 @@
 .submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.submit.active::before {
+  animation: shine 1s linear infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -50%;
+  }
+  100% {
+    left: 150%;
+  }
 }
 
 .cancel {

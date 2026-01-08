@@ -3,6 +3,7 @@ import { useCommentInput } from "@/hooks/useCommentInput";
 
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useModalsStore } from "@/store/modal/useModalsStore";
+import { useCommentsStore } from "@/store/courses/useCommentsStore";
 
 import { CloseButton } from "@/components/ui/buttons/CloseButton";
 import { CommonCounter } from "@/components/ui/counters/CommonCounter";
@@ -57,6 +58,7 @@ export const CommentTextarea = ({
 
   const { user } = useAuthStore();
   const { openAuthModal } = useModalsStore();
+  const { isSubmitting } = useCommentsStore();
 
   useEffect(() => {
     if (initialText) {
@@ -196,9 +198,9 @@ export const CommentTextarea = ({
 
           <div className={styles.submitButtons}>
             <button
-              className={styles.submit}
+              className={`${styles.submit} ${isSubmitting ? styles.active : ""}`}
               onClick={handleSubmit}
-              disabled={!text.trim() && images.length === 0}
+              disabled={isSubmitting || (!text.trim() && images.length === 0)}
             >
               {submitText}
             </button>
