@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ICommentData } from "@/common/types";
 
 import { useAuthStore } from "@/store/auth/useAuthStore";
+import { useModalsStore } from "@/store/modal/useModalsStore";
 
 import { CloseButton } from "@/components/ui/buttons/CloseButton";
 import { EditButton } from "@/components/ui/buttons/EditButton";
@@ -40,10 +41,13 @@ export const CommentItem = ({
   level = 1,
 }: ICommentItemProps) => {
   const currentUserId = useAuthStore((state) => state.user?.id);
+  const { user } = useAuthStore();
+  const { openAuthModal } = useModalsStore();
 
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [flatEditingIds, setFlatEditingIds] = useState<Set<string>>(new Set());
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const formattedDate = formatDateTime(comment.createdAt);
   const formattedEditedDate = formatDateTime(comment.editedAt);
@@ -55,12 +59,19 @@ export const CommentItem = ({
   const showReplyInput = activeReplyId === comment.id;
 
   const handleReplyClick = () => {
+    if (!user) {
+      openAuthModal();
+      return;
+    }
+
     onSetActiveReply(showReplyInput ? null : comment.id);
   };
 
   const handleReplySubmit = (text: string, images: File[]) => {
     onReply(comment.id, text, images);
     onSetActiveReply(null);
+
+    setAreRepliesVisible(true);
   };
 
   const handleEditClick = () => {
@@ -78,7 +89,20 @@ export const CommentItem = ({
   };
 
   const handleLike = () => {
+    if (!user) {
+      openAuthModal();
+      return;
+    }
+
     onLike(comment.id);
+  };
+
+  const handleDelete = () => {
+    setIsDeleting(true);
+
+    setTimeout(() => {
+      onDelete(comment.id);
+    }, 250);
   };
 
   const renderNestedReplies = () => {
@@ -104,9 +128,27 @@ export const CommentItem = ({
   const renderFlatReplies = () => {
     if (!comment.replies || comment.replies.length === 0) return null;
 
+    const flattenReplies = (replies: ICommentData[]): ICommentData[] => {
+      const result: ICommentData[] = [];
+
+      const flatten = (replyList: ICommentData[]) => {
+        replyList.forEach((reply) => {
+          result.push(reply);
+          if (reply.replies && reply.replies.length > 0) {
+            flatten(reply.replies);
+          }
+        });
+      };
+
+      flatten(replies);
+      return result;
+    };
+
+    const allReplies = flattenReplies(comment.replies);
+
     return (
       <div>
-        {comment.replies.map((reply) => (
+        {allReplies.map((reply) => (
           <FlatReplyItem
             key={reply.id}
             reply={reply}
@@ -154,7 +196,11 @@ export const CommentItem = ({
   };
 
   return (
-    <div className={styles.commentWrapper}>
+    <div
+      className={`${styles.commentWrapper} ${
+        isDeleting ? styles.deleting : ""
+      }`}
+    >
       <div className={styles.commentContainer}>
         <img
           src={comment.avatar || defaultAvatarSvg}
@@ -172,7 +218,7 @@ export const CommentItem = ({
               {!isDeleted && isOwn && (
                 <div className={styles.deleteWrapper}>
                   <EditButton onClick={handleEditClick} />
-                  <CloseButton onClick={() => onDelete(comment.id)} />
+                  <CloseButton onClick={handleDelete} />
                 </div>
               )}
 
@@ -211,6 +257,7 @@ export const CommentItem = ({
                   onSubmit={handleReplySubmit}
                   onCancel={() => onSetActiveReply(null)}
                   isReply
+                  initialText={`${comment.username}, `}
                 />
               </div>
             )}

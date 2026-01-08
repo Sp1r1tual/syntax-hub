@@ -5,8 +5,10 @@ import { IEditComment } from "@/common/types";
 
 import { useCommentsStore } from "@/store/courses/useCommentsStore";
 
+import { DotsLoader } from "@/components/ui/loaders/DotsLoader";
 import { CommentsList } from "./CommentsList";
 import { CommentInput } from "./CommentInput";
+import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
 
 import commentSvg from "@/assets/comment.svg";
 
@@ -16,6 +18,7 @@ export const CommentsSection = () => {
   const { questionId } = useParams<{ questionId: string }>();
 
   const comments = useCommentsStore((state) => state.comments);
+  const totalCount = useCommentsStore((state) => state.totalCount);
   const fetchComments = useCommentsStore((state) => state.fetchComments);
   const deleteComment = useCommentsStore((state) => state.deleteComment);
   const replyToComment = useCommentsStore((state) => state.replyToComment);
@@ -57,12 +60,14 @@ export const CommentsSection = () => {
   };
 
   if (isLoading) {
-    return <div>Завантаження коментарів...</div>;
+    return (
+      <div className={styles.loaderWrapper}>
+        <DotsLoader />
+      </div>
+    );
   }
 
-  if (error) {
-    return <div>Помилка: {error}</div>;
-  }
+  if (error) return <ErrorWrapper error={error} />;
 
   return (
     <section className={styles.section}>
@@ -78,7 +83,7 @@ export const CommentsSection = () => {
         </header>
 
         <div className={styles.meta}>
-          <span>{comments.length} коментарів</span>
+          <span>{totalCount} коментарів</span>
         </div>
       </div>
 

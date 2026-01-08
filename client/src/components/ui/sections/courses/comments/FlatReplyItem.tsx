@@ -114,6 +114,7 @@ export const FlatReplyItem = ({
                     onSubmit={onReply}
                     onCancel={onReplyClick}
                     isReply={true}
+                    initialText={`${reply.username}, `}
                   />
                 </div>
               )}

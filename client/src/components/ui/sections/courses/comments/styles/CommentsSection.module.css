@@ -1,3 +1,11 @@
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 35vh;
+  width: 100%;
+}
+
 .section {
   padding: 1rem;
 }

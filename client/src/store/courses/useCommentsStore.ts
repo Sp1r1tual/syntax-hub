@@ -6,6 +6,7 @@ import { CourseCommentsService } from "@/api/services/courseCommentsService";
 
 interface ICommentsStoreState {
   comments: ICommentData[];
+  totalCount: number;
   isLoading: boolean;
   isSubmitting: boolean;
   error: string | null;
@@ -27,6 +28,7 @@ interface ICommentsStoreState {
 
 export const useCommentsStore = create<ICommentsStoreState>((set, get) => ({
   comments: [],
+  totalCount: 0,
   isLoading: false,
   isSubmitting: false,
   error: null,
@@ -46,7 +48,7 @@ export const useCommentsStore = create<ICommentsStoreState>((set, get) => ({
 
       const { data } = await CourseCommentsService.getComments(questionId);
 
-      set({ comments: data });
+      set({ comments: data, totalCount: data.length });
     } catch {
       set({
         error: "Не вдалося завантажити коментарі",
@@ -68,6 +70,7 @@ export const useCommentsStore = create<ICommentsStoreState>((set, get) => ({
 
       set((state) => ({
         comments: [newComment, ...state.comments],
+        totalCount: state.totalCount + 1,
       }));
     } catch {
       set({ error: "Не вдалося додати коментар" });
@@ -184,6 +187,7 @@ export const useCommentsStore = create<ICommentsStoreState>((set, get) => ({
 
       set((state) => ({
         comments: markDeleted(state.comments),
+        totalCount: state.totalCount - 1,
       }));
     } catch {
       set({ error: "Не вдалося видалити коментар" });

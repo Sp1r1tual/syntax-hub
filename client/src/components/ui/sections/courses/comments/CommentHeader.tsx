@@ -13,12 +13,16 @@ export const CommentHeader = ({
   isEdited,
   formattedEditedDate,
 }: ICommentHeaderProps) => {
+  const displayDate =
+    isEdited && formattedEditedDate ? formattedEditedDate : formattedDate;
+
   return (
     <div className={styles.commentHeader}>
       <span className={styles.username}>{username}</span>
-      <span className={styles.createdAt}>{formattedDate}</span>
-      {isEdited && formattedEditedDate && (
-        <span className={styles.edited}>(змінено: {formattedEditedDate})</span>
+      {displayDate && (
+        <span className={styles.createdAt}>
+          {isEdited ? `змінено: ${displayDate}` : displayDate}
+        </span>
       )}
     </div>
   );

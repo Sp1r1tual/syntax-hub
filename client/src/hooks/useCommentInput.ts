@@ -33,6 +33,21 @@ export const useCommentInput = () => {
       textarea.scrollHeight > MAX_TEXTAREA_HEIGHT ? "auto" : "hidden";
   }, []);
 
+  const setInitialText = useCallback(
+    (initialText: string) => {
+      setText(initialText);
+      requestAnimationFrame(() => {
+        autoResizeTextarea();
+        if (textareaRef.current) {
+          const length = initialText.length;
+          textareaRef.current.setSelectionRange(length, length);
+          textareaRef.current.focus();
+        }
+      });
+    },
+    [autoResizeTextarea],
+  );
+
   const setInitialImages = useCallback((initialImages: IImageItem[]) => {
     setImages(initialImages);
   }, []);
@@ -195,6 +210,7 @@ export const useCommentInput = () => {
   }, []);
 
   return {
+    setInitialText,
     text,
     autoResizeTextarea,
     setText,
