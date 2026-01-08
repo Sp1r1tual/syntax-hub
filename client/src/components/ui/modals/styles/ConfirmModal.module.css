@@ -1,0 +1,18 @@
+.confirmWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.confirmWrapper p {
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.buttonsWrapper {
+  display: flex;
+  gap: 2rem;
+}

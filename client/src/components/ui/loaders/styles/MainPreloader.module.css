@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background-color: var(--overlay-bg);
+  background-color: var(--overlay-bg-solid);
   display: flex;
   justify-content: center;
   align-items: center;

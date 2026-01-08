@@ -13,7 +13,8 @@ import styles from "./styles/ProfileModal.module.css";
 type ProfileModalMode = "view" | "edit";
 
 export const ProfileModal = () => {
-  const { isProfileModalOpen, closeProfileModal } = useModalsStore();
+  const { isProfileModalOpen, closeProfileModal, openConfirmModal } =
+    useModalsStore();
   const { user, logout } = useAuthStore();
 
   const [mode, setMode] = useState<ProfileModalMode>("view");
@@ -26,8 +27,10 @@ export const ProfileModal = () => {
   };
 
   const handleLogout = () => {
-    handleClose();
-    setTimeout(() => logout(), 300);
+    closeProfileModal();
+    openConfirmModal("Ви точно хочете вийти з акаунта?", () => {
+      setTimeout(() => logout(), 300);
+    });
   };
 
   return (

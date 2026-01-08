@@ -1,0 +1,104 @@
+.cookieBanner {
+  display: fle;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  width: 25rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-main);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10000;
+  font-size: 0.9rem;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(100%);
+  animation: slideUp 0.5s forwards;
+  border-top: 1px solid var(--border-color);
+  border-radius: 0.5rem 0.5rem 0 0;
+  box-sizing: border-box;
+  gap: 1rem;
+}
+
+.cookieBanner p {
+  margin: 0 0 0.5rem 0;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.cookieBanner a {
+  color: var(--text-green);
+  text-decoration: underline;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.cookieBanner button {
+  background-color: var(--text-green);
+  border: none;
+  color: var(--bg-main);
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0.3rem;
+  transition: background-color 0.3s ease;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.cookieBanner button:hover {
+  background-color: var(--bg-hover-strong);
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.cookieBanner.fade-out {
+  animation: slideDown 0.5s forwards;
+}
+
+@keyframes slideDown {
+  to {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 480px) {
+  .cookieBanner {
+    width: 95%;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+  }
+
+  .textWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .cookieBanner p {
+    margin-bottom: 1rem;
+  }
+
+  .cookieBanner button {
+    padding: 1rem 0.8rem;
+    font-size: 0.85rem;
+    width: 100%;
+  }
+
+  .cookieBanner a {
+    font-size: 0.9rem;
+  }
+}

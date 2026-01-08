@@ -42,7 +42,7 @@ export const CommentItem = ({
 }: ICommentItemProps) => {
   const currentUserId = useAuthStore((state) => state.user?.id);
   const { user } = useAuthStore();
-  const { openAuthModal } = useModalsStore();
+  const { openAuthModal, openConfirmModal } = useModalsStore();
 
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -98,11 +98,13 @@ export const CommentItem = ({
   };
 
   const handleDelete = () => {
-    setIsDeleting(true);
+    openConfirmModal("Видалити коментар?", () => {
+      setIsDeleting(true);
 
-    setTimeout(() => {
-      onDelete(comment.id);
-    }, 250);
+      setTimeout(() => {
+        onDelete(comment.id);
+      }, 250);
+    });
   };
 
   const renderNestedReplies = () => {
