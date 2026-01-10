@@ -1,9 +1,12 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 
-import { IUpdateUserProfilePayload } from "./types";
-import { CreateUserOAuthDto, UserResponseDto } from "./dto";
-
 import { PrismaService } from "../prisma/prisma.service";
+
+import {
+  CreateUserOAuthDto,
+  UpdateUserProfileDto,
+  UserResponseDto,
+} from "./dto/index";
 
 import { deleteOldAvatarIfNeeded } from "./utils/delete-old-user-avatar";
 
@@ -12,15 +15,19 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   private async findByEmail(email: string): Promise<UserResponseDto | null> {
-    return this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { email },
     });
+
+    return user ? UserResponseDto.create(user) : null;
   }
 
   async findById(id: string): Promise<UserResponseDto | null> {
-    return this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id },
     });
+
+    return user ? UserResponseDto.create(user) : null;
   }
 
   async upsertFromOAuth(dto: CreateUserOAuthDto): Promise<UserResponseDto> {
@@ -30,7 +37,7 @@ export class UsersService {
       return existingUser;
     }
 
-    return this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: {
         email: dto.email,
         name: dto.name,
@@ -38,11 +45,13 @@ export class UsersService {
         role: "USER",
       },
     });
+
+    return UserResponseDto.create(user);
   }
 
   async updateProfile(
     userId: string,
-    updates: IUpdateUserProfilePayload,
+    updates: UpdateUserProfileDto,
   ): Promise<UserResponseDto> {
     const current = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -61,7 +70,10 @@ export class UsersService {
       await deleteOldAvatarIfNeeded(current.avatar, updates.avatar);
     }
 
-    const updateData: Record<string, string | null> = {};
+    const updateData: {
+      name?: string | null;
+      avatar?: string | null;
+    } = {};
 
     if (updates.name !== undefined) {
       updateData.name = updates.name;
@@ -71,9 +83,11 @@ export class UsersService {
       updateData.avatar = updates.avatar;
     }
 
-    return this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       where: { id: userId },
       data: updateData,
     });
+
+    return UserResponseDto.create(updatedUser);
   }
 }

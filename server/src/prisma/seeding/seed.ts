@@ -13,7 +13,7 @@ export const prisma = new PrismaClient({
 });
 
 async function seed() {
-  console.log("Seeding category groups...");
+  console.log("Seeding courses groups...");
   await seedGroups();
 
   console.log("Seeding courses, topics and questions...");

@@ -2,13 +2,12 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { randomBytes } from "crypto";
 
-import { UserRole } from "@prisma/client";
-import { IGoogleProfile } from "./types/auth";
+import type { UserRole } from "@prisma/client";
+import type { GoogleProfileType } from "./types/auth";
+import { RefreshTokenResponseDto, GoogleAuthUserDto } from "./dto/index";
 
 import { UsersService } from "src/user/users.service";
 import { PrismaService } from "src/prisma/prisma.service";
-
-import { RefreshTokenResponseDto } from "./dto";
 
 @Injectable()
 export class AuthService {
@@ -18,7 +17,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateOAuthLogin(profile: IGoogleProfile) {
+  async validateOAuthLogin(
+    profile: GoogleProfileType,
+  ): Promise<GoogleAuthUserDto> {
     const user = await this.usersService.upsertFromOAuth({
       email: profile.emails[0].value,
       name: profile.displayName,
@@ -30,7 +31,11 @@ export class AuthService {
     const accessToken = this.createAccessToken(user.id, user.role);
     const refreshToken = await this.createRefreshToken(user.id);
 
-    return { user, accessToken, refreshToken };
+    return GoogleAuthUserDto.create({
+      ...user,
+      accessToken,
+      refreshToken,
+    });
   }
 
   createAccessToken(userId: string, role: UserRole): string {
@@ -59,7 +64,6 @@ export class AuthService {
     }
 
     await this.prisma.refreshToken.delete({ where: { id: dbToken.id } });
-
     await this.cleanupExpiredTokens(dbToken.user.id);
 
     const newRefreshToken = await this.createRefreshToken(dbToken.user.id);
@@ -68,7 +72,10 @@ export class AuthService {
       dbToken.user.role,
     );
 
-    return { accessToken, refreshToken: newRefreshToken };
+    return RefreshTokenResponseDto.create({
+      accessToken,
+      refreshToken: newRefreshToken,
+    });
   }
 
   async revokeRefreshToken(token: string): Promise<void> {

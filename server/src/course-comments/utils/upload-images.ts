@@ -3,7 +3,7 @@ import { UploadApiResponse } from "cloudinary";
 import crypto from "crypto";
 import { z } from "zod";
 
-import { CommentsImageSchema } from "../schemas/course-comments-image.schema";
+import { CommentsImageSchema } from "../schemas/course-comments.schemas";
 
 import { cloudinary } from "../../common/providers/cloudinary";
 

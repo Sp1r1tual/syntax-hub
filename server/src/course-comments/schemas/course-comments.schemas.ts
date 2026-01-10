@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { CommentsImageSchema } from "./course-comments-image.schema";
+export const CommentsImageSchema = z.object({
+  id: z.string(),
+  order: z.number(),
+  src: z.string(),
+});
 
 export const CommentsResponseSchema = z.object({
   id: z.string(),

@@ -13,18 +13,13 @@ import {
   UploadedFiles,
 } from "@nestjs/common";
 import { FilesInterceptor } from "@nestjs/platform-express";
-import z from "zod";
 
 import type { IRequestWithUser } from "src/common/types";
 
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { GetUserId } from "src/auth/decorators/get-user-id.decorator";
-import { CommentsResponseSchema } from "./schemas/course-comments-response.schema";
-import { CommentsResponseDto } from "./dto";
 
 import { CommentsService } from "./course-comments.service";
-
-import { uploadCommentImagesToCloudinary } from "./utils/upload-images";
 
 @Controller("courses")
 export class CommentsController {
@@ -34,21 +29,15 @@ export class CommentsController {
   async getComments(
     @Param("questionId") questionId: string,
     @Req() req: IRequestWithUser,
-  ): Promise<CommentsResponseDto[]> {
+  ) {
     const userId = req.user?.userId;
+    const comments = await this.commentsService.getComments(questionId, userId);
 
-    const commentsList = await this.commentsService.getComments(
-      questionId,
-      userId,
-    );
-
-    if (!commentsList) {
+    if (!comments.length) {
       throw new NotFoundException(`Comments for "${questionId}" not found`);
     }
 
-    return commentsList.map((comment: z.infer<typeof CommentsResponseSchema>) =>
-      CommentsResponseDto.create(comment),
-    );
+    return comments;
   }
 
   @Patch("comments/:commentId")
@@ -56,13 +45,8 @@ export class CommentsController {
   async toggleLike(
     @GetUserId() userId: string,
     @Param("commentId") commentId: string,
-  ): Promise<CommentsResponseDto> {
-    const updatedComments = await this.commentsService.toggleLike(
-      commentId,
-      userId,
-    );
-
-    return CommentsResponseDto.create(updatedComments);
+  ) {
+    return this.commentsService.toggleLike(commentId, userId);
   }
 
   @Post("comments/:questionId")
@@ -74,16 +58,12 @@ export class CommentsController {
     @Body("text") text: string,
     @UploadedFiles() files?: Express.Multer.File[],
   ) {
-    const images = await uploadCommentImagesToCloudinary(files, userId);
-
-    const createdComment = await this.commentsService.createComment({
+    return this.commentsService.createComment({
       userId,
       questionId,
       text,
-      images,
+      files,
     });
-
-    return CommentsResponseDto.create(createdComment);
   }
 
   @Post("comments/:commentId/reply")
@@ -95,16 +75,12 @@ export class CommentsController {
     @Body("text") text: string,
     @UploadedFiles() files?: Express.Multer.File[],
   ) {
-    const images = await uploadCommentImagesToCloudinary(files, userId);
-
-    const createdReply = await this.commentsService.replyToComment({
+    return this.commentsService.replyToComment({
       userId,
       parentCommentId,
       text,
-      images,
+      files,
     });
-
-    return CommentsResponseDto.create(createdReply);
   }
 
   @Delete("comments/:commentId")
@@ -113,16 +89,7 @@ export class CommentsController {
     @GetUserId() userId: string,
     @Param("commentId") commentId: string,
   ) {
-    const deletedComment = await this.commentsService.deleteComment(
-      commentId,
-      userId,
-    );
-
-    if (!deletedComment) {
-      throw new NotFoundException("Comment not found");
-    }
-
-    return CommentsResponseDto.create(deletedComment);
+    return this.commentsService.deleteComment(commentId, userId);
   }
 
   @Patch("comments/:commentId/edit")
@@ -134,21 +101,11 @@ export class CommentsController {
     @Body("text") text?: string,
     @UploadedFiles() files?: Express.Multer.File[],
   ) {
-    const images = files
-      ? await uploadCommentImagesToCloudinary(files, userId)
-      : undefined;
-
-    const updatedComment = await this.commentsService.editComment({
+    return this.commentsService.editComment({
       commentId,
       userId,
       text,
-      images,
+      files,
     });
-
-    if (!updatedComment) {
-      throw new NotFoundException("Comment not found");
-    }
-
-    return CommentsResponseDto.create(updatedComment);
   }
 }

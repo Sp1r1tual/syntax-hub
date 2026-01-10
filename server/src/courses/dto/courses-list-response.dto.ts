@@ -1,33 +1,7 @@
-import { Expose, Type } from "class-transformer";
+import { createZodDto } from "nestjs-zod";
 
-class CourseInGroupDto {
-  @Expose()
-  slug: string;
+import { CoursesGroupedListResponseSchema } from "../schemas/courses-list.schemas";
 
-  @Expose()
-  title: string;
-
-  @Expose()
-  description: string | null;
-
-  @Expose()
-  icon?: string;
-}
-
-class CategoryGroupWithCoursesDto {
-  @Expose()
-  key: string;
-
-  @Expose()
-  title: string;
-
-  @Expose()
-  @Type(() => CourseInGroupDto)
-  courses: CourseInGroupDto[];
-}
-
-export class CoursesGroupedListResponseDto {
-  @Expose()
-  @Type(() => CategoryGroupWithCoursesDto)
-  groups: CategoryGroupWithCoursesDto[];
-}
+export class CoursesGroupedListResponseDto extends createZodDto(
+  CoursesGroupedListResponseSchema,
+) {}

@@ -4,22 +4,42 @@ import {
   ForbiddenException,
 } from "@nestjs/common";
 
-import { ICreateComment, IEditComment, IReplyToComment } from "./types";
-
 import { CommentsResponseDto } from "./dto";
-
 import { PrismaService } from "../prisma/prisma.service";
 
 import {
   commentIncludeWithNestedReplies,
   commentIncludeWithReplies,
   commentIncludeBasic,
-} from "./entities/comment-includes";
+} from "./entities/comment-entity";
+
 import { deleteOldCommentImagesIfNeeded } from "./utils/delete-old-images";
+import { uploadCommentImagesToCloudinary } from "./utils/upload-images";
 import {
   transformComment,
   flattenDeepReplies,
 } from "./utils/transform-comment";
+
+interface ICreateCommentData {
+  userId: string;
+  questionId: string;
+  text: string;
+  files?: Express.Multer.File[];
+}
+
+interface IReplyToCommentData {
+  userId: string;
+  parentCommentId: string;
+  text: string;
+  files?: Express.Multer.File[];
+}
+
+interface IEditCommentData {
+  commentId: string;
+  userId: string;
+  text?: string;
+  files?: Express.Multer.File[];
+}
 
 @Injectable()
 export class CommentsService {
@@ -87,14 +107,19 @@ export class CommentsService {
     return CommentsResponseDto.create(transformComment(updatedComment, userId));
   }
 
-  async createComment(data: ICreateComment): Promise<CommentsResponseDto> {
+  async createComment(data: ICreateCommentData): Promise<CommentsResponseDto> {
+    const images = await uploadCommentImagesToCloudinary(
+      data.files,
+      data.userId,
+    );
+
     const comment = await this.prisma.comment.create({
       data: {
         userId: data.userId,
         questionId: data.questionId,
         text: data.text,
         images: {
-          create: data.images.map((img) => ({
+          create: images.map((img) => ({
             src: img.src,
             order: img.order,
           })),
@@ -106,7 +131,9 @@ export class CommentsService {
     return CommentsResponseDto.create(transformComment(comment, data.userId));
   }
 
-  async replyToComment(data: IReplyToComment): Promise<CommentsResponseDto> {
+  async replyToComment(
+    data: IReplyToCommentData,
+  ): Promise<CommentsResponseDto> {
     const parentComment = await this.prisma.comment.findUnique({
       where: { id: data.parentCommentId },
     });
@@ -115,6 +142,11 @@ export class CommentsService {
       throw new NotFoundException("Parent comment not found");
     }
 
+    const images = await uploadCommentImagesToCloudinary(
+      data.files,
+      data.userId,
+    );
+
     const reply = await this.prisma.comment.create({
       data: {
         userId: data.userId,
@@ -122,7 +154,7 @@ export class CommentsService {
         parentId: data.parentCommentId,
         text: data.text,
         images: {
-          create: data.images.map((img) => ({
+          create: images.map((img) => ({
             src: img.src,
             order: img.order,
           })),
@@ -213,7 +245,7 @@ export class CommentsService {
     return CommentsResponseDto.create(transformComment(deletedComment, userId));
   }
 
-  async editComment(data: IEditComment): Promise<CommentsResponseDto> {
+  async editComment(data: IEditCommentData): Promise<CommentsResponseDto> {
     const comment = await this.prisma.comment.findUnique({
       where: { id: data.commentId },
       include: {
@@ -229,10 +261,14 @@ export class CommentsService {
       throw new ForbiddenException("You are not allowed to edit this comment");
     }
 
-    if (data.images !== undefined) {
+    let images: Array<{ src: string; order: number }> | undefined;
+
+    if (data.files !== undefined) {
+      images = await uploadCommentImagesToCloudinary(data.files, data.userId);
+
       await deleteOldCommentImagesIfNeeded(
         comment.images,
-        data.images.map((img) => ({ src: img.src })),
+        images.map((img) => ({ src: img.src })),
       );
 
       await this.prisma.commentImage.deleteMany({
@@ -254,9 +290,9 @@ export class CommentsService {
       updateData.text = data.text;
     }
 
-    if (data.images !== undefined) {
+    if (images !== undefined) {
       updateData.images = {
-        create: data.images.map((img) => ({
+        create: images.map((img) => ({
           src: img.src,
           order: img.order,
         })),

@@ -1,11 +1,14 @@
 import { Injectable } from "@nestjs/common";
-import { plainToInstance } from "class-transformer";
 
 import { PrismaService } from "src/prisma/prisma.service";
+import {
+  categoryGroupIncludeWithCourses,
+  CategoryGroupWithCourses,
+  courseIncludeWithTopics,
+  CourseWithTopics,
+} from "./entities/course.entity";
 
 import { CoursesGroupedListResponseDto, CourseDetailsResponseDto } from "./dto";
-
-import { ContentBlockMapper } from "src/common/utils/content-block-mapper";
 
 @Injectable()
 export class CoursesService {
@@ -13,31 +16,11 @@ export class CoursesService {
 
   async getCoursesList(): Promise<CoursesGroupedListResponseDto> {
     const categoryGroups = await this.prisma.categoryGroup.findMany({
-      orderBy: { order: "asc" },
-      include: {
-        courses: {
-          orderBy: { order: "asc" },
-          select: {
-            slug: true,
-            title: true,
-            description: true,
-            icon: true,
-          },
-        },
-      },
+      orderBy: { order: "asc" as const },
+      include: categoryGroupIncludeWithCourses(),
     });
 
-    const groups = categoryGroups.map((group) => ({
-      key: group.key,
-      title: group.title,
-      courses: group.courses,
-    }));
-
-    return plainToInstance(
-      CoursesGroupedListResponseDto,
-      { groups },
-      { excludeExtraneousValues: true },
-    );
+    return this.mapCategoryGroupsToDto(categoryGroups);
   }
 
   async getCourseBySlug(
@@ -45,47 +28,31 @@ export class CoursesService {
   ): Promise<CourseDetailsResponseDto | null> {
     const course = await this.prisma.course.findUnique({
       where: { slug },
-      include: {
-        group: true,
-        author: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        topics: {
-          orderBy: { order: "asc" },
-          include: {
-            questions: {
-              orderBy: { order: "asc" },
-              include: {
-                blocks: {
-                  orderBy: { order: "asc" },
-                  include: {
-                    headers: {
-                      orderBy: { order: "asc" },
-                    },
-                    rows: {
-                      orderBy: { order: "asc" },
-                      include: {
-                        cells: {
-                          orderBy: { order: "asc" },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
+      include: courseIncludeWithTopics(),
     });
 
     if (!course) {
       return null;
     }
 
+    return this.mapCourseToDetailsDto(course);
+  }
+
+  private mapCategoryGroupsToDto(
+    groups: CategoryGroupWithCourses[],
+  ): CoursesGroupedListResponseDto {
+    const mappedGroups = groups.map((group) => ({
+      key: group.key,
+      title: group.title,
+      courses: group.courses,
+    }));
+
+    return CoursesGroupedListResponseDto.create({ groups: mappedGroups });
+  }
+
+  private mapCourseToDetailsDto(
+    course: CourseWithTopics,
+  ): CourseDetailsResponseDto {
     const structure = {
       slug: course.slug,
       title: course.title,
@@ -119,15 +86,11 @@ export class CoursesService {
       topic.questions.map((q) => ({
         id: q.id,
         text: q.text,
+        content: q.content,
         topicId: q.topicId,
-        blocks: ContentBlockMapper.mapBlocks(q.blocks),
       })),
     );
 
-    return plainToInstance(
-      CourseDetailsResponseDto,
-      { structure, content },
-      { excludeExtraneousValues: true },
-    );
+    return CourseDetailsResponseDto.create({ structure, content });
   }
 }

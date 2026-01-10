@@ -1,25 +1,5 @@
-import { Expose } from "class-transformer";
-import type { UserRole } from "@prisma/client";
+import { createZodDto } from "nestjs-zod";
 
-export class UserResponseDto {
-  @Expose()
-  id: string;
+import { UserResponseSchema } from "../schemas/users.schemas";
 
-  @Expose()
-  email: string;
-
-  @Expose()
-  name: string | null;
-
-  @Expose()
-  avatar: string | null;
-
-  @Expose()
-  role: UserRole;
-
-  @Expose()
-  createdAt: Date;
-
-  @Expose()
-  updatedAt: Date;
-}
+export class UserResponseDto extends createZodDto(UserResponseSchema) {}

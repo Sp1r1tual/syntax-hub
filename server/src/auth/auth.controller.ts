@@ -11,12 +11,12 @@ import { AuthGuard } from "@nestjs/passport";
 import { ConfigService } from "@nestjs/config";
 import type { Request, Response } from "express";
 
-import type { IGoogleAuthUser, IJwtRequest } from "./types/auth";
+import type { GoogleAuthUserType, IJwtRequest } from "./types/auth";
 
 import { AuthService } from "./auth.service";
 
 interface AuthRequest extends Request {
-  user: IGoogleAuthUser;
+  user: GoogleAuthUserType;
 }
 
 @Controller("auth")

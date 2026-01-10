@@ -1,6 +1,23 @@
-import { TransformedComment } from "../types";
-
 import { Comment, CommentImage, CommentLike, User } from "@prisma/client";
+
+export interface ITransformedComment {
+  id: string;
+  userId: string;
+  username: string;
+  avatar: string | null;
+  text: string;
+  createdAt: string;
+  editedAt?: string;
+  deletedAt?: string;
+  likes: number;
+  liked: boolean;
+  images: Array<{
+    id: string;
+    order: number;
+    src: string;
+  }>;
+  replies: ITransformedComment[];
+}
 
 export type CommentWithRelationsType = Comment & {
   user: Pick<User, "id" | "name" | "avatar">;
@@ -15,7 +32,7 @@ export type CommentWithRelationsType = Comment & {
 export const transformComment = (
   comment: any,
   userId?: string,
-): TransformedComment => {
+): ITransformedComment => {
   return {
     id: comment.id,
     userId: comment.userId,
@@ -42,13 +59,13 @@ export const transformComment = (
 };
 
 export const flattenDeepReplies = (
-  comment: TransformedComment,
+  comment: ITransformedComment,
   currentLevel: number = 1,
-): TransformedComment => {
+): ITransformedComment => {
   if (currentLevel === 3) {
-    const flatReplies: TransformedComment[] = [];
+    const flatReplies: ITransformedComment[] = [];
 
-    const collectReplies = (replies: TransformedComment[]) => {
+    const collectReplies = (replies: ITransformedComment[]) => {
       replies.forEach((reply) => {
         flatReplies.push({
           ...reply,

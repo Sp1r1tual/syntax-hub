@@ -1,12 +1,9 @@
 import { Controller, Get, Req, UseGuards, Patch, Param } from "@nestjs/common";
-import z from "zod";
 
 import type { IRequestWithUser } from "src/common/types";
 
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { GetUserId } from "src/auth/decorators/get-user-id.decorator";
-import { NewsResponseSchema } from "./schemas/news-response.schema";
-import { NewsResponseDto } from "./dto";
 
 import { CommunityService } from "./community.service";
 
@@ -15,24 +12,15 @@ export class CommunityController {
   constructor(private readonly communityService: CommunityService) {}
 
   @Get("news")
-  async getNews(@Req() req: IRequestWithUser): Promise<NewsResponseDto[]> {
+  async getNews(@Req() req: IRequestWithUser) {
     const userId = req.user?.userId;
 
-    const newsList = await this.communityService.getNews(userId);
-
-    return newsList.map((news: z.infer<typeof NewsResponseSchema>) =>
-      NewsResponseDto.create(news),
-    );
+    return this.communityService.getNews(userId);
   }
 
   @Patch("news/:newsId")
   @UseGuards(JwtAuthGuard)
-  async like(
-    @GetUserId() userId: string,
-    @Param("newsId") newsId: string,
-  ): Promise<NewsResponseDto> {
-    const updatedNews = await this.communityService.toggleLike(newsId, userId);
-
-    return NewsResponseDto.create(updatedNews);
+  async like(@GetUserId() userId: string, @Param("newsId") newsId: string) {
+    return this.communityService.toggleLike(newsId, userId);
   }
 }

@@ -96,7 +96,7 @@ model Question {
   text                  String            @db.Text
   topicId               String
   topic                 Topic             @relation(fields: [topicId], references: [id], onDelete: Cascade)
-  blocks                ContentBlock[]
+  content               String            @db.Text
   comments              Comment[]
   order                 Int               @default(999)
   createdAt             DateTime          @default(now())
@@ -108,119 +108,16 @@ model Question {
   @@unique([topicId, order])
 }
 
-enum ContentBlockType {
-  TEXT
-  CODE
-  NOTE
-  IMAGE
-  TABLE
-  LIST
-}
-
-enum CodeLanguage {
-  JAVASCRIPT
-  TYPESCRIPT
-  HTML
-  CSS
-  JSON
-  BASH
-  PYTHON
-  JAVA
-  CSHARP
-  SQL
-}
-
-model ContentBlock {
-  id                    String            @id @default(uuid())
-  questionId            String
-  question              Question          @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  type                  ContentBlockType
-  content               String?           @db.Text
-  language              CodeLanguage?
-  src                   String?
-  alt                   String?
-  caption               String?
-  title                 String?
-  headers               TableHeader[]
-  rows                  TableRow[]
-  order                 Int               @default(999)
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime          @updatedAt
-
-  @@index([questionId])
-  @@index([order])
-  @@map("content_blocks")
-  @@unique([questionId, order])
-}
-
-model TableHeader {
-  id                    String            @id @default(uuid())
-  contentBlockId        String
-  contentBlock          ContentBlock      @relation(fields: [contentBlockId], references: [id], onDelete: Cascade)
-  text                  String
-  order                 Int               @default(999)
-
-  @@index([contentBlockId])
-  @@index([order])
-  @@map("table_headers")
-  @@unique([contentBlockId, order])
-}
-
-model TableRow {
-  id                    String            @id @default(uuid())
-  contentBlockId        String
-  contentBlock          ContentBlock      @relation(fields: [contentBlockId], references: [id], onDelete: Cascade)
-  cells                 TableCell[]
-  order                 Int               @default(999)
-
-  @@index([contentBlockId])
-  @@index([order])
-  @@map("table_rows")
-  @@unique([contentBlockId, order])
-}
-
-model TableCell {
-  id                    String            @id @default(uuid())
-  rowId                 String
-  row                   TableRow          @relation(fields: [rowId], references: [id], onDelete: Cascade)
-  text                  String
-  order                 Int               @default(999)
-
-  @@index([rowId])
-  @@index([order])
-  @@map("table_cells")
-  @@unique([rowId, order])
-}
-
 model News {
   id                    String            @id @default(uuid())
-  title                 String
+  title                 String            @unique
+  content               String            @db.Text
+  likes                 Int               @default(0)
+  likedBy               NewsLike[]
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
-  likes                 Int               @default(0)
-  likedBy               NewsLike[]     
-  blocks                NewsBlock[]    
 
   @@map("news")
-}
-
-model NewsBlock {
-  id                    String            @id @default(uuid())
-  newsId                String
-  news                  News              @relation(fields: [newsId], references: [id], onDelete: Cascade)
-  type                  ContentBlockType
-  content               String?           @db.Text
-  title                 String?
-  src                   String?
-  alt                   String?
-  caption               String?
-  order                 Int               @default(999)
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime          @updatedAt
-
-  @@index([newsId])
-  @@index([order])
-  @@map("news_blocks")
 }
 
 model NewsLike {

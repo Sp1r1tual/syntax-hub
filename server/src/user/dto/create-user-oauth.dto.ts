@@ -1,14 +1,5 @@
-import { IsEmail, IsString, IsOptional, IsUrl } from "class-validator";
+import { createZodDto } from "nestjs-zod";
 
-export class CreateUserOAuthDto {
-  @IsEmail()
-  email: string;
+import { CreateUserOAuthSchema } from "../schemas/users.schemas";
 
-  @IsString()
-  @IsOptional()
-  name?: string;
-
-  @IsUrl()
-  @IsOptional()
-  avatar?: string;
-}
+export class CreateUserOAuthDto extends createZodDto(CreateUserOAuthSchema) {}

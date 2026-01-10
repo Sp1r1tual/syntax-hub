@@ -1,1 +1,1 @@
-export * from "./news-response.dto";
+export * from "./news.dto";
