@@ -10,7 +10,6 @@ import { ProfileModal } from "./components/ui/modals/ProfileModal";
 import { ConfirmModal } from "./components/ui/modals/ConfirmModal";
 import { CookieBanner } from "./components/ui/banners/CookieBanner";
 import { ErrorBoundaryWrapper } from "./components/errors/ErrorBoundaryWrapper";
-import { ReactQueryProvider } from "./components/providers/ReactQueryProvider";
 
 const App = () => {
   const { openAuthModal } = useModalsStore();
@@ -24,20 +23,18 @@ const App = () => {
 
   return (
     <ErrorBoundaryWrapper>
-      <ReactQueryProvider>
-        <SkeletonTheme
-          baseColor="var(--skeleton-base)"
-          highlightColor="var(--skeleton-highlight)"
-        >
-          <AuthModal />
-          <ProfileModal />
-          <ConfirmModal />
+      <SkeletonTheme
+        baseColor="var(--skeleton-base)"
+        highlightColor="var(--skeleton-highlight)"
+      >
+        <AuthModal />
+        <ProfileModal />
+        <ConfirmModal />
 
-          <CookieBanner />
+        <CookieBanner />
 
-          <Outlet />
-        </SkeletonTheme>
-      </ReactQueryProvider>
+        <Outlet />
+      </SkeletonTheme>
     </ErrorBoundaryWrapper>
   );
 };
