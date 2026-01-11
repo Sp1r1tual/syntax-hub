@@ -25,7 +25,7 @@ The project has served as a testing ground for experimenting with UX/UI design, 
 - 🎨 Light & Dark Theme – light and dark modes with instant switching
 - 🔐 Authentication – JWT-based authentication with Google OAuth
 - 💬 Comments – comments for courses, questions, and news with image uploads via paste and drag & drop
-- 📰 News Page – dedicated news section with comments and reactions
+- 📰 News Page – dedicated project news section
 - ❤️ Likes – likes for questions, comments, and news
 
 ---
@@ -76,3 +76,4 @@ Currently, this project does not include a formal license.
 All rights are reserved by the author.
 
 If you plan to use, modify, or distribute this project, please contact the author for permission.
+
