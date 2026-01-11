@@ -2,7 +2,7 @@ import { Controller, Get, Req, UseGuards, Patch, Param } from "@nestjs/common";
 
 import type { IRequestWithUser } from "src/common/types";
 
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { JwtAuthGuard } from "src/auth/guards/index";
 import { GetUserId } from "src/auth/decorators/get-user-id.decorator";
 
 import { CommunityService } from "./community.service";

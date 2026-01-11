@@ -13,6 +13,11 @@ enum UserRole {
   TEACHER
 }
 
+enum QuestionStatus {
+  REPEAT
+  LEARNED
+}
+
 model User {
   id                    String           @id @default(uuid())
   email                 String           @unique
@@ -24,6 +29,7 @@ model User {
   newsLikes             NewsLike[]
   comments              Comment[]
   commentLikes          CommentLike[]
+  questionStatuses      UserQuestionStatus[]
   createdAt             DateTime         @default(now())
   updatedAt             DateTime         @updatedAt
 
@@ -98,6 +104,7 @@ model Question {
   topic                 Topic             @relation(fields: [topicId], references: [id], onDelete: Cascade)
   content               String            @db.Text
   comments              Comment[]
+  userStatuses          UserQuestionStatus[]
   order                 Int               @default(999)
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
@@ -106,6 +113,23 @@ model Question {
   @@index([order])
   @@map("questions")
   @@unique([topicId, order])
+}
+
+model UserQuestionStatus {
+  id                    String            @id @default(uuid())
+  userId                String
+  user                  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionId            String
+  question              Question          @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  status                QuestionStatus
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  @@unique([userId, questionId])
+  @@index([userId])
+  @@index([questionId])
+  @@index([status])
+  @@map("user_question_statuses")
 }
 
 model News {

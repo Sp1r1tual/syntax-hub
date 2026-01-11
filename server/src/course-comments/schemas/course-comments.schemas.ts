@@ -10,7 +10,7 @@ export const CommentsResponseSchema = z.object({
   id: z.string(),
   userId: z.string(),
   username: z.string(),
-  avatar: z.string().optional(),
+  avatar: z.string().nullish(),
   text: z.string(),
   createdAt: z.string(),
   editedAt: z.string().optional(),

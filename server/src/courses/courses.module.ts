@@ -4,9 +4,11 @@ import { PrismaModule } from "src/prisma/prisma.module";
 import { CoursesController } from "./courses.controller";
 import { CoursesService } from "./courses.service";
 
+import { QuestionStatusEntity } from "./entities";
+
 @Module({
   imports: [PrismaModule],
-  providers: [CoursesService],
+  providers: [CoursesService, QuestionStatusEntity],
   controllers: [CoursesController],
   exports: [CoursesService],
 })

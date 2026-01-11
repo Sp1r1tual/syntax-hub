@@ -10,10 +10,13 @@ export const CourseAuthorSchema = z.object({
   name: z.string().nullable(),
 });
 
+export const QuestionStatusSchema = z.enum(["repeat", "learned"]).optional();
+
 export const QuestionSchema = z.object({
   id: z.string(),
   text: z.string(),
   topicId: z.string(),
+  status: QuestionStatusSchema,
 });
 
 export const QuestionDetailSchema = z.object({
@@ -21,6 +24,7 @@ export const QuestionDetailSchema = z.object({
   text: z.string(),
   content: z.string(),
   topicId: z.string(),
+  status: QuestionStatusSchema,
 });
 
 export const TopicSchema = z.object({
@@ -45,4 +49,10 @@ export const CourseStructureSchema = z.object({
 export const CourseDetailsResponseSchema = z.object({
   structure: CourseStructureSchema,
   content: z.array(QuestionDetailSchema),
+});
+
+export const ToggleQuestionStatusResponseSchema = z.object({
+  questionId: z.string(),
+  status: QuestionStatusSchema,
+  message: z.string().optional(),
 });

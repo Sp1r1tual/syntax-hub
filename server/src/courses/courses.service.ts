@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { QuestionStatus } from "@prisma/client";
 
 import { PrismaService } from "src/prisma/prisma.service";
 import {
@@ -6,13 +7,21 @@ import {
   CategoryGroupWithCourses,
   courseIncludeWithTopics,
   CourseWithTopics,
-} from "./entities/course.entity";
+  QuestionStatusEntity,
+} from "./entities/index";
 
-import { CoursesGroupedListResponseDto, CourseDetailsResponseDto } from "./dto";
+import {
+  CoursesGroupedListResponseDto,
+  CourseDetailsResponseDto,
+  ToggleQuestionStatusResponseDto,
+} from "./dto";
 
 @Injectable()
 export class CoursesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly questionStatusEntity: QuestionStatusEntity,
+  ) {}
 
   async getCoursesList(): Promise<CoursesGroupedListResponseDto> {
     const categoryGroups = await this.prisma.categoryGroup.findMany({
@@ -25,6 +34,7 @@ export class CoursesService {
 
   async getCourseBySlug(
     slug: string,
+    userId?: string,
   ): Promise<CourseDetailsResponseDto | null> {
     const course = await this.prisma.course.findUnique({
       where: { slug },
@@ -35,7 +45,57 @@ export class CoursesService {
       return null;
     }
 
-    return this.mapCourseToDetailsDto(course);
+    let userStatuses = new Map<string, QuestionStatus>();
+
+    if (userId) {
+      const questionIds = course.topics.flatMap((topic) =>
+        topic.questions.map((q) => q.id),
+      );
+
+      const statuses = await this.prisma.userQuestionStatus.findMany({
+        where: {
+          userId,
+          questionId: { in: questionIds },
+        },
+        select: {
+          questionId: true,
+          status: true,
+        },
+      });
+
+      userStatuses = new Map(statuses.map((s) => [s.questionId, s.status]));
+    }
+
+    return this.mapCourseToDetailsDto(course, userStatuses);
+  }
+
+  async toggleQuestionStatus(
+    userId: string,
+    questionId: string,
+    targetStatus: QuestionStatus,
+  ): Promise<ToggleQuestionStatusResponseDto> {
+    const questionExists = await this.prisma.question.findUnique({
+      where: { id: questionId },
+      select: { id: true },
+    });
+
+    if (!questionExists) {
+      throw new NotFoundException(`Question with id "${questionId}" not found`);
+    }
+
+    const newStatus = await this.questionStatusEntity.toggle(
+      userId,
+      questionId,
+      targetStatus,
+    );
+
+    return ToggleQuestionStatusResponseDto.create({
+      questionId,
+      status: newStatus?.toLowerCase() as "repeat" | "learned" | undefined,
+      message: newStatus
+        ? `Question marked as ${newStatus.toLowerCase()}`
+        : "Question status removed",
+    });
   }
 
   private mapCategoryGroupsToDto(
@@ -52,6 +112,7 @@ export class CoursesService {
 
   private mapCourseToDetailsDto(
     course: CourseWithTopics,
+    userStatuses: Map<string, QuestionStatus>,
   ): CourseDetailsResponseDto {
     const structure = {
       slug: course.slug,
@@ -76,6 +137,10 @@ export class CoursesService {
           id: q.id,
           text: q.text,
           topicId: q.topicId,
+          status: userStatuses.get(q.id)?.toLowerCase() as
+            | "repeat"
+            | "learned"
+            | undefined,
         })),
       })),
       createdAt: course.createdAt,
@@ -88,6 +153,10 @@ export class CoursesService {
         text: q.text,
         content: q.content,
         topicId: q.topicId,
+        status: userStatuses.get(q.id)?.toLowerCase() as
+          | "repeat"
+          | "learned"
+          | undefined,
       })),
     );
 

@@ -7,7 +7,6 @@ import {
   UseGuards,
   Patch,
   Param,
-  NotFoundException,
   Post,
   UseInterceptors,
   UploadedFiles,
@@ -16,7 +15,7 @@ import { FilesInterceptor } from "@nestjs/platform-express";
 
 import type { IRequestWithUser } from "src/common/types";
 
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { OptionalJwtAuthGuard, JwtAuthGuard } from "src/auth/guards/index";
 import { GetUserId } from "src/auth/decorators/get-user-id.decorator";
 
 import { CommentsService } from "./course-comments.service";
@@ -26,16 +25,13 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Get("comments/:questionId")
+  @UseGuards(OptionalJwtAuthGuard)
   async getComments(
     @Param("questionId") questionId: string,
     @Req() req: IRequestWithUser,
   ) {
     const userId = req.user?.userId;
     const comments = await this.commentsService.getComments(questionId, userId);
-
-    if (!comments.length) {
-      throw new NotFoundException(`Comments for "${questionId}" not found`);
-    }
 
     return comments;
   }
