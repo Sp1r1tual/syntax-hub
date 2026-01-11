@@ -30,7 +30,7 @@ export type CommentWithRelationsType = Comment & {
 };
 
 export const transformComment = (
-  comment: CommentWithRelationsType,
+  comment: any,
   userId?: string,
 ): ITransformedComment => {
   return {
@@ -46,15 +46,13 @@ export const transformComment = (
         : undefined,
     deletedAt: comment.deletedAt?.toISOString(),
     likes: comment._count?.likes || 0,
-    liked: userId
-      ? comment.likes.some((like) => like.userId === userId)
-      : false,
+    liked: userId ? (comment.likes?.length || 0) > 0 : false,
     images: (comment.images || []).map((img: CommentImage) => ({
       id: img.id,
       order: img.order,
       src: img.src,
     })),
-    replies: (comment.replies || []).map((reply: CommentWithRelationsType) =>
+    replies: (comment.replies || []).map((reply: any) =>
       transformComment(reply, userId),
     ),
   };
