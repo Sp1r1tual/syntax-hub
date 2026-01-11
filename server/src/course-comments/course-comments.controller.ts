@@ -12,6 +12,7 @@ import {
   UploadedFiles,
 } from "@nestjs/common";
 import { FilesInterceptor } from "@nestjs/platform-express";
+import { Throttle } from "@nestjs/throttler";
 
 import type { IRequestWithUser } from "src/common/types";
 
@@ -38,6 +39,7 @@ export class CommentsController {
 
   @Patch("comments/:commentId")
   @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   async toggleLike(
     @GetUserId() userId: string,
     @Param("commentId") commentId: string,

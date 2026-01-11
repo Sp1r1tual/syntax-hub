@@ -1,4 +1,5 @@
 import { Controller, Get, Req, UseGuards, Patch, Param } from "@nestjs/common";
+import { Throttle } from "@nestjs/throttler";
 
 import type { IRequestWithUser } from "src/common/types";
 
@@ -20,6 +21,7 @@ export class CommunityController {
 
   @Patch("news/:newsId")
   @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   async like(@GetUserId() userId: string, @Param("newsId") newsId: string) {
     return this.communityService.toggleLike(newsId, userId);
   }

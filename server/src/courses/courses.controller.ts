@@ -7,6 +7,7 @@ import {
   Req,
   Patch,
 } from "@nestjs/common";
+import { Throttle } from "@nestjs/throttler";
 
 import type { IRequestWithUser } from "src/common/types";
 
@@ -43,6 +44,7 @@ export class CoursesController {
 
   @Patch("mark-question-as-repeat/:questionId")
   @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   async toggleQuestionAsRepeat(
     @GetUserId() userId: string,
     @Param("questionId") questionId: string,
@@ -56,6 +58,7 @@ export class CoursesController {
 
   @Patch("mark-question-as-learned/:questionId")
   @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   async toggleQuestionAsLearned(
     @GetUserId() userId: string,
     @Param("questionId") questionId: string,
