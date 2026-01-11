@@ -248,6 +248,7 @@ export const CommentItem = ({
                 onToggleReplies={() => setAreRepliesVisible(!areRepliesVisible)}
                 onReply={handleReplyClick}
                 onLike={handleLike}
+                isOwn={isOwn}
               />
             )}
 

@@ -3,10 +3,29 @@
   padding: 0 1rem;
 }
 
+.content {
+  position: relative;
+}
+
+.content::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--border-color) 15%,
+    var(--border-color) 85%,
+    transparent 100%
+  );
+}
 .title {
   font-size: 2rem;
   font-weight: 600;
-  margin: 0 0 1rem 0;
+  margin: 0;
   color: var(--text-main);
   font-family:
     Onest Variable,

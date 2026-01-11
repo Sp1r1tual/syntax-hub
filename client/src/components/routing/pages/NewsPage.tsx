@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useNewsStore } from "@/store/news/useNewsStore";
 
 import { NewsContent } from "@/components/sections/community/NewsContent";
+import { NewsContentSkeleton } from "@/components/ui/skeletons/NewsContentSkeleton";
 import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
 
 import { sortByDate } from "@/common/utils/sortByDate";
@@ -15,8 +16,12 @@ export const NewsPage = () => {
     fetchNews();
   }, [fetchNews]);
 
-  if (isLoadingNews && !isFetched) {
-    return <div style={{ minHeight: "100dvh" }} />;
+  if (isLoadingNews && isFetched) {
+    return (
+      <>
+        <NewsContentSkeleton cards={3} />
+      </>
+    );
   }
 
   if (error) return <ErrorWrapper error={error} />;

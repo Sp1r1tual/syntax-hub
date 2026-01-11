@@ -7,14 +7,311 @@
     sans-serif;
 }
 
+.codeBlockWrapper {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--terminal-border);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  margin: 1rem 0;
+  box-sizing: border-box;
+}
+
+.codeHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.languageLabel {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  opacity: 0.8;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.codeBlockWrapper pre {
+  overflow: auto;
+  margin: 0;
+  padding: 2.75rem 1rem 1rem 1rem !important;
+  background: transparent;
+  border-radius: 0;
+}
+
+.textBlock pre {
+  overflow: auto;
+  margin: 0;
+  border-radius: 0.5rem;
+}
+
+.codeBlockWrapper pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.codeBlockWrapper pre::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+.codeBlockWrapper pre::-webkit-scrollbar-thumb {
+  background: var(--bg-hover-strong);
+  border-radius: 3px;
+}
+
+.codeBlockWrapper pre::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-active);
+}
+
+.textBlock code {
+  font-size: 0.95rem;
+  font-family: inherit;
+  padding-right: 1rem;
+  display: inline-block;
+}
+
+.textBlock p code {
+  background: var(--bg-tertiary);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+.textBlock img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 1rem auto;
+}
+
+.textBlock figure {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.textBlock figcaption {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.textBlock ul,
+.textBlock ol {
+  padding-left: 1.2rem;
+  color: var(--text-secondary);
+  margin: 0;
+  margin-bottom: 2rem;
+}
+
+.textBlock li {
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1rem 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tableWrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background: var(--bg-hover-strong);
+  border-radius: 3px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-active);
+}
+
+.textBlock table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+}
+
+.textBlock th,
+.textBlock td {
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.textBlock th {
+  background: var(--bg-tertiary);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.textBlock blockquote {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-tertiary);
+  border-left: 4px solid var(--text-green);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  align-items: flex-start;
+  margin: 2rem 0;
+  font-style: normal;
+}
+
+.textBlock blockquote p {
+  margin: 0;
+  flex: 1;
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.textBlock h1,
+.textBlock h2,
+.textBlock h3,
+.textBlock h4,
+.textBlock h5,
+.textBlock h6 {
+  color: var(--text-main);
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.textBlock h1 {
+  font-size: 1.8rem;
+}
+.textBlock h2 {
+  font-size: 1.5rem;
+}
+.textBlock h3 {
+  font-size: 1.3rem;
+}
+.textBlock h4 {
+  font-size: 1.1rem;
+}
+.textBlock h5 {
+  font-size: 1rem;
+}
+.textBlock h6 {
+  font-size: 0.95rem;
+}
+
+.textBlock p {
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.textBlock a {
+  color: var(--text-green);
+  text-decoration: none;
+}
+
+.textBlock a:hover {
+  text-decoration: underline;
+}
+
+.textBlock hr {
+  border: none;
+  border-top: 1px solid var(--bg-tertiary);
+  margin: 1.5rem 0;
+}
+
 @media (max-width: 768px) {
   .textBlock {
     font-size: 1rem;
+  }
+
+  .textBlock th,
+  .textBlock td {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .textBlock blockquote {
+    padding: 0.8rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .textBlock blockquote p {
+    font-size: 0.95rem;
+  }
+
+  .textBlock h1 {
+    font-size: 1.5rem;
+  }
+  .textBlock h2 {
+    font-size: 1.3rem;
+  }
+  .textBlock h3 {
+    font-size: 1.15rem;
   }
 }
 
 @media (max-width: 480px) {
   .textBlock {
     font-size: 0.9rem;
+  }
+
+  .textBlock code {
+    font-size: 0.8rem;
+  }
+
+  .textBlock th,
+  .textBlock td {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .textBlock blockquote {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem 0.6rem;
+    gap: 0.4rem;
+    border-left-width: 3px;
+  }
+
+  .textBlock blockquote p {
+    font-size: 0.85rem;
+  }
+
+  .textBlock figcaption {
+    font-size: 0.8rem;
+  }
+
+  .textBlock h1 {
+    font-size: 1.3rem;
+  }
+  .textBlock h2 {
+    font-size: 1.15rem;
+  }
+  .textBlock h3 {
+    font-size: 1.05rem;
   }
 }

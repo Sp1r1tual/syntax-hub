@@ -65,11 +65,10 @@
   color: var(--text-secondary);
 }
 
-.course img {
+.courseImage {
   width: 5rem;
   height: 5rem;
   object-fit: contain;
-  flex-shrink: 0;
   border-radius: 0.25rem;
 }
 

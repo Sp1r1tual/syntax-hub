@@ -5,23 +5,34 @@ import {
   ICourseNavigation,
   IQuestionDetail,
   ITopic,
+  QuestionStatusType,
 } from "@/common/types";
 
 import { CoursesService } from "@/api/services/coursesService";
 
+import { optimisticToggleQuestionStatus } from "@/common/utils/optimisticUpdates";
+
 interface ICoursesState {
   coursesList: IGroupCourses[];
+  isLoadingList: boolean;
+  isFetchedList: boolean;
   selectedCourse: ICourseNavigation | null;
   questionsContent: Map<string, IQuestionDetail>;
-  isLoadingList: boolean;
+  isMarkingQuestion: boolean;
   isLoadingCourse: boolean;
   error: string | null;
+  fetchCoursesList: () => Promise<void>;
   setCoursesList: (groups: IGroupCourses[]) => void;
+  fetchCourse: (courseSlug: string) => Promise<void>;
+  markQuestionAsRepeat: (questionId: string) => Promise<void>;
+  markQuestionAsLearned: (questionId: string) => Promise<void>;
+  updateQuestionStatus: (
+    questionId: string,
+    status: QuestionStatusType | undefined,
+  ) => void;
   setSelectedCourse: (course: ICourseNavigation | null) => void;
   setQuestionsContent: (content: IQuestionDetail[]) => void;
-  setError: (message: string | null) => void;
-  fetchCoursesList: () => Promise<void>;
-  fetchCourse: (courseSlug: string) => Promise<void>;
+  getQuestionDetail: (questionId: string) => IQuestionDetail | undefined;
   getNavigationState: (
     navigation: {
       topicIndex: number;
@@ -32,7 +43,7 @@ interface ICoursesState {
     disablePrev: boolean;
     disableNext: boolean;
   };
-  getQuestionDetail: (questionId: string) => IQuestionDetail | undefined;
+  setError: (message: string | null) => void;
   clearSelectedCourse: () => void;
 }
 
@@ -41,6 +52,8 @@ const useCoursesStore = create<ICoursesState>((set, get) => ({
   selectedCourse: null,
   questionsContent: new Map(),
   isLoadingList: false,
+  isMarkingQuestion: false,
+  isFetchedList: false,
   isLoadingCourse: false,
   error: null,
 
@@ -64,6 +77,7 @@ const useCoursesStore = create<ICoursesState>((set, get) => ({
       set({
         coursesList: response.data.groups,
         isLoadingList: false,
+        isFetchedList: true,
       });
     } catch (error) {
       console.error("Error fetching courses list:", error);
@@ -144,6 +158,65 @@ const useCoursesStore = create<ICoursesState>((set, get) => ({
 
   getQuestionDetail: (questionId: string) => {
     return get().questionsContent.get(questionId);
+  },
+
+  updateQuestionStatus: (
+    questionId: string,
+    status: QuestionStatusType | undefined,
+  ) => {
+    const state = get();
+    const question = state.questionsContent.get(questionId);
+
+    if (question) {
+      const updatedQuestion = { ...question };
+
+      if (status === undefined) {
+        delete updatedQuestion.status;
+      } else {
+        updatedQuestion.status = status;
+      }
+
+      const newMap = new Map(state.questionsContent);
+      newMap.set(questionId, updatedQuestion);
+
+      set({ questionsContent: newMap });
+    }
+  },
+
+  markQuestionAsRepeat: async (questionId: string) => {
+    set({ isMarkingQuestion: true, error: null });
+
+    await optimisticToggleQuestionStatus(
+      questionId,
+      "repeat",
+      get().questionsContent,
+      get().updateQuestionStatus,
+      () => CoursesService.toggleQuestionAsRepeat(questionId),
+      (error) => {
+        console.error("Error marking question as repeat:", error);
+        set({ error: "Не вдалося відмітити питання для повторення" });
+      },
+    );
+
+    set({ isMarkingQuestion: false });
+  },
+
+  markQuestionAsLearned: async (questionId: string) => {
+    set({ isMarkingQuestion: true, error: null });
+
+    await optimisticToggleQuestionStatus(
+      questionId,
+      "learned",
+      get().questionsContent,
+      get().updateQuestionStatus,
+      () => CoursesService.toggleQuestionAsLearned(questionId),
+      (error) => {
+        console.error("Error marking question as learned:", error);
+        set({ error: "Не вдалося відмітити питання як вивчене" });
+      },
+    );
+
+    set({ isMarkingQuestion: false });
   },
 
   clearSelectedCourse: () => {

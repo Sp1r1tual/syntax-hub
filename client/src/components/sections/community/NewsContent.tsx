@@ -5,19 +5,16 @@ import { useNewsStore } from "@/store/news/useNewsStore";
 import { useModalsStore } from "@/store/modal/useModalsStore";
 
 import { LikeButton } from "@/components/ui/buttons/LikeButton";
-import { ListBlock } from "@/components/ui/content/ListBlock";
-import { ImageBlock } from "@/components/ui/content/ImageBlock";
 import { TextBlock } from "@/components/ui/content/TextBlock";
 
 import styles from "./styles/NewsContent.module.css";
 
-interface NewsContentProps {
+interface INewsContentProps {
   news: INewsResponse;
 }
 
-export const NewsContent = ({ news }: NewsContentProps) => {
+export const NewsContent = ({ news }: INewsContentProps) => {
   const toggleLike = useNewsStore((state) => state.toggleLike);
-
   const { user } = useAuthStore();
   const { openAuthModal } = useModalsStore();
 
@@ -26,7 +23,6 @@ export const NewsContent = ({ news }: NewsContentProps) => {
       openAuthModal();
       return;
     }
-
     toggleLike(news.id);
   };
 
@@ -38,43 +34,7 @@ export const NewsContent = ({ news }: NewsContentProps) => {
       </p>
 
       <div className={styles.content}>
-        {news.content.map((block) => {
-          switch (block.type) {
-            case "TEXT":
-              return (
-                <TextBlock
-                  key={block.id}
-                  id={block.id}
-                  content={block.content}
-                />
-              );
-
-            case "IMAGE":
-              return (
-                <ImageBlock
-                  key={block.id}
-                  id={block.id}
-                  src={block.src}
-                  alt={block.alt}
-                  caption={block.caption}
-                />
-              );
-
-            case "LIST":
-              return (
-                <ListBlock
-                  key={block.id}
-                  id={block.id}
-                  items={block.items}
-                  title={block.title}
-                  ordered={block.ordered}
-                />
-              );
-
-            default:
-              return null;
-          }
-        })}
+        <TextBlock content={news.content} />
       </div>
 
       <div className={styles.likesSection}>

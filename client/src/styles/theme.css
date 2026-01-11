@@ -24,6 +24,9 @@
   --terminal-border: rgba(0, 255, 65, 0.3);
   --terminal-shadow: rgba(0, 255, 65, 0.2);
 
+  --skeleton-base: rgba(46, 46, 50, 0.6);
+  --skeleton-highlight: rgba(255, 255, 255, 0.1);
+
   --icon-filter: none;
 }
 
@@ -52,6 +55,9 @@ body.light-theme {
   --terminal-bg: #eaeaea;
   --terminal-border: rgba(0, 0, 0, 0.3);
   --terminal-shadow: rgba(21, 21, 21, 0.15);
+
+  --skeleton-base: #e8e8e8;
+  --skeleton-highlight: #f5f5f5;
 
   --icon-filter: brightness(0) saturate(100%);
 }

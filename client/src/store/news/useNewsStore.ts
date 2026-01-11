@@ -4,6 +4,8 @@ import { INewsResponse } from "@/common/types";
 
 import { CommunityService } from "@/api/services/communityService";
 
+import { optimisticToggleLikeNews } from "@/common/utils/optimisticUpdates";
+
 interface INewsState {
   newsList: INewsResponse[];
   isLoadingNews: boolean;
@@ -11,7 +13,7 @@ interface INewsState {
   isFetched: boolean;
 
   fetchNews: (force?: boolean) => Promise<void>;
-  toggleLike: (newsId: string) => void;
+  toggleLike: (newsId: string) => Promise<void>;
 }
 
 const useNewsStore = create<INewsState>((set, get) => ({
@@ -48,18 +50,19 @@ const useNewsStore = create<INewsState>((set, get) => ({
   },
 
   toggleLike: async (newsId: string) => {
-    try {
-      const response = await CommunityService.toggleLike(newsId);
-      const updatedNews = response.data;
-
-      set((state) => ({
-        newsList: state.newsList.map((news) =>
-          news.id === newsId ? updatedNews : news,
-        ),
-      }));
-    } catch (error) {
-      console.error("Не вдалося поставити лайк:", error);
-    }
+    await optimisticToggleLikeNews(
+      newsId,
+      get().newsList,
+      (newsList) => set({ newsList }),
+      async () => {
+        const response = await CommunityService.toggleLike(newsId);
+        return response.data;
+      },
+      (error) => {
+        console.error("Не вдалося поставити лайк:", error);
+        set({ error: "Не вдалося поставити лайк" });
+      },
+    );
   },
 }));
 

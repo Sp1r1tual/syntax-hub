@@ -4,6 +4,7 @@ import { useParams, Outlet } from "react-router-dom";
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
 import { CourseContent } from "@/components/sections/courses/CourseContent";
+import { CourseContentSkeleton } from "@/components/ui/skeletons/CourseContentSkeleton";
 
 export const CoursePage = () => {
   const { courseSlug, questionId } = useParams();
@@ -25,7 +26,7 @@ export const CoursePage = () => {
   }, [courseSlug, selectedCourse, isLoadingCourse, fetchCourse]);
 
   if (isLoadingCourse) {
-    return <div style={{ minHeight: "100dvh" }} />;
+    return <CourseContentSkeleton />;
   }
 
   if (questionId) {

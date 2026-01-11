@@ -1,0 +1,62 @@
+.markButtonsWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.markButtonsWrapper p {
+  margin: 0 1rem;
+  font-family:
+    Onest Variable,
+    sans-serif;
+}
+
+.buttonsWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.buttonsWrapper button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.buttonsWrapper button:hover {
+  background-color: var(--bg-hover-strong);
+  border-color: var(--text-muted);
+}
+
+.buttonsWrapper button:active {
+  background-color: var(--bg-active);
+  transform: scale(0.95);
+}
+
+.buttonsWrapper button.active {
+  background-color: var(--bg-active);
+  border-color: var(--text-green);
+  color: var(--text-green);
+}
+
+@media (max-width: 480px) {
+  .markButtonsWrapper {
+    justify-content: center;
+  }
+
+  .markButtonsWrapper p {
+    margin: 0 0.5rem;
+  }
+
+  .buttonsWrapper {
+    gap: 0.5rem;
+  }
+}

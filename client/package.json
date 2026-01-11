@@ -17,11 +17,15 @@
   "dependencies": {
     "@tanstack/react-query": "^5.90.15",
     "axios": "^1.12.2",
+    "lucide-react": "^0.562.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-error-boundary": "^6.0.0",
+    "react-loading-skeleton": "^3.5.0",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.9.4",
     "react-syntax-highlighter": "^16.1.0",
+    "remark-gfm": "^4.0.1",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

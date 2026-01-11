@@ -135,6 +135,7 @@
   .labels,
   .info {
     text-align: center;
+    font-size: 1rem;
   }
 
   .editProfileBtn {

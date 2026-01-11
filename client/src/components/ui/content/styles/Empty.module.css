@@ -1,0 +1,9 @@
+.emptyWrapper {
+  min-height: 40dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  font-family: "Onest Variable", sans-serif;
+}

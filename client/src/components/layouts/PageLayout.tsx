@@ -2,11 +2,9 @@ import { useEffect } from "react";
 import { Outlet, useMatches, useParams } from "react-router-dom";
 
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
-import { useNewsStore } from "@/store/news/useNewsStore";
 
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
-import { PageLoader } from "../ui/loaders/PageLoader";
 
 import styles from "./styles/PageLyout.module.css";
 
@@ -14,10 +12,7 @@ export const PageLayout = () => {
   const matches = useMatches();
   const { courseSlug } = useParams();
 
-  const { selectedCourse, coursesList, isLoadingList, isLoadingCourse } =
-    useCoursesStore();
-
-  const { isLoadingNews } = useNewsStore();
+  const { selectedCourse, coursesList } = useCoursesStore();
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -55,10 +50,6 @@ export const PageLayout = () => {
 
   return (
     <>
-      <PageLoader
-        isLoading={isLoadingList || isLoadingCourse || isLoadingNews}
-      />
-
       <div className={styles.page}>
         <Navbar />
 

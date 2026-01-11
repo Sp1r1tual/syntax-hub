@@ -8,6 +8,7 @@ interface ICommentActionsProps {
   areRepliesVisible: boolean;
   likesCount: number;
   isLiked: boolean;
+  isOwn?: boolean;
   onToggleReplies: () => void;
   onReply: () => void;
   onLike: () => void;
@@ -22,6 +23,7 @@ export const CommentActions = ({
   onToggleReplies,
   onReply,
   onLike,
+  isOwn,
 }: ICommentActionsProps) => {
   return (
     <div className={styles.downRow}>
@@ -31,9 +33,11 @@ export const CommentActions = ({
         </button>
       )}
 
-      <button className={styles.reply} onClick={onReply}>
-        Відповісти
-      </button>
+      {!isOwn && (
+        <button className={styles.reply} onClick={onReply}>
+          Відповісти
+        </button>
+      )}
 
       <LikeButton onToggle={onLike} likesCount={likesCount} isLiked={isLiked} />
     </div>

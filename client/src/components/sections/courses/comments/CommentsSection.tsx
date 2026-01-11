@@ -5,7 +5,7 @@ import { IEditComment } from "@/common/types";
 
 import { useCommentsStore } from "@/store/courses/useCommentsStore";
 
-import { DotsLoader } from "@/components/ui/loaders/DotsLoader";
+import { CommentsSkeleton } from "@/components/ui/skeletons/CommentsSkeleton";
 import { CommentsList } from "./CommentsList";
 import { CommentInput } from "./CommentInput";
 import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
@@ -59,12 +59,11 @@ export const CommentsSection = () => {
     await editComment(id, editData);
   };
 
+  const getCommentsLabel = (count: number) =>
+    count === 1 ? "коментар" : "коментарі";
+
   if (isLoading) {
-    return (
-      <div className={styles.loaderWrapper}>
-        <DotsLoader />
-      </div>
-    );
+    return <CommentsSkeleton />;
   }
 
   if (error) return <ErrorWrapper error={error} />;
@@ -83,7 +82,9 @@ export const CommentsSection = () => {
         </header>
 
         <div className={styles.meta}>
-          <span>{totalCount} коментарів</span>
+          <span>
+            {totalCount} {getCommentsLabel(totalCount)}
+          </span>
         </div>
       </div>
 

@@ -1,4 +1,5 @@
 import { ICourseNavigation } from "@/common/types";
+import { ImageWithSkeleton } from "@/components/ui/skeletons/ImageWithSkeleton";
 
 import styles from "./styles/CourseHeader.module.css";
 
@@ -12,7 +13,15 @@ export const CourseHeader = ({ course }: ICourseHeaderProps) => {
       <h3 className={styles.topicsHeader}>Деталі курсу</h3>
 
       <div className={styles.course}>
-        {course.icon && <img src={course.icon} alt={`${course.title} logo`} />}
+        {course.icon && (
+          <ImageWithSkeleton
+            src={course.icon}
+            alt={`${course.title} logo`}
+            width={80}
+            height={80}
+            className={styles.courseImage}
+          />
+        )}
         <div className={styles.naming}>
           <h1 className={styles.courseTitle}>{course.title}</h1>
           <p className={styles.description}>{course.description}</p>

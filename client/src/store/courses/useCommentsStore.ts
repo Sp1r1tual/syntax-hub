@@ -4,6 +4,8 @@ import { ICommentData, ISendComment, IEditComment } from "@/common/types";
 
 import { CourseCommentsService } from "@/api/services/courseCommentsService";
 
+import { optimisticToggleLikeComments } from "@/common/utils/optimisticUpdates";
+
 interface ICommentsStoreState {
   comments: ICommentData[];
   totalCount: number;
@@ -143,26 +145,18 @@ export const useCommentsStore = create<ICommentsStoreState>((set, get) => ({
   },
 
   async toggleLike(commentId) {
-    try {
-      const { data: updated } =
-        await CourseCommentsService.toggleLike(commentId);
-
-      const updateComment = (comments: ICommentData[]): ICommentData[] =>
-        comments.map((comment) =>
-          comment.id === commentId
-            ? updated
-            : {
-                ...comment,
-                replies: updateComment(comment.replies),
-              },
-        );
-
-      set((state) => ({
-        comments: updateComment(state.comments),
-      }));
-    } catch {
-      set({ error: "Не вдалося поставити лайк" });
-    }
+    await optimisticToggleLikeComments(
+      commentId,
+      get().comments,
+      (comments) => set({ comments }),
+      async () => {
+        const { data } = await CourseCommentsService.toggleLike(commentId);
+        return data;
+      },
+      () => {
+        set({ error: "Не вдалося поставити лайк" });
+      },
+    );
   },
 
   async deleteComment(commentId) {

@@ -1,22 +1,19 @@
-import { IQuestionDetail } from "@/common/types";
+import { IQuestionDetail } from "@/common/types/index";
 
 import { useModalsStore } from "@/store/modal/useModalsStore";
 
-import { CodeBlock } from "@/components/ui/content/CodeBlock";
-import { ListBlock } from "@/components/ui/content/ListBlock";
-import { ImageBlock } from "@/components/ui/content/ImageBlock";
 import { TextBlock } from "@/components/ui/content/TextBlock";
-import { TableBlock } from "@/components/ui/content/TableBlock";
-import { NoteBlock } from "@/components/ui/content/NoteBlock";
+import { MarkQuestionAs } from "./MarkQuestionAs";
+
 import { CommonButton } from "@/components/ui/buttons/CommonButton";
 
 import styles from "./styles/QuestionContent.module.css";
 
-interface IQuestionContentProps {
+interface ICourseQuestionContentProps {
   question: IQuestionDetail;
 }
 
-export const QuestionContent = ({ question }: IQuestionContentProps) => {
+export const QuestionContent = ({ question }: ICourseQuestionContentProps) => {
   const { openMobileTopicsModal } = useModalsStore();
 
   return (
@@ -29,72 +26,11 @@ export const QuestionContent = ({ question }: IQuestionContentProps) => {
         <h1 className={styles.title}>{question.text}</h1>
 
         <div className={styles.blocks}>
-          {question.blocks.map((block) => {
-            switch (block.type) {
-              case "TEXT":
-                return (
-                  <TextBlock
-                    key={block.id}
-                    id={block.id}
-                    content={block.content}
-                  />
-                );
+          <div className={styles.content}>
+            <TextBlock content={question.content} />
+          </div>
 
-              case "CODE":
-                return (
-                  <CodeBlock
-                    key={block.id}
-                    language={block.language}
-                    content={block.content}
-                  />
-                );
-
-              case "NOTE":
-                return (
-                  <NoteBlock
-                    key={block.id}
-                    id={block.id}
-                    content={block.content}
-                  />
-                );
-
-              case "IMAGE":
-                return (
-                  <ImageBlock
-                    key={block.id}
-                    id={block.id}
-                    src={block.src}
-                    alt={block.alt}
-                    caption={block.caption}
-                  />
-                );
-
-              case "TABLE":
-                return (
-                  <TableBlock
-                    key={block.id}
-                    id={block.id}
-                    title={block.title}
-                    headers={block.headers ?? []}
-                    rows={block.rows ?? []}
-                  />
-                );
-
-              case "LIST":
-                return (
-                  <ListBlock
-                    key={block.id}
-                    id={block.id}
-                    items={block.items}
-                    title={block.title}
-                    ordered={block.ordered}
-                  />
-                );
-
-              default:
-                return null;
-            }
-          })}
+          <MarkQuestionAs questionId={question.id} />
         </div>
       </article>
     </>

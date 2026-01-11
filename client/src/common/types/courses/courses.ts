@@ -1,12 +1,3 @@
-import {
-  ITextBlock,
-  ICodeBlock,
-  INoteBlock,
-  ITableBlock,
-  IImageBlock,
-  IListBlock,
-} from "../index";
-
 export interface ICategoryGroup {
   key: string;
   title: string;
@@ -17,22 +8,13 @@ export interface ICourseAuthor {
   name: string | null;
 }
 
+export type QuestionStatusType = "repeat" | "learned";
+
 export interface IQuestion {
   id: string;
   text: string;
   topicId: string;
-}
-
-export type ContentBlockType =
-  | ITextBlock
-  | ICodeBlock
-  | INoteBlock
-  | IImageBlock
-  | ITableBlock
-  | IListBlock;
-
-export interface IQuestionDetail extends IQuestion {
-  blocks: ContentBlockType[];
+  status?: QuestionStatusType;
 }
 
 export interface ITopic {
@@ -69,6 +51,14 @@ export interface ICourseNavigation {
   updatedAt: string;
 }
 
+export interface IQuestionDetail {
+  id: string;
+  text: string;
+  content: string;
+  topicId: string;
+  status?: QuestionStatusType;
+}
+
 export interface ICoursesListResponse {
   groups: IGroupCourses[];
 }
@@ -76,4 +66,10 @@ export interface ICoursesListResponse {
 export interface ICourseDetailsResponse {
   structure: ICourseNavigation;
   content: IQuestionDetail[];
+}
+
+export interface IMarkQuestionResponse {
+  questionId: string;
+  status: QuestionStatusType;
+  message?: string;
 }

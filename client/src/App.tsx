@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 import { useReopen } from "./hooks/ui/useReopen";
 
@@ -24,13 +25,18 @@ const App = () => {
   return (
     <ErrorBoundaryWrapper>
       <ReactQueryProvider>
-        <AuthModal />
-        <ProfileModal />
-        <ConfirmModal />
+        <SkeletonTheme
+          baseColor="var(--skeleton-base)"
+          highlightColor="var(--skeleton-highlight)"
+        >
+          <AuthModal />
+          <ProfileModal />
+          <ConfirmModal />
 
-        <CookieBanner />
+          <CookieBanner />
 
-        <Outlet />
+          <Outlet />
+        </SkeletonTheme>
       </ReactQueryProvider>
     </ErrorBoundaryWrapper>
   );

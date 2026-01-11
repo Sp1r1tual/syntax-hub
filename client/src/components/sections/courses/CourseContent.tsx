@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
 import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
-import { CourseHeader } from "../main/CourseHeader";
+import { CourseHeader } from "./CourseHeader";
 import { RoadmapSection } from "./RoadmapSection";
 import { TopicsList } from "./TopicsList";
 
