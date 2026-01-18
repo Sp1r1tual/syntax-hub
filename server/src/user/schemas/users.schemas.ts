@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { UserRole } from "@prisma/client";
+
 export const CreateUserOAuthSchema = z.object({
   email: z.string().email(),
   name: z.string().optional(),
@@ -16,7 +18,7 @@ export const UserResponseSchema = z.object({
   email: z.string(),
   name: z.string().nullable(),
   avatar: z.string().nullable(),
-  role: z.enum(["USER", "ADMIN"]),
+  role: z.enum(UserRole),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

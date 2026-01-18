@@ -29,6 +29,7 @@ export async function seedCourses() {
 
     await prisma.course.create({
       data: {
+        id: courseData.id,
         slug: courseData.slug,
         title: courseData.title,
         description: courseData.description,
@@ -37,10 +38,12 @@ export async function seedCourses() {
         order: courseData.order,
         topics: {
           create: courseData.topics.map((topic) => ({
+            id: topic.id,
             title: topic.title,
             order: topic.order,
             questions: {
               create: topic.questions.map((question) => ({
+                id: question.id,
                 text: question.text,
                 order: question.order,
                 content: question.content,

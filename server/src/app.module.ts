@@ -25,7 +25,7 @@ import { validateEnv } from "./common/configs/env.validation";
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
-        limit: 15,
+        limit: 30,
       },
     ]),
     AuthModule,

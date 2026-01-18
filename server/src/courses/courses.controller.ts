@@ -4,15 +4,12 @@ import {
   Param,
   NotFoundException,
   UseGuards,
-  Req,
   Patch,
 } from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
 
-import type { IRequestWithUser } from "src/common/types";
-
-import { GetUserId } from "src/auth/decorators/get-user-id.decorator";
-import { JwtAuthGuard, OptionalJwtAuthGuard } from "src/auth/guards/index";
+import { GetUserId } from "src/auth/decorators";
+import { JwtAuthGuard } from "src/auth/guards/index";
 
 import { CoursesService } from "./courses.service";
 
@@ -26,13 +23,10 @@ export class CoursesController {
   }
 
   @Get(":slug")
-  @UseGuards(OptionalJwtAuthGuard)
   async getCourseBySlug(
     @Param("slug") slug: string,
-    @Req() req: IRequestWithUser,
+    @GetUserId(true) userId: string | undefined,
   ) {
-    const userId = req.user?.userId;
-
     const course = await this.coursesService.getCourseBySlug(slug, userId);
 
     if (!course) {
@@ -43,8 +37,8 @@ export class CoursesController {
   }
 
   @Patch("mark-question-as-repeat/:questionId")
-  @UseGuards(JwtAuthGuard)
   @Throttle({ default: { limit: 10, ttl: 60000 } })
+  @UseGuards(JwtAuthGuard)
   async toggleQuestionAsRepeat(
     @GetUserId() userId: string,
     @Param("questionId") questionId: string,
@@ -57,8 +51,8 @@ export class CoursesController {
   }
 
   @Patch("mark-question-as-learned/:questionId")
-  @UseGuards(JwtAuthGuard)
   @Throttle({ default: { limit: 10, ttl: 60000 } })
+  @UseGuards(JwtAuthGuard)
   async toggleQuestionAsLearned(
     @GetUserId() userId: string,
     @Param("questionId") questionId: string,

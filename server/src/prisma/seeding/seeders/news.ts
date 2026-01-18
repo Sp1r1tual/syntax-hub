@@ -1,6 +1,7 @@
 import { prisma } from "../seed";
 
 interface INewsData {
+  id: string;
   title: string;
   content: string;
   likes: number;
@@ -9,6 +10,7 @@ interface INewsData {
 export async function seedNews() {
   const newsData: INewsData[] = [
     {
+      id: "news-1",
       title: "Вітаємо у SyntaxHub!",
       likes: 0,
       content: `Ласкаво просимо до **SyntaxHub** – вашої платформи для вивчення програмування! Ми раді вітати вас у нашій спільноті розробників.
@@ -37,17 +39,19 @@ export async function seedNews() {
   ];
 
   for (const newsItem of newsData) {
-    await prisma.news.upsert({
+    const existingNews = await prisma.news.findUnique({
       where: { title: newsItem.title },
-      update: {
-        content: newsItem.content,
-        likes: newsItem.likes,
-      },
-      create: {
-        title: newsItem.title,
-        content: newsItem.content,
-        likes: newsItem.likes,
-      },
     });
+
+    if (!existingNews) {
+      await prisma.news.create({
+        data: {
+          id: newsItem.id,
+          title: newsItem.title,
+          content: newsItem.content,
+          likes: newsItem.likes,
+        },
+      });
+    }
   }
 }

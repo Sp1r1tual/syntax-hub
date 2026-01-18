@@ -19,42 +19,45 @@ export interface ITransformedComment {
   replies: ITransformedComment[];
 }
 
-export type CommentWithRelationsType = Comment & {
+type CommentWithRelationsBaseType = Comment & {
   user: Pick<User, "id" | "name" | "avatar">;
   images: CommentImage[];
   likes: CommentLike[];
   _count: {
     likes: number;
   };
+};
+
+export type CommentWithRelationsType = CommentWithRelationsBaseType & {
   replies?: CommentWithRelationsType[];
 };
 
 export const transformComment = (
-  comment: any,
+  comment: unknown,
   userId?: string,
 ): ITransformedComment => {
+  const c = comment as CommentWithRelationsType;
+
   return {
-    id: comment.id,
-    userId: comment.userId,
-    username: comment.user?.name || "Anonymous",
-    avatar: comment.user?.avatar || null,
-    text: comment.text,
-    createdAt: comment.createdAt.toISOString(),
+    id: c.id,
+    userId: c.userId,
+    username: c.user?.name || "Anonymous",
+    avatar: c.user?.avatar || null,
+    text: c.text,
+    createdAt: c.createdAt.toISOString(),
     editedAt:
-      comment.updatedAt.getTime() !== comment.createdAt.getTime()
-        ? comment.updatedAt.toISOString()
+      c.updatedAt.getTime() !== c.createdAt.getTime()
+        ? c.updatedAt.toISOString()
         : undefined,
-    deletedAt: comment.deletedAt?.toISOString(),
-    likes: comment._count?.likes || 0,
-    liked: userId ? (comment.likes?.length || 0) > 0 : false,
-    images: (comment.images || []).map((img: CommentImage) => ({
+    deletedAt: c.deletedAt?.toISOString(),
+    likes: c._count?.likes || 0,
+    liked: userId ? (c.likes?.length || 0) > 0 : false,
+    images: c.images.map((img) => ({
       id: img.id,
       order: img.order,
       src: img.src,
     })),
-    replies: (comment.replies || []).map((reply: any) =>
-      transformComment(reply, userId),
-    ),
+    replies: (c.replies || []).map((reply) => transformComment(reply, userId)),
   };
 };
 
@@ -65,7 +68,7 @@ export const flattenDeepReplies = (
   if (currentLevel === 3) {
     const flatReplies: ITransformedComment[] = [];
 
-    const collectReplies = (replies: ITransformedComment[]) => {
+    const collectReplies = (replies: ITransformedComment[]): void => {
       replies.forEach((reply) => {
         flatReplies.push({
           ...reply,

@@ -5,11 +5,11 @@ import {
 } from "@nestjs/common";
 
 export const GetUserId = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext): string => {
+  (optional: boolean = false, ctx: ExecutionContext): string | undefined => {
     const request = ctx.switchToHttp().getRequest();
     const userId = request.user?.userId;
 
-    if (!userId) {
+    if (!userId && !optional) {
       throw new UnauthorizedException("User ID not found");
     }
 

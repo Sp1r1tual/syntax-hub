@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Req,
   Delete,
   UseGuards,
   Patch,
@@ -14,10 +13,8 @@ import {
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { Throttle } from "@nestjs/throttler";
 
-import type { IRequestWithUser } from "src/common/types";
-
-import { OptionalJwtAuthGuard, JwtAuthGuard } from "src/auth/guards/index";
-import { GetUserId } from "src/auth/decorators/get-user-id.decorator";
+import { JwtAuthGuard } from "src/auth/guards/index";
+import { GetUserId } from "src/auth/decorators";
 
 import { CommentsService } from "./course-comments.service";
 
@@ -26,20 +23,16 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Get("comments/:questionId")
-  @UseGuards(OptionalJwtAuthGuard)
   async getComments(
     @Param("questionId") questionId: string,
-    @Req() req: IRequestWithUser,
+    @GetUserId(true) userId: string | undefined,
   ) {
-    const userId = req.user?.userId;
-    const comments = await this.commentsService.getComments(questionId, userId);
-
-    return comments;
+    return this.commentsService.getComments(questionId, userId);
   }
 
   @Patch("comments/:commentId")
-  @UseGuards(JwtAuthGuard)
   @Throttle({ default: { limit: 10, ttl: 60000 } })
+  @UseGuards(JwtAuthGuard)
   async toggleLike(
     @GetUserId() userId: string,
     @Param("commentId") commentId: string,

@@ -10,13 +10,14 @@ export async function seedGroups() {
   ];
 
   for (const group of groups) {
-    await prisma.categoryGroup.upsert({
+    const existingGroup = await prisma.categoryGroup.findUnique({
       where: { key: group.key },
-      update: {
-        title: group.title,
-        order: group.order,
-      },
-      create: group,
     });
+
+    if (!existingGroup) {
+      await prisma.categoryGroup.create({
+        data: group,
+      });
+    }
   }
 }
