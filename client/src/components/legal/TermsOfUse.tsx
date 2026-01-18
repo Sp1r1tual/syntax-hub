@@ -11,11 +11,10 @@ export const TermsOfUse = () => {
   const fromAuthModal = useRef(location.state?.fromAuthModal);
 
   const handleBack = () => {
-    if (fromAuthModal.current) {
-      sessionStorage.setItem("reopenAuthModal", "true");
+    if (window.history.length > 1) {
       navigate(-1);
     } else {
-      navigate("/");
+      navigate("/", { replace: true });
     }
   };
 

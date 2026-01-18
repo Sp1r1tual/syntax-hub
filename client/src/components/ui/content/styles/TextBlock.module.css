@@ -7,73 +7,10 @@
     sans-serif;
 }
 
-.codeBlockWrapper {
-  border-radius: 0.5rem;
-  overflow: hidden;
-  border: 1px solid var(--terminal-border);
-  transition: all 0.3s ease;
-  width: 100%;
-  max-width: 100%;
-  position: relative;
-  margin: 1rem 0;
-  box-sizing: border-box;
-}
-
-.codeHeader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.languageLabel {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  opacity: 0.8;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-family:
-    Onest Variable,
-    sans-serif;
-}
-
-.codeBlockWrapper pre {
-  overflow: auto;
-  margin: 0;
-  padding: 2.75rem 1rem 1rem 1rem !important;
-  background: transparent;
-  border-radius: 0;
-}
-
 .textBlock pre {
   overflow: auto;
   margin: 0;
   border-radius: 0.5rem;
-}
-
-.codeBlockWrapper pre::-webkit-scrollbar {
-  height: 8px;
-}
-
-.codeBlockWrapper pre::-webkit-scrollbar-track {
-  background: var(--bg-tertiary);
-  border-radius: 4px;
-}
-
-.codeBlockWrapper pre::-webkit-scrollbar-thumb {
-  background: var(--bg-hover-strong);
-  border-radius: 3px;
-}
-
-.codeBlockWrapper pre::-webkit-scrollbar-thumb:hover {
-  background: var(--bg-active);
 }
 
 .textBlock code {
@@ -134,7 +71,7 @@
 }
 
 .tableWrapper::-webkit-scrollbar {
-  height: 8px;
+  height: 10px;
 }
 
 .tableWrapper::-webkit-scrollbar-track {
@@ -313,5 +250,9 @@
   }
   .textBlock h3 {
     font-size: 1.05rem;
+  }
+
+  .tableWrapper::-webkit-scrollbar {
+    height: 8px;
   }
 }
