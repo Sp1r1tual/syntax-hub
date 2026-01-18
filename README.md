@@ -6,7 +6,7 @@
 
 ## Screenshot
 
-![SyntaxHub](https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/news/syntax-hub-page-2.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL25ld3Mvc3ludGF4LWh1Yi1wYWdlLTIucG5nIiwiaWF0IjoxNzY4Nzc2MDkxLCJleHAiOjQ4OTA4NDAwOTF9.ASbLgjf96a_FS3IdGFsnwBxdBibEq_1e-ic1KweqPJw)
+![SyntaxHub](https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/news/syntax-hub-page-2.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL25ld3Mvc3ludGF4LWh1Yi1wYWdlLTIucG5nIiwiaWF0IjoxNzY4Nzc4NTY2LCJleHAiOjQ4OTA4NDI1NjZ9.6VinOSPTXj4eqyryqufBwSfYiv-fVsranB1Akrhjkhg)
 
 ---
 
@@ -74,4 +74,3 @@ Currently, this project does not include a formal license.
 All rights are reserved by the author.
 
 If you plan to use, modify, or distribute this project, please contact the author for permission.
-
