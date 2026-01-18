@@ -6,7 +6,7 @@
 
 ## Screenshot
 
-![SyntaxHub](https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/news/syntaxhub-page.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL25ld3Mvc3ludGF4aHViLXBhZ2UucG5nIiwiaWF0IjoxNzY4MTU3NzA0LCJleHAiOjQ4OTAyMjE3MDR9.2kzrMqAH48qmnX242Q7UxZ7n6aqqG95CgAT1FUgPdAk)
+![SyntaxHub](https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/news/syntax-hub-page-2.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL25ld3Mvc3ludGF4LWh1Yi1wYWdlLTIucG5nIiwiaWF0IjoxNzY4Nzc2MDkxLCJleHAiOjQ4OTA4NDAwOTF9.ASbLgjf96a_FS3IdGFsnwBxdBibEq_1e-ic1KweqPJw)
 
 ---
 
@@ -20,7 +20,7 @@ The project has served as a testing ground for experimenting with UX/UI design, 
 
 ## Features
 
-- 🧭 Programming Courses – well-structured programming courses in text format
+- 🧭 Programming Courses – structured programming courses in text format
 - 🧑‍💻 User Profiles – profiles with the ability to edit name and avatar
 - 🎨 Light & Dark Theme – light and dark modes with instant switching
 - 🔐 Authentication – JWT-based authentication with Google OAuth
@@ -39,9 +39,7 @@ The project has served as a testing ground for experimenting with UX/UI design, 
 - Axios
 - Zustand
 - React Router
-- Axios
 - React Error Boundary
-- lucide-react
 - react-loading-skeleton
 - react-markdown
 
@@ -52,11 +50,11 @@ The project has served as a testing ground for experimenting with UX/UI design, 
 - Supabase (PostgreSQl)
 - passport-google-oauth20
 - passport-jwt
-- multer-storage-cloudinary
-- zod
-- throttler
+- Cloudinary
+- Zod
+- Throttler
 
-**Architecture**: Client ↔ API ↔ Database
+**Architecture**: Client ↔ Server ↔ Database
 
 ---
 
