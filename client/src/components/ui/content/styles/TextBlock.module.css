@@ -85,7 +85,7 @@
 }
 
 .tableWrapper::-webkit-scrollbar-thumb:hover {
-  background: var(--bg-active);
+  background: var(--text-muted);
 }
 
 .textBlock table {

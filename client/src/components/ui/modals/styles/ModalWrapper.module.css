@@ -78,6 +78,29 @@
   width: 1.5rem;
 }
 
+.modalBody {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-hover-strong) var(--bg-secondary);
+}
+
+.modalBody::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalBody::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.modalBody::-webkit-scrollbar-thumb {
+  background-color: var(--bg-hover-strong);
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.modalBody::-webkit-scrollbar-thumb:hover {
+  background-color: var(--bg-active);
+}
+
 @media (max-width: 768px) {
   .modal {
     padding: 1rem;

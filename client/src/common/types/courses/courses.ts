@@ -1,12 +1,11 @@
+import { IUser } from "../auth/auth";
+
 export interface ICategoryGroup {
   key: string;
   title: string;
 }
 
-export interface ICourseAuthor {
-  id: string;
-  name: string | null;
-}
+export type CourseAuthorType = Omit<IUser, "roles">;
 
 export type QuestionStatusType = "repeat" | "learned";
 
@@ -45,7 +44,7 @@ export interface ICourseNavigation {
   description: string | null;
   icon?: string;
   group: ICategoryGroup;
-  author: ICourseAuthor | null;
+  authors: CourseAuthorType[];
   topics: ITopic[];
   createdAt: string;
   updatedAt: string;

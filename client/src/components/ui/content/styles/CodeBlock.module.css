@@ -2,7 +2,6 @@
   border-radius: 0.5rem;
   overflow: hidden;
   border: 1px solid var(--terminal-border);
-  transition: all 0.3s ease;
   width: 100%;
   max-width: 100%;
   position: relative;
@@ -63,5 +62,5 @@
 }
 
 .codeBlockWrapper pre::-webkit-scrollbar-thumb:hover {
-  background: var(--bg-active);
+  background: var(--text-muted);
 }

@@ -1,11 +1,11 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { FormEvent } from "react";
 
-import { IUpdateUserProfilePayload } from "@/common/types";
-
+import { useProfileForm } from "@/hooks/ui/useProfileForm";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useUserStore } from "@/store/users/useUserStore";
 
 import { CommonButton } from "../ui/buttons/CommonButton";
+import { EditSocials } from "./EditSocials";
 
 import { getAvatarUrl } from "@/common/utils/getAvatarUrl";
 
@@ -21,57 +21,20 @@ export const EditProfileForm = ({ onClose }: IEditProfileFormProps) => {
   const { user } = useAuthStore();
   const { updateProfile, isLoading } = useUserStore();
 
-  const [name, setName] = useState(user?.name ?? "");
-  const [nameError, setNameError] = useState("");
-
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState(
-    getAvatarUrl(user?.avatar),
-  );
-  const [avatarError, setAvatarError] = useState("");
-
-  const isNameChanged = name !== user?.name;
-  const isAvatarChanged = Boolean(avatarFile);
-
-  const hasChanges = isNameChanged || isAvatarChanged;
-
-  const isSaveDisabled =
-    !hasChanges || Boolean(nameError) || Boolean(avatarError) || isLoading;
-
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setName(value);
-
-    if (value.length < 2 || value.length > 32) {
-      setNameError("Допустимий розмір імені 2-32 символи");
-    } else {
-      setNameError("");
-    }
-  };
-
-  const handleAvatarChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      setAvatarError("Неправильний формат зображення");
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      setAvatarError("Завантажте фото не більше за 5 МБ");
-      return;
-    }
-
-    setAvatarError("");
-    setAvatarFile(file);
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setAvatarPreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
+  const {
+    name,
+    nameError,
+    avatarPreview,
+    avatarError,
+    socialsErrorMessage,
+    socials,
+    socialsError,
+    handleNameChange,
+    handleAvatarChange,
+    handleSocialsChange,
+    isSaveDisabled,
+    buildPayload,
+  } = useProfileForm(user);
 
   const handleAvatarError = (event: React.SyntheticEvent<HTMLImageElement>) => {
     event.currentTarget.src = defaultAvatarSvg;
@@ -80,17 +43,17 @@ export const EditProfileForm = ({ onClose }: IEditProfileFormProps) => {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (nameError || avatarError) return;
-
-    const payload: IUpdateUserProfilePayload = {};
-
-    if (name !== user?.name) {
-      payload.name = name;
+    if (
+      nameError ||
+      avatarError ||
+      socialsError.githubUrl ||
+      socialsError.telegramUrl ||
+      socialsError.instagramUrl
+    ) {
+      return;
     }
 
-    if (avatarFile) {
-      payload.avatar = avatarFile;
-    }
+    const payload = buildPayload();
 
     if (!Object.keys(payload).length) {
       onClose();
@@ -101,11 +64,22 @@ export const EditProfileForm = ({ onClose }: IEditProfileFormProps) => {
     onClose();
   };
 
+  const handleFileInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      handleAvatarChange(file);
+    }
+  };
+
+  const hasError = Boolean(nameError || avatarError || socialsErrorMessage);
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.avatarSection}>
         <img
-          src={avatarPreview}
+          src={avatarPreview || getAvatarUrl(user?.avatar)}
           alt="Аватар"
           className={styles.avatar}
           loading="lazy"
@@ -124,7 +98,7 @@ export const EditProfileForm = ({ onClose }: IEditProfileFormProps) => {
           id="avatarInput"
           type="file"
           accept="image/*"
-          onChange={handleAvatarChange}
+          onChange={handleFileInputChange}
           className={styles.avatarInput}
         />
       </div>
@@ -145,13 +119,25 @@ export const EditProfileForm = ({ onClose }: IEditProfileFormProps) => {
           autoComplete="name"
         />
 
-        <p className={`${styles.error} ${nameError ? styles.show : ""}`}>
-          {nameError || avatarError}
-        </p>
+        <EditSocials
+          socials={socials}
+          errors={socialsError}
+          onChange={handleSocialsChange}
+          disabled={isLoading}
+        />
+
+        <div className={`${styles.error} ${hasError ? styles.show : ""}`}>
+          {(nameError || avatarError) && <p>{nameError || avatarError}</p>}
+          {socialsErrorMessage && <p>{socialsErrorMessage}</p>}
+        </div>
       </div>
 
       <div className={styles.actions}>
-        <CommonButton text="Зберегти" type="submit" disabled={isSaveDisabled} />
+        <CommonButton
+          text="Зберегти"
+          type="submit"
+          disabled={isSaveDisabled || isLoading}
+        />
 
         <CommonButton text="Скасувати" onClick={onClose} />
       </div>

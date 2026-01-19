@@ -2,15 +2,15 @@ import { useState } from "react";
 
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
-import { ErrorWrapper } from "@/components/errors/ErrorWpapper";
 import { CourseHeader } from "./CourseHeader";
 import { RoadmapSection } from "./RoadmapSection";
 import { TopicsList } from "./TopicsList";
+import { Authors } from "./Authors";
 
 import styles from "./styles/CourseContent.module.css";
 
 export const CourseContent = () => {
-  const { selectedCourse, isLoadingCourse, error } = useCoursesStore();
+  const { selectedCourse } = useCoursesStore();
 
   const [openTopics, setOpenTopics] = useState<Record<string, boolean>>({});
 
@@ -20,13 +20,9 @@ export const CourseContent = () => {
     }
   };
 
-  const handleOpenRoadmap = () => {};
-
-  if (isLoadingCourse) return null;
-
-  if (error) {
-    return <ErrorWrapper error={error} />;
-  }
+  const handleOpenRoadmap = () => {
+    alert("Дорожня карта у розробці");
+  };
 
   if (!selectedCourse) {
     return null;
@@ -55,6 +51,8 @@ export const CourseContent = () => {
       ) : (
         <p className={styles.soon}>Курс у розробці</p>
       )}
+
+      <Authors authors={selectedCourse.authors} />
     </section>
   );
 };

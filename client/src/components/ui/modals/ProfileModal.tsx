@@ -5,6 +5,7 @@ import { useAuthStore } from "@/store/auth/useAuthStore";
 
 import { ModalWrapper } from "./ModalWrapper";
 import { EditProfileForm } from "@/components/profile/EditProfileForm";
+import { Socials } from "@/components/profile/Socials";
 
 import DefaultAvatar from "@/assets/avatar-default.svg";
 
@@ -63,6 +64,8 @@ export const ProfileModal = () => {
               <span className={styles.info}>{user?.id}</span>
             </div>
           </div>
+
+          <Socials socials={user?.socials} />
 
           <div className={styles.buttonsWrapper}>
             <button

@@ -14,6 +14,9 @@ export class UsersService {
 
     if (data.name) formData.append("name", data.name);
     if (data.avatar) formData.append("avatar", data.avatar);
+    if (data.socials) {
+      formData.append("socials", JSON.stringify(data.socials));
+    }
 
     return $apiMain.patch<IUser>("users/me/update", formData);
   }

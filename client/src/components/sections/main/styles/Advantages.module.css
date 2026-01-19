@@ -18,17 +18,22 @@
 }
 
 .advantagesItem {
+  opacity: 0;
   padding: 1.5rem;
+  transform: translateY(30px);
   border-radius: 1rem;
   box-shadow: 0 0 10px var(--border-shadow);
   background: var(--bg-secondary);
   backdrop-filter: blur(14px) saturate(140%);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.4s ease,
-    color 0.4s ease;
+    opacity 0.6s ease,
+    transform 0.6s ease;
   color: var(--text-secondary);
+}
+
+.advantagesItem.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .itemHeader {
