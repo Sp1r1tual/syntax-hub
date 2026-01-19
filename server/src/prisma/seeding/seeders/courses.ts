@@ -22,6 +22,10 @@ export async function seedCourses() {
         where: { courseId: existingCourse.id },
       });
 
+      await prisma.courseAuthor.deleteMany({
+        where: { courseId: existingCourse.id },
+      });
+
       await prisma.course.delete({
         where: { id: existingCourse.id },
       });
@@ -36,6 +40,14 @@ export async function seedCourses() {
         icon: courseData.icon,
         groupId: group.id,
         order: courseData.order,
+        authors: courseData.authorIds
+          ? {
+              create: courseData.authorIds.map((userId, index) => ({
+                userId,
+                order: index + 1,
+              })),
+            }
+          : undefined,
         topics: {
           create: courseData.topics.map((topic) => ({
             id: topic.id,

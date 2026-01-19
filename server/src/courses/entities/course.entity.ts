@@ -20,10 +20,19 @@ export type CategoryGroupWithCourses = Prisma.CategoryGroupGetPayload<{
 
 export const courseIncludeBasic = () => ({
   group: true,
-  author: {
-    select: {
-      id: true,
-      name: true,
+  authors: {
+    orderBy: {
+      order: "asc" as const,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+          socials: true,
+        },
+      },
     },
   },
 });

@@ -7,6 +7,7 @@ import {
 
 import { FileValidationMiddleware } from "./middlewares/file-validation.middleware";
 import { NameValidationMiddleware } from "./middlewares/name-validation.middleware";
+import { SocialsValidationMiddleware } from "./middlewares/socials-validation.middleware";
 
 import { PrismaModule } from "src/prisma/prisma.module";
 import { CloudinaryProvider } from "src/common/providers/cloudinary";
@@ -22,7 +23,11 @@ import { UsersService } from "./users.service";
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(FileValidationMiddleware, NameValidationMiddleware)
+      .apply(
+        FileValidationMiddleware,
+        NameValidationMiddleware,
+        SocialsValidationMiddleware,
+      )
       .forRoutes({ path: "users/me/update", method: RequestMethod.PATCH });
   }
 }

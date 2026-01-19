@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { SocialsSchema } from "src/user/schemas/users.schemas";
+
 export const CategoryGroupSchema = z.object({
   key: z.string(),
   title: z.string(),
@@ -8,6 +10,8 @@ export const CategoryGroupSchema = z.object({
 export const CourseAuthorSchema = z.object({
   id: z.string(),
   name: z.string().nullable(),
+  avatar: z.string().optional(),
+  socials: SocialsSchema.optional(),
 });
 
 export const QuestionStatusSchema = z.enum(["repeat", "learned"]).optional();
@@ -40,7 +44,7 @@ export const CourseStructureSchema = z.object({
   description: z.string().nullable(),
   icon: z.string().optional(),
   group: CategoryGroupSchema,
-  author: CourseAuthorSchema.nullable(),
+  authors: z.array(CourseAuthorSchema),
   topics: z.array(TopicSchema),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),

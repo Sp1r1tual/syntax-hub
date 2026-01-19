@@ -5,6 +5,7 @@ export interface ICourseSeed {
   description?: string;
   icon?: string;
   groupKey: string;
+  authorIds?: string[];
   order: number;
   topics: {
     id: string;

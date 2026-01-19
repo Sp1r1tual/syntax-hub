@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import z from "zod";
 
 import { PrismaService } from "../prisma/prisma.service";
 
@@ -6,7 +7,9 @@ import {
   CreateUserOAuthDto,
   UpdateUserProfileDto,
   UserResponseDto,
+  PublicUserResponseDto,
 } from "./dto/index";
+import { UpdateUserProfileSchema } from "./schemas/users.schemas";
 
 import { deleteOldAvatarIfNeeded } from "./utils/delete-old-user-avatar";
 
@@ -55,7 +58,7 @@ export class UsersService {
   ): Promise<UserResponseDto> {
     const current = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, avatar: true },
+      select: { id: true, avatar: true, socials: true },
     });
 
     if (!current) {
@@ -70,18 +73,11 @@ export class UsersService {
       await deleteOldAvatarIfNeeded(current.avatar, updates.avatar);
     }
 
-    const updateData: {
-      name?: string | null;
-      avatar?: string | null;
-    } = {};
+    const updateData: z.infer<typeof UpdateUserProfileSchema> = {};
 
-    if (updates.name !== undefined) {
-      updateData.name = updates.name;
-    }
-
-    if (updates.avatar !== undefined) {
-      updateData.avatar = updates.avatar;
-    }
+    if (updates.name !== undefined) updateData.name = updates.name;
+    if (updates.avatar !== undefined) updateData.avatar = updates.avatar;
+    if (updates.socials !== undefined) updateData.socials = updates.socials;
 
     const updatedUser = await this.prisma.user.update({
       where: { id: userId },
@@ -89,5 +85,28 @@ export class UsersService {
     });
 
     return UserResponseDto.create(updatedUser);
+  }
+
+  async getPublicUser(userId: string): Promise<PublicUserResponseDto> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        avatar: true,
+        socials: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    return PublicUserResponseDto.create({
+      ...user,
+      socials: user.socials || undefined,
+    });
   }
 }

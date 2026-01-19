@@ -23,9 +23,10 @@ model User {
   email                 String           @unique
   name                  String?
   avatar                String?
+  socials               Json? 
   role                  UserRole         @default(USER)
   refreshTokens         RefreshToken[]
-  createdCourses        Course[]
+  authoredCourses       CourseAuthor[]
   newsLikes             NewsLike[]
   comments              Comment[]
   commentLikes          CommentLike[]
@@ -68,17 +69,31 @@ model Course {
   title                 String
   description           String?
   icon                  String?
-  authorId              String?
-  author                User?             @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authors               CourseAuthor[]
   topics                Topic[]
   order                 Int               @default(999)
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
 
   @@index([groupId])
-  @@index([authorId])
   @@index([order])
   @@map("courses")
+}
+
+model CourseAuthor {
+  id                    String            @id @default(uuid())
+  courseId              String
+  course                Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userId                String
+  user                  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  order                 Int               @default(999)
+  createdAt             DateTime          @default(now())
+
+  @@unique([courseId, userId])
+  @@index([courseId])
+  @@index([userId])
+  @@index([order])
+  @@map("course_authors")
 }
 
 model Topic {

@@ -4,32 +4,29 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
+import { z } from "zod";
+
+import { NameSchema } from "../schemas/name.schema";
 
 @Injectable()
 export class NameValidationMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    const { name } = req.body;
+    const body = req.body || {};
 
-    if (name === undefined || name === null) {
+    if (body.name === undefined || body.name === null) {
       return next();
     }
 
-    if (typeof name === "string" && name.trim().length === 0) {
-      throw new BadRequestException("Name cannot be empty");
+    try {
+      const validatedData = NameSchema.parse({ name: body.name });
+      req.body.name = validatedData.name;
+      next();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const firstError = error.issues[0];
+        throw new BadRequestException(firstError.message);
+      }
+      throw error;
     }
-
-    if (typeof name !== "string") {
-      throw new BadRequestException("Name must be a string");
-    }
-
-    if (name.length > 32) {
-      throw new BadRequestException("Name must not exceed 32 characters");
-    }
-
-    if (name.trim().length < 2) {
-      throw new BadRequestException("Name must be at least 2 characters long");
-    }
-
-    next();
   }
 }

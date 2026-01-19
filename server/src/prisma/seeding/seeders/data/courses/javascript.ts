@@ -9,6 +9,7 @@ export const javascriptCourse: ICourseSeed = {
   groupKey: "frontend",
   icon: "https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/courses/groups/javascript-logo.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL2NvdXJzZXMvZ3JvdXBzL2phdmFzY3JpcHQtbG9nby5wbmciLCJpYXQiOjE3Njc1MzQ3ODAsImV4cCI6NDg4OTU5ODc4MH0.TqQOpquP1Q0mO3x73NIoXpDB0OvtJAKzg-e17UVE3E4",
   order: 3,
+  authorIds: ["eaab3633-8366-4ef2-8cb4-e3841c0f4702"],
   topics: [
     {
       id: "js-topic-1",
@@ -372,7 +373,7 @@ console.log("5" + "3");    // "53"
 console.log("Hello" + " World");  // "Hello World"
 \`\`\`
 
-**Інші арифметичні операції (-, *, /):**
+**Інші арифметичні операції (-, \*, /):**
 
 Всі інші оператори намагаються перетворити значення в числа:
 
@@ -548,42 +549,34 @@ console.log(typeof greet); // "function"
 - Завжди перевіряй типи даних у критичних місцях;
 - Будь обережним з автоматичним перетворенням типів;
 - Використовуй перевірки, щоб уникнути несподіваних помилок.
-
-Далі ми розглянемо способи оголошення змінних...
 `,
         },
       ],
     },
-    {
-      id: "js-topic-2",
-      title: "Типи даних та змінні",
-      order: 2,
-      questions: [],
-    },
-    { id: "js-topic-3", title: "Умови", order: 3, questions: [] },
-    { id: "js-topic-4", title: "Цикли", order: 4, questions: [] },
-    { id: "js-topic-5", title: "Функції та scope", order: 5, questions: [] },
+    { id: "js-topic-3", title: "Умови", order: 2, questions: [] },
+    { id: "js-topic-4", title: "Функції та scope", order: 3, questions: [] },
+    { id: "js-topic-5", title: "Цикли", order: 4, questions: [] },
     {
       id: "js-topic-6",
       title: "Об'єкти та прототипи",
-      order: 6,
+      order: 5,
       questions: [],
     },
-    { id: "js-topic-7", title: "this та контекст", order: 7, questions: [] },
+    { id: "js-topic-7", title: "this та контекст", order: 6, questions: [] },
     {
       id: "js-topic-8",
       title: "Масиви та структури даних",
-      order: 8,
+      order: 7,
       questions: [],
     },
-    { id: "js-topic-9", title: "Класи", order: 9, questions: [] },
+    { id: "js-topic-9", title: "Класи", order: 8, questions: [] },
     {
       id: "js-topic-10 ",
       title: "Асинхронність та Event Loop",
-      order: 10,
+      order: 9,
       questions: [],
     },
-    { id: "js-topic-11", title: "Дебагінг", order: 11, questions: [] },
-    { id: "js-topic-12", title: "DOM та події", order: 12, questions: [] },
+    { id: "js-topic-11", title: "Дебагінг", order: 10, questions: [] },
+    { id: "js-topic-12", title: "DOM та події", order: 11, questions: [] },
   ],
 };

@@ -123,12 +123,12 @@ export class CoursesService {
         key: course.group.key,
         title: course.group.title,
       },
-      author: course.author
-        ? {
-            id: course.author.id,
-            name: course.author.name,
-          }
-        : null,
+      authors: course.authors.map((courseAuthor) => ({
+        id: courseAuthor.user.id,
+        name: courseAuthor.user.name,
+        avatar: courseAuthor.user.avatar,
+        socials: courseAuthor.user.socials,
+      })),
       topics: course.topics.map((topic) => ({
         id: topic.id,
         title: topic.title,
