@@ -6,10 +6,5 @@ export interface IUser {
   name: string | null;
   avatar?: string;
   socials?: ISocials | undefined;
-  roles: Array<{
-    role: {
-      key: string;
-      title: string;
-    };
-  }>;
+  role: string;
 }

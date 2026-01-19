@@ -67,7 +67,7 @@ const useAuthStore = create<IAuthState>((set, get) => ({
 
     if (!user) return false;
 
-    return user.roles.some((r) => r.role.key === role);
+    return user.role === role;
   },
 }));
 
