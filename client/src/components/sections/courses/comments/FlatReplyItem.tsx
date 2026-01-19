@@ -103,6 +103,7 @@ export const FlatReplyItem = ({
                   onToggleReplies={() => {}}
                   onReply={onReplyClick}
                   onLike={() => onLike(reply.id)}
+                  isOwn={isOwn}
                 />
               )}
 
