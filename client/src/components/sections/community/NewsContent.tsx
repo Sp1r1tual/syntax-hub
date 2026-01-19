@@ -1,7 +1,8 @@
 import { INewsResponse } from "@/common/types";
 
+import { useToggleLike } from "@/hooks/queries/useNewsQueries";
+
 import { useAuthStore } from "@/store/auth/useAuthStore";
-import { useNewsStore } from "@/store/news/useNewsStore";
 import { useModalsStore } from "@/store/modal/useModalsStore";
 
 import { LikeButton } from "@/components/ui/buttons/LikeButton";
@@ -14,7 +15,8 @@ interface INewsContentProps {
 }
 
 export const NewsContent = ({ news }: INewsContentProps) => {
-  const toggleLike = useNewsStore((state) => state.toggleLike);
+  const toggleLikeMutation = useToggleLike();
+
   const { user } = useAuthStore();
   const { openAuthModal } = useModalsStore();
 
@@ -23,7 +25,7 @@ export const NewsContent = ({ news }: INewsContentProps) => {
       openAuthModal();
       return;
     }
-    toggleLike(news.id);
+    toggleLikeMutation.mutate(news.id);
   };
 
   return (

@@ -1,5 +1,10 @@
 import { Info, RefreshCcw, Check } from "lucide-react";
 
+import {
+  useMarkQuestionAsLearned,
+  useMarkQuestionAsRepeat,
+} from "@/hooks/queries/useCoursesQueries";
+
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
 import styles from "./styles/MarkQuestionAs.module.css";
@@ -9,22 +14,22 @@ interface MarkQuestionAsProps {
 }
 
 export const MarkQuestionAs = ({ questionId }: MarkQuestionAsProps) => {
-  const {
-    markQuestionAsRepeat,
-    markQuestionAsLearned,
-    isMarkingQuestion,
-    getQuestionDetail,
-  } = useCoursesStore();
+  const repeatMutation = useMarkQuestionAsRepeat();
+  const learnedMutation = useMarkQuestionAsLearned();
+  const { getQuestionDetail } = useCoursesStore();
+
+  const isMarkingQuestion =
+    repeatMutation.isPending || learnedMutation.isPending;
 
   const question = getQuestionDetail(questionId);
   const currentStatus = question?.status;
 
-  const handleRepeatClick = async () => {
-    await markQuestionAsRepeat(questionId);
+  const handleRepeatClick = () => {
+    repeatMutation.mutate(questionId);
   };
 
-  const handleLearnedClick = async () => {
-    await markQuestionAsLearned(questionId);
+  const handleLearnedClick = () => {
+    learnedMutation.mutate(questionId);
   };
 
   return (

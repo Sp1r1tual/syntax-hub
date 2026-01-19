@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { ReactQueryProvider } from "./components/providers/ReactQueryProvider";
 
 import { useReopen } from "./hooks/ui/useReopen";
 
@@ -17,24 +18,25 @@ const App = () => {
   useReopen({
     storageKey: "reopenAuthModal",
     onReopen: openAuthModal,
-    excludePaths: ["/terms-of-use", "/privacy-policy"],
-    delay: 100,
+    excludePaths: ["/terms-of-use", "/privacy-policy", "/community-rules"],
   });
 
   return (
     <ErrorBoundaryWrapper>
-      <SkeletonTheme
-        baseColor="var(--skeleton-base)"
-        highlightColor="var(--skeleton-highlight)"
-      >
-        <AuthModal />
-        <ProfileModal />
-        <ConfirmModal />
+      <ReactQueryProvider>
+        <SkeletonTheme
+          baseColor="var(--skeleton-base)"
+          highlightColor="var(--skeleton-highlight)"
+        >
+          <AuthModal />
+          <ProfileModal />
+          <ConfirmModal />
 
-        <CookieBanner />
+          <CookieBanner />
 
-        <Outlet />
-      </SkeletonTheme>
+          <Outlet />
+        </SkeletonTheme>
+      </ReactQueryProvider>
     </ErrorBoundaryWrapper>
   );
 };

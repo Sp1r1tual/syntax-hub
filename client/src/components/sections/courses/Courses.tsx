@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 
-import { useCoursesStore } from "@/store/courses/useCoursesStore";
+import { IGroupCourses } from "@/common/types";
 import { ImageWithSkeleton } from "@/components/ui/skeletons/ImageWithSkeleton";
 
 import styles from "./styles/Courses.module.css";
 
-export const Courses = () => {
-  const { coursesList } = useCoursesStore();
+interface ICoursesProps {
+  coursesList: IGroupCourses[];
+}
 
+export const Courses = ({ coursesList }: ICoursesProps) => {
   return (
     <section className={styles.coursesWrapper}>
       <p className={styles.coursesHeader}>

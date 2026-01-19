@@ -4,14 +4,13 @@ import { ICommentData } from "@/common/types";
 
 import { CommentItem } from "./CommentItem";
 
-import styles from "./styles/CommentsList.module.css";
-
 interface ICommentsListProps {
   comments: ICommentData[];
-  level?: number;
-  onEdit: (id: string, text: string, images?: File[]) => void;
+  isReplySubmitting?: boolean;
+  isEditSubmitting?: boolean;
   onDelete: (id: string) => void;
   onReply: (parentId: string, text: string, images: File[]) => void;
+  onEdit: (id: string, text: string, images?: File[]) => void;
   onLike: (id: string) => void;
 }
 
@@ -19,25 +18,31 @@ export const CommentsList = ({
   comments,
   onDelete,
   onReply,
-  onLike,
   onEdit,
-  level = 1,
+  onLike,
+  isReplySubmitting = false,
+  isEditSubmitting = false,
 }: ICommentsListProps) => {
   const [activeReplyId, setActiveReplyId] = useState<string | null>(null);
 
+  if (!comments || comments.length === 0) {
+    return <div>Поки що немає коментарів</div>;
+  }
+
   return (
-    <div className={styles.commentsList}>
+    <div>
       {comments.map((comment) => (
         <CommentItem
           key={comment.id}
           comment={comment}
+          activeReplyId={activeReplyId}
           onDelete={onDelete}
           onReply={onReply}
-          onLike={onLike}
           onEdit={onEdit}
-          activeReplyId={activeReplyId}
+          onLike={onLike}
           onSetActiveReply={setActiveReplyId}
-          level={level}
+          isReplySubmitting={isReplySubmitting}
+          isEditSubmitting={isEditSubmitting}
         />
       ))}
     </div>

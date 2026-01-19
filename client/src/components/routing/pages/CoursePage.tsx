@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams, Outlet } from "react-router-dom";
 
+import { useCourse } from "@/hooks/queries/useCoursesQueries";
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
 
 import { CourseContent } from "@/components/sections/courses/CourseContent";
@@ -9,23 +10,28 @@ import { CourseContentSkeleton } from "@/components/ui/skeletons/CourseContentSk
 export const CoursePage = () => {
   const { courseSlug, questionId } = useParams();
 
-  const { selectedCourse, fetchCourse, isLoadingCourse } = useCoursesStore();
+  const { setSelectedCourse, setQuestionsContent } = useCoursesStore();
+  const { data, isLoading } = useCourse(courseSlug);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [questionId]);
 
   useEffect(() => {
-    if (
-      courseSlug &&
-      (!selectedCourse || selectedCourse.slug !== courseSlug) &&
-      !isLoadingCourse
-    ) {
-      fetchCourse(courseSlug);
+    if (data) {
+      setSelectedCourse(data.structure);
+      setQuestionsContent(data.content);
     }
-  }, [courseSlug, selectedCourse, isLoadingCourse, fetchCourse]);
 
-  if (isLoadingCourse) {
+    return () => {
+      if (!questionId) {
+        setSelectedCourse(null);
+        setQuestionsContent([]);
+      }
+    };
+  }, [data, setSelectedCourse, setQuestionsContent, questionId]);
+
+  if (isLoading) {
     return <CourseContentSkeleton />;
   }
 
@@ -33,9 +39,5 @@ export const CoursePage = () => {
     return <Outlet />;
   }
 
-  return (
-    <>
-      <CourseContent />
-    </>
-  );
+  return <CourseContent />;
 };

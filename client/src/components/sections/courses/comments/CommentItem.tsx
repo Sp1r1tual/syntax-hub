@@ -23,6 +23,8 @@ interface ICommentItemProps {
   comment: ICommentData;
   activeReplyId: string | null;
   level?: number;
+  isReplySubmitting?: boolean;
+  isEditSubmitting?: boolean;
   onDelete: (id: string) => void;
   onReply: (parentId: string, text: string, images: File[]) => void;
   onEdit: (id: string, text: string, images?: File[]) => void;
@@ -38,6 +40,8 @@ export const CommentItem = ({
   onLike,
   activeReplyId,
   onSetActiveReply,
+  isReplySubmitting = false,
+  isEditSubmitting = false,
   level = 1,
 }: ICommentItemProps) => {
   const currentUserId = useAuthStore((state) => state.user?.id);
@@ -121,6 +125,8 @@ export const CommentItem = ({
           onLike={onLike}
           activeReplyId={activeReplyId}
           onSetActiveReply={onSetActiveReply}
+          isReplySubmitting={isReplySubmitting}
+          isEditSubmitting={isEditSubmitting}
           level={level + 1}
         />
       </div>
@@ -261,6 +267,7 @@ export const CommentItem = ({
                   onCancel={() => onSetActiveReply(null)}
                   isReply
                   initialText={`${comment.username}, `}
+                  isSubmitting={isReplySubmitting}
                 />
               </div>
             )}
@@ -279,6 +286,7 @@ export const CommentItem = ({
               isReply
               initialText={comment.text}
               initialImages={comment.images}
+              isSubmitting={isEditSubmitting}
             />
           </div>
         </div>

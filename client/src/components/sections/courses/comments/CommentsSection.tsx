@@ -1,9 +1,14 @@
-import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import { IEditComment } from "@/common/types";
 
-import { useCommentsStore } from "@/store/courses/useCommentsStore";
+import {
+  useComments,
+  useReplyToComment,
+  useEditComment,
+  useToggleLike,
+  useDeleteComment,
+} from "@/hooks/queries/useCommentsQueries";
 
 import { CommentsSkeleton } from "@/components/ui/skeletons/CommentsSkeleton";
 import { CommentsList } from "./CommentsList";
@@ -17,24 +22,16 @@ import styles from "./styles/CommentsSection.module.css";
 export const CommentsSection = () => {
   const { questionId } = useParams<{ questionId: string }>();
 
-  const comments = useCommentsStore((state) => state.comments);
-  const totalCount = useCommentsStore((state) => state.totalCount);
-  const fetchComments = useCommentsStore((state) => state.fetchComments);
-  const deleteComment = useCommentsStore((state) => state.deleteComment);
-  const replyToComment = useCommentsStore((state) => state.replyToComment);
-  const toggleLike = useCommentsStore((state) => state.toggleLike);
-  const editComment = useCommentsStore((state) => state.editComment);
-  const isLoading = useCommentsStore((state) => state.isLoading);
-  const error = useCommentsStore((state) => state.error);
+  const { data: comments = [], isLoading, error } = useComments(questionId);
+  const replyMutation = useReplyToComment(questionId || "");
+  const editMutation = useEditComment(questionId || "");
+  const toggleLikeMutation = useToggleLike(questionId || "");
+  const deleteMutation = useDeleteComment(questionId || "");
 
-  useEffect(() => {
-    if (questionId) {
-      fetchComments(questionId);
-    }
-  }, [questionId, fetchComments]);
+  const totalCount = comments.length;
 
   const handleDelete = async (id: string) => {
-    await deleteComment(id);
+    await deleteMutation.mutateAsync(id);
   };
 
   const handleReply = async (
@@ -42,11 +39,14 @@ export const CommentsSection = () => {
     text: string,
     images: File[],
   ) => {
-    await replyToComment(parentId, { text, images });
+    await replyMutation.mutateAsync({
+      commentId: parentId,
+      data: { text, images },
+    });
   };
 
   const handleLike = async (id: string) => {
-    await toggleLike(id);
+    await toggleLikeMutation.mutateAsync(id);
   };
 
   const handleEdit = async (id: string, text: string, images?: File[]) => {
@@ -56,7 +56,10 @@ export const CommentsSection = () => {
       editData.images = images;
     }
 
-    await editComment(id, editData);
+    await editMutation.mutateAsync({
+      commentId: id,
+      data: editData,
+    });
   };
 
   const getCommentsLabel = (count: number) =>
@@ -66,7 +69,9 @@ export const CommentsSection = () => {
     return <CommentsSkeleton />;
   }
 
-  if (error) return <ErrorWrapper error={error} />;
+  if (error) {
+    return <ErrorWrapper error={error.message || "Помилка завантаження"} />;
+  }
 
   return (
     <section className={styles.section}>
@@ -77,7 +82,9 @@ export const CommentsSection = () => {
               <img src={commentSvg} alt="Comments" />
               <h3>Коментарі</h3>
             </div>
-            <Link to="/comment-rules">Прочитайте це, перш ніж коментувати</Link>
+            <Link to="/community-rules">
+              Прочитайте це, перш ніж коментувати
+            </Link>
           </div>
         </header>
 
@@ -99,6 +106,8 @@ export const CommentsSection = () => {
           onReply={handleReply}
           onLike={handleLike}
           onEdit={handleEdit}
+          isReplySubmitting={replyMutation.isPending}
+          isEditSubmitting={editMutation.isPending}
         />
       </div>
     </section>

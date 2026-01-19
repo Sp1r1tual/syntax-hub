@@ -3,7 +3,6 @@ import { useCommentInput } from "@/hooks/useCommentInput";
 
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useModalsStore } from "@/store/modal/useModalsStore";
-import { useCommentsStore } from "@/store/courses/useCommentsStore";
 
 import { CloseButton } from "@/components/ui/buttons/CloseButton";
 import { CommonCounter } from "@/components/ui/counters/CommonCounter";
@@ -20,6 +19,7 @@ interface ICommentTextareaProps {
   isReply?: boolean;
   initialText?: string;
   initialImages?: { id: string; order: number; src: string }[];
+  isSubmitting?: boolean;
   onSubmit?: (text: string, images: File[]) => void;
   onCancel?: () => void;
 }
@@ -32,6 +32,7 @@ export const CommentTextarea = ({
   isReply = false,
   initialText = "",
   initialImages = [],
+  isSubmitting = false,
 }: ICommentTextareaProps) => {
   const generatedId = useId();
 
@@ -58,7 +59,6 @@ export const CommentTextarea = ({
 
   const { user } = useAuthStore();
   const { openAuthModal } = useModalsStore();
-  const { isSubmitting } = useCommentsStore();
 
   useEffect(() => {
     if (initialText) {

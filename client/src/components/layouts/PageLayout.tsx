@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useMatches, useParams } from "react-router-dom";
 
 import { useCoursesStore } from "@/store/courses/useCoursesStore";
+import { useCoursesList } from "@/hooks/queries/useCoursesQueries";
 
 import { Navbar } from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/Footer";
@@ -12,7 +13,8 @@ export const PageLayout = () => {
   const matches = useMatches();
   const { courseSlug } = useParams();
 
-  const { selectedCourse, coursesList } = useCoursesStore();
+  const { selectedCourse } = useCoursesStore();
+  const { data: coursesData } = useCoursesList();
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -22,8 +24,8 @@ export const PageLayout = () => {
     if (courseSlug) {
       if (selectedCourse && selectedCourse.slug === courseSlug) {
         title = `${selectedCourse.title} | SyntaxHub`;
-      } else {
-        for (const group of coursesList) {
+      } else if (coursesData) {
+        for (const group of coursesData.groups) {
           const course = group.courses.find((c) => c.slug === courseSlug);
 
           if (course) {
@@ -46,7 +48,7 @@ export const PageLayout = () => {
     }
 
     if (title) document.title = title;
-  }, [matches, courseSlug, selectedCourse, coursesList]);
+  }, [matches, courseSlug, selectedCourse, coursesData]);
 
   return (
     <>

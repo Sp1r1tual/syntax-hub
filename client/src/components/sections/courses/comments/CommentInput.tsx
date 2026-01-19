@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/store/auth/useAuthStore";
-import { useCommentsStore } from "@/store/courses/useCommentsStore";
+import { useSendComment } from "@/hooks/queries/useCommentsQueries";
 
 import { CommentTextarea } from "./CommentTextarea";
 
@@ -13,12 +13,12 @@ interface ICommentInputProps {
 
 export const CommentInput = ({ questionId }: ICommentInputProps) => {
   const { user } = useAuthStore();
-  const sendComment = useCommentsStore((state) => state.sendComment);
+  const { mutateAsync: sendComment, isPending } = useSendComment(questionId);
 
   const isDefaultAvatar = !user?.avatar;
 
   const handleSubmit = async (text: string, images: File[]) => {
-    await sendComment(questionId, { text, images });
+    await sendComment({ text, images });
   };
 
   return (
@@ -36,6 +36,7 @@ export const CommentInput = ({ questionId }: ICommentInputProps) => {
         placeholder="Приєднатися до обговорення..."
         submitText="Коментувати"
         onSubmit={handleSubmit}
+        isSubmitting={isPending}
       />
     </div>
   );

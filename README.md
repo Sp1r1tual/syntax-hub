@@ -36,6 +36,7 @@ The project has served as a testing ground for experimenting with UX/UI design, 
 
 - TypeScript
 - React
+- TanStack Query
 - Axios
 - Zustand
 - React Router

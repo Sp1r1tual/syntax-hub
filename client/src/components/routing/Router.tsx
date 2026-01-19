@@ -74,7 +74,7 @@ export const Router = createBrowserRouter([
             handle: { title: "Політика приватності | SyntaxHub" },
           },
           {
-            path: "/comment-rules",
+            path: "/community-rules",
             element: <CommentsRulesPage />,
             handle: { title: "Правила спільноти | SyntaxHub" },
           },

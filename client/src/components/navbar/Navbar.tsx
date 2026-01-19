@@ -10,7 +10,7 @@ import { ThemeButton } from "../ui/buttons/ThemeButton";
 import { GoogleAuthButton } from "../ui/buttons/GoogleAuthButton";
 import { ProfileButton } from "../ui/buttons/ProfileButton";
 
-import { MENU_CONFIG } from "@/common/configs/navbarConfigsMenu";
+import { MENU_CONFIG } from "@/common/configs/ui/navbarConfigsMenu";
 
 import NavbarHeaderPng from "@/assets/navbar-header.png";
 import BurgerMenuSvg from "@/assets/burger-menu.svg";
