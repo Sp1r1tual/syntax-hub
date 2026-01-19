@@ -25,7 +25,7 @@ export const UserResponseSchema = z.object({
   email: z.string(),
   name: z.string().nullable(),
   avatar: z.string().nullable(),
-  socials: SocialsSchema.optional(),
+  socials: SocialsSchema.optional().nullable(),
   role: z.enum(UserRole),
   createdAt: z.date(),
   updatedAt: z.date(),
