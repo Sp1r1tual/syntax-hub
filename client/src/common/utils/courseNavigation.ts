@@ -1,4 +1,4 @@
-import { ICourseNavigation, ITopic } from "@/types/courses";
+import { ICourseNavigation, ITopic } from "../types";
 
 interface INavigation {
   topicIndex: number;

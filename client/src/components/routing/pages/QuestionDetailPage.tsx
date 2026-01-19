@@ -18,8 +18,7 @@ export const QuestionDetailPage = () => {
 
   const { setTopic } = useCourseSidebarStore();
 
-  const { selectedCourse, getQuestionDetail, isLoadingCourse } =
-    useCoursesStore();
+  const { selectedCourse, getQuestionDetail } = useCoursesStore();
 
   const navigation = findQuestionNavigation(selectedCourse, questionId);
 
@@ -36,7 +35,7 @@ export const QuestionDetailPage = () => {
     }
   }, [navigation, setTopic]);
 
-  if (isLoadingCourse || !selectedCourse) {
+  if (!selectedCourse) {
     return null;
   }
 
