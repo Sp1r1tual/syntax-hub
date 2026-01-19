@@ -231,6 +231,7 @@ export const CommentItem = ({
               )}
 
               <CommentHeader
+                userId={comment.userId}
                 username={comment.username}
                 formattedDate={formattedDate}
                 isEdited={isEdited}

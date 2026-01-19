@@ -1,3 +1,5 @@
+import { IUser } from "../auth/auth";
+
 export interface ISocials {
   telegramUrl?: string | undefined;
   githubUrl?: string | undefined;
@@ -9,3 +11,5 @@ export interface IUpdateUserProfilePayload {
   avatar?: File;
   socials?: ISocials;
 }
+
+export type PublicUserType = Omit<IUser, "roles">;

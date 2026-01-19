@@ -1,4 +1,8 @@
-import { IUser, IUpdateUserProfilePayload } from "@/common/types";
+import {
+  IUser,
+  IUpdateUserProfilePayload,
+  PublicUserType,
+} from "@/common/types";
 
 import { $apiMain } from "@/api";
 
@@ -19,5 +23,13 @@ export class UsersService {
     }
 
     return $apiMain.patch<IUser>("users/me/update", formData);
+  }
+
+  static async getPublicUser(userId: string) {
+    const response = await $apiMain.get<{ user: PublicUserType }>(
+      `/users/${userId}`,
+    );
+
+    return response.data.user;
   }
 }

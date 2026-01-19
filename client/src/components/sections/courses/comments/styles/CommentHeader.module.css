@@ -20,6 +20,10 @@
     sans-serif;
 }
 
+.username:hover {
+  text-decoration: underline;
+}
+
 .createdAt {
   font-size: 0.85rem;
   color: var(--text-muted);

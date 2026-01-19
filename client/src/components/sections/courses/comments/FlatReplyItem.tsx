@@ -80,6 +80,7 @@ export const FlatReplyItem = ({
                 )}
 
                 <CommentHeader
+                  userId={reply.userId}
                   username={reply.username}
                   formattedDate={formattedDate}
                   isEdited={isEdited}

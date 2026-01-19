@@ -1,11 +1,9 @@
-import { IUser } from "../auth/auth";
+import { PublicUserType } from "../users/users";
 
 export interface ICategoryGroup {
   key: string;
   title: string;
 }
-
-export type CourseAuthorType = Omit<IUser, "roles">;
 
 export type QuestionStatusType = "repeat" | "learned";
 
@@ -44,7 +42,7 @@ export interface ICourseNavigation {
   description: string | null;
   icon?: string;
   group: ICategoryGroup;
-  authors: CourseAuthorType[];
+  authors: PublicUserType[];
   topics: ITopic[];
   createdAt: string;
   updatedAt: string;
