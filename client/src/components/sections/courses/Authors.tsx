@@ -32,9 +32,11 @@ export const Authors = ({ authors }: IAuthorsProps) => {
     openPublicProfileModal(authorId);
   };
 
+  const title = authors.length === 1 ? "Автор курсу" : "Автори курсу";
+
   return (
     <section>
-      <h3 className={styles.title}>Автори курсу</h3>
+      <h3 className={styles.title}>{title}</h3>
 
       <div className={styles.authorsWrapper}>
         {authors.map((author, idx) => (
@@ -45,17 +47,20 @@ export const Authors = ({ authors }: IAuthorsProps) => {
             }}
             className={styles.authorCard}
           >
-            <img
-              src={author.avatar}
-              alt={author.name ?? "Avatar"}
-              className={styles.authorAvatar}
-            />
-            <a
-              className={styles.authorName}
-              onClick={() => openPublicProfile(author.id)}
-            >
-              {author.name ?? "Не вказано"}
-            </a>
+            <div className={styles.infoWrapper}>
+              <img
+                src={author.avatar}
+                alt={author.name ?? "Avatar"}
+                className={styles.authorAvatar}
+              />
+              <a
+                className={styles.authorName}
+                onClick={() => openPublicProfile(author.id)}
+              >
+                {author.name ?? "Не вказано"}
+              </a>
+            </div>
+
             <div className={styles.authorSocials}>
               {author.socials?.telegramUrl && (
                 <a

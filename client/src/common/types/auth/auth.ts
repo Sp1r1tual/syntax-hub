@@ -5,7 +5,7 @@ export interface IUser {
   email: string;
   name: string | null;
   avatar?: string;
-  socials: ISocials;
+  socials?: ISocials | undefined;
   roles: Array<{
     role: {
       key: string;

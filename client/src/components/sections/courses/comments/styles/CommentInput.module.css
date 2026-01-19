@@ -12,17 +12,15 @@
   object-fit: cover;
   border-radius: 0.5rem;
   border: 2px solid var(--border-color);
-  background-color: whitesmoke;
-  flex-shrink: 0;
 }
 
 .profileAvatarImg {
   width: 3.5rem;
   height: 3.5rem;
   object-fit: cover;
+  background-color: whitesmoke;
   border-radius: 0.5rem;
   border: 2px solid var(--border-color);
-  flex-shrink: 0;
 }
 
 @media (max-width: 720px) {

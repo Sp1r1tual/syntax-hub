@@ -25,10 +25,6 @@ export const CommentsList = ({
 }: ICommentsListProps) => {
   const [activeReplyId, setActiveReplyId] = useState<string | null>(null);
 
-  if (!comments || comments.length === 0) {
-    return <div>Поки що немає коментарів</div>;
-  }
-
   return (
     <div>
       {comments.map((comment) => (

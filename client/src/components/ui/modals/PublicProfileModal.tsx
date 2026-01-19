@@ -8,14 +8,14 @@ import { useUserStore } from "@/store/users/useUserStore";
 import { ModalWrapper } from "./ModalWrapper";
 import { Socials } from "@/components/profile/Socials";
 
-import DefaultAvatar from "@/assets/avatar-default.svg";
+import defaultAvatarSvg from "@/assets/avatar-default.svg";
 
 import styles from "./styles/PublicProfileModal.module.css";
 
 export const PublicProfileModal = () => {
   const { isPublicProfileModalOpen, closePublicProfileModal, publicUserId } =
     useModalsStore();
-  const { isLoading, reset, fetchPublicUser, publicUser } = useUserStore();
+  const { isLoading, fetchPublicUser, publicUser } = useUserStore();
 
   const isDefaultAvatar = !publicUser?.avatar;
 
@@ -27,7 +27,6 @@ export const PublicProfileModal = () => {
 
   const handleClose = () => {
     closePublicProfileModal();
-    reset();
   };
 
   return (
@@ -70,7 +69,7 @@ export const PublicProfileModal = () => {
           <div className={styles.infoWrapper}>
             <div className={styles.imgWrapper}>
               <img
-                src={publicUser?.avatar || DefaultAvatar}
+                src={publicUser?.avatar || defaultAvatarSvg}
                 alt="Avatar"
                 className={
                   isDefaultAvatar

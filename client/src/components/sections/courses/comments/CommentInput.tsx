@@ -25,12 +25,12 @@ export const CommentInput = ({ questionId }: ICommentInputProps) => {
     <div className={styles.wrapper}>
       <img
         src={user?.avatar || defaultAvatarSvg}
+        alt="Avatar"
         className={
           isDefaultAvatar
             ? styles.profileAvatarImg
             : styles.profileAvatarImgUser
         }
-        alt="Avatar"
       />
       <CommentTextarea
         placeholder="Приєднатися до обговорення..."

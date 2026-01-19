@@ -62,8 +62,15 @@ export const CommentsSection = () => {
     });
   };
 
-  const getCommentsLabel = (count: number) =>
-    count === 1 ? "коментар" : "коментарі";
+  const getCommentsLabel = (count: number) => {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+
+    if (mod10 === 1 && mod100 !== 11) return "коментар";
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
+      return "коментарі";
+    return "коментарів";
+  };
 
   if (isLoading) {
     return <CommentsSkeleton />;

@@ -26,10 +26,19 @@ export const useUserStore = create<IUserState>((set) => ({
     try {
       const response = await UsersService.changeProfileInfo(data);
 
-      useAuthStore.getState().setUser({
-        ...useAuthStore.getState().user,
-        ...response.data,
-      });
+      const updatedProfile = response.data.updatedProfile || response.data;
+
+      const currentUser = useAuthStore.getState().user;
+
+      const newUser = {
+        ...currentUser,
+        ...updatedProfile,
+        socials: updatedProfile.socials
+          ? { ...updatedProfile.socials }
+          : currentUser?.socials,
+      };
+
+      useAuthStore.getState().setUser(newUser);
     } catch (error) {
       set({ error: String(error) });
       throw error;

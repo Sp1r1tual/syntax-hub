@@ -12,4 +12,4 @@ export interface IUpdateUserProfilePayload {
   socials?: ISocials;
 }
 
-export type PublicUserType = Omit<IUser, "roles">;
+export type PublicUserType = Omit<IUser, "roles" | "email">;

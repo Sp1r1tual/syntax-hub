@@ -22,7 +22,10 @@ export class UsersService {
       formData.append("socials", JSON.stringify(data.socials));
     }
 
-    return $apiMain.patch<IUser>("users/me/update", formData);
+    return $apiMain.patch<{ updatedProfile: IUser }>(
+      "users/me/update",
+      formData,
+    );
   }
 
   static async getPublicUser(userId: string) {
