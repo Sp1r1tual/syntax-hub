@@ -9,7 +9,7 @@ import {
 import { Throttle } from "@nestjs/throttler";
 
 import { GetUserId } from "src/auth/decorators";
-import { JwtAuthGuard } from "src/auth/guards/index";
+import { JwtAuthGuard, OptionalJwtAuthGuard } from "src/auth/guards/index";
 
 import { CoursesService } from "./courses.service";
 
@@ -23,6 +23,7 @@ export class CoursesController {
   }
 
   @Get(":slug")
+  @UseGuards(OptionalJwtAuthGuard)
   async getCourseBySlug(
     @Param("slug") slug: string,
     @GetUserId(true) userId: string | undefined,

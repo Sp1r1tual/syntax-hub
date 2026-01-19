@@ -1,7 +1,7 @@
 import { Controller, Get, UseGuards, Patch, Param } from "@nestjs/common";
 import { Throttle } from "@nestjs/throttler";
 
-import { JwtAuthGuard } from "src/auth/guards/index";
+import { JwtAuthGuard, OptionalJwtAuthGuard } from "src/auth/guards/index";
 import { GetUserId } from "src/auth/decorators";
 
 import { CommunityService } from "./community.service";
@@ -11,6 +11,7 @@ export class CommunityController {
   constructor(private readonly communityService: CommunityService) {}
 
   @Get("news")
+  @UseGuards(OptionalJwtAuthGuard)
   async getNews(@GetUserId(true) userId: string | undefined) {
     return this.communityService.getNews(userId);
   }

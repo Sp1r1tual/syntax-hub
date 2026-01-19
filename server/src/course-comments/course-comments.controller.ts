@@ -13,7 +13,7 @@ import {
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { Throttle } from "@nestjs/throttler";
 
-import { JwtAuthGuard } from "src/auth/guards/index";
+import { JwtAuthGuard, OptionalJwtAuthGuard } from "src/auth/guards/index";
 import { GetUserId } from "src/auth/decorators";
 
 import { CommentsService } from "./course-comments.service";
@@ -23,6 +23,7 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Get("comments/:questionId")
+  @UseGuards(OptionalJwtAuthGuard)
   async getComments(
     @Param("questionId") questionId: string,
     @GetUserId(true) userId: string | undefined,
