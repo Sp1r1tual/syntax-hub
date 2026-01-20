@@ -18,6 +18,10 @@
   text-decoration: underline;
 }
 
+.toggleRepliesBtn:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 720px) {
   .downRow {
     gap: 0.5rem;
