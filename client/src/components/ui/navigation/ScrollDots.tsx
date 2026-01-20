@@ -31,12 +31,25 @@ export const ScrollDots = () => {
   }, []);
 
   const scrollTo = (id: string) => {
+    const element = document.getElementById(id);
+    if (!element) return;
+
     if (id === "hero") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    const navbar = document.getElementById("navbar");
+    const navbarHeight = navbar?.offsetHeight || 0;
+
+    const elementPosition =
+      element.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - navbarHeight - 16;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
   };
 
   return (

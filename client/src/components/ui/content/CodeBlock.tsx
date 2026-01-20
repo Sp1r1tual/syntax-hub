@@ -34,6 +34,7 @@ export const CodeBlock = ({ language, code }: ICodeBlockProps) => {
     el.removeAttribute("data-highlighted");
     el.textContent = code;
     el.className = language ? `language-${language}` : "";
+    el.style.padding = "0";
 
     hljs.highlightElement(el);
   }, [code, language]);

@@ -12,7 +12,7 @@ export const useReopen = ({
   storageKey,
   onReopen,
   excludePaths = [],
-  delay = 100,
+  delay = 150,
 }: IUseReopenModalOptions) => {
   const location = useLocation();
 
@@ -21,15 +21,15 @@ export const useReopen = ({
       return;
     }
 
-    const shouldReopen = sessionStorage.getItem(storageKey);
+    const checkTimer = setTimeout(() => {
+      const shouldReopen = sessionStorage.getItem(storageKey);
 
-    if (shouldReopen === "true") {
-      const timer = setTimeout(() => {
+      if (shouldReopen === "true") {
         onReopen();
         sessionStorage.removeItem(storageKey);
-      }, delay);
+      }
+    }, delay);
 
-      return () => clearTimeout(timer);
-    }
+    return () => clearTimeout(checkTimer);
   }, [location.pathname, storageKey, onReopen, excludePaths, delay]);
 };

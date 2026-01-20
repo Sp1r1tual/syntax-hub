@@ -51,7 +51,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className={styles.navbar}>
+      <nav id="navbar" className={styles.navbar}>
         <div className={styles.links}>
           <div className={styles.leftSide}>
             <Link to="/" className={styles.logoWrapper}>

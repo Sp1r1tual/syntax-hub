@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { CommonButton } from "../ui/buttons/CommonButton";
@@ -18,7 +18,7 @@ export const TermsOfUse = () => {
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (location.state?.fromAuthModal) {
       fromAuthModal.current = true;
     }
