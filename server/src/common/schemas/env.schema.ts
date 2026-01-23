@@ -9,6 +9,13 @@ export const envSchema = z.object({
 
   DATABASE_URL: z.string().url(),
 
+  UPSTASH_REDIS_REST_URL: z.string().url({
+    message: "UPSTASH_REDIS_REST_URL must be a valid URL",
+  }),
+  UPSTASH_REDIS_REST_TOKEN: z.string().min(1, {
+    message: "UPSTASH_REDIS_REST_TOKEN is required",
+  }),
+
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_SECRET: z.string(),
   GOOGLE_CALLBACK_URL: z.string().url(),

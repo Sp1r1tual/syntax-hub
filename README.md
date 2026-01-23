@@ -6,7 +6,7 @@
 
 ## Screenshot
 
-![SyntaxHub](https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/news/syntax-hub-page-2.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL25ld3Mvc3ludGF4LWh1Yi1wYWdlLTIucG5nIiwiaWF0IjoxNzY4Nzc4NTY2LCJleHAiOjQ4OTA4NDI1NjZ9.6VinOSPTXj4eqyryqufBwSfYiv-fVsranB1Akrhjkhg)
+![SyntaxHub](https://naqhdzpocsklzkhutzwc.supabase.co/storage/v1/object/sign/syntax-hub/news/syntax-hub-page.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xZDFhZmE1NS00MzFhLTQxMDgtOTE0ZS02NTcxMmE0YjZkNGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzeW50YXgtaHViL25ld3Mvc3ludGF4LWh1Yi1wYWdlLnBuZyIsImlhdCI6MTc2OTEzNzkxMiwiZXhwIjo0ODkxMjAxOTEyfQ.iu5MuIXsertidvFMX7WGCzSEMLgE68jg3O1ljQb_6yU)
 
 ---
 
@@ -21,12 +21,12 @@ The project has served as a testing ground for experimenting with UX/UI design, 
 ## Features
 
 - 🧭 Programming Courses – structured programming courses in text format
-- 🧑‍💻 User Profiles – profiles with the ability to edit name and avatar
+- 🧑‍💻 User Profiles – profiles with the ability to edit name, socials and avatar
 - 🎨 Light & Dark Theme – light and dark modes with instant switching
 - 🔐 Authentication – JWT-based authentication with Google OAuth
 - 💬 Comments – comments for courses, questions, and news with image uploads via paste and drag & drop
 - 📰 News Page – dedicated project news section
-- ❤️ Likes – likes for questions, comments, and news
+- ❤️ Likes – likes comments, and news
 
 ---
 
@@ -41,19 +41,19 @@ The project has served as a testing ground for experimenting with UX/UI design, 
 - Zustand
 - React Router
 - React Error Boundary
-- react-loading-skeleton
-- react-markdown
+- React Loading Skeleton
+- React Markdown
 
 ### Backend
 
-- NestJS
 - TypeScript
+- NestJS
 - Supabase (PostgreSQl)
-- passport-google-oauth20
-- passport-jwt
+- Upstash (Redis)
+- Passport Google Oauth20
+- Passport JWT
 - Cloudinary
 - Zod
-- Throttler
 
 **Architecture**: Client ↔ Server ↔ Database
 

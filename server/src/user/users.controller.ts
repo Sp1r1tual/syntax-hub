@@ -85,7 +85,7 @@ export class UsersController {
     @Param("userId") userId: string,
     @Body() body: z.infer<typeof BanUserSchema>,
   ) {
-    const user = await this.usersService.banUser(userId, body);
+    const user = await this.usersService.banUser(userId, body || {});
     return { user };
   }
 
