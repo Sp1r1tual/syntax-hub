@@ -8,13 +8,20 @@ import {
   UploadedFile,
   UseInterceptors,
   BadRequestException,
+  Post,
+  Delete,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import z from "zod";
 
-import { UpdateUserProfileSchema } from "./schemas/users.schemas";
+import {
+  UpdateUserProfileSchema,
+  BanUserSchema,
+} from "./schemas/users.schemas";
 
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { RolesGuard } from "src/auth/guards/roles.guard";
+import { Roles } from "src/auth/decorators/roles.decorator";
 import { GetUserId } from "src/auth/decorators/get-user-id.decorator";
 
 import { UsersService } from "./users.service";
@@ -68,6 +75,25 @@ export class UsersController {
   @Get(":userId")
   async getPublicUser(@Param("userId") userId: string) {
     const user = await this.usersService.getPublicUser(userId);
+    return { user };
+  }
+
+  @Post(":userId/ban")
+  @UseGuards(RolesGuard)
+  @Roles("ADMIN", "MODERATOR")
+  async banUser(
+    @Param("userId") userId: string,
+    @Body() body: z.infer<typeof BanUserSchema>,
+  ) {
+    const user = await this.usersService.banUser(userId, body);
+    return { user };
+  }
+
+  @Delete(":userId/ban")
+  @UseGuards(RolesGuard)
+  @Roles("ADMIN", "MODERATOR")
+  async unbanUser(@Param("userId") userId: string) {
+    const user = await this.usersService.unbanUser(userId);
     return { user };
   }
 }

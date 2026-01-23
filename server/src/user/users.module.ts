@@ -13,9 +13,10 @@ import { PrismaModule } from "src/prisma/prisma.module";
 import { CloudinaryProvider } from "src/common/providers/cloudinary";
 import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";
+import { TokenBlacklistModule } from "src/auth/token-blacklist.module";
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, TokenBlacklistModule],
   providers: [UsersService, CloudinaryProvider],
   controllers: [UsersController],
   exports: [UsersService],

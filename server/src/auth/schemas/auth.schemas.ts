@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { UserRole } from "@prisma/client";
 
-export const UserRoleSchema = z.nativeEnum(UserRole);
+const UserRoleEnum = z.enum(Object.values(UserRole) as [string, ...string[]]);
 
 export const RefreshTokenSchema = z.object({
   refreshToken: z.string().min(1, "Refresh token is required"),
@@ -52,7 +52,7 @@ export const GoogleAuthUserSchema = z.object({
   email: z.string().email(),
   name: z.string().nullable(),
   avatar: z.string().url().nullable(),
-  role: UserRoleSchema,
+  role: UserRoleEnum,
   createdAt: z.date(),
   updatedAt: z.date(),
   accessToken: z.string(),
@@ -61,12 +61,13 @@ export const GoogleAuthUserSchema = z.object({
 
 export const JwtPayloadSchema = z.object({
   userId: z.string(),
-  role: UserRoleSchema,
+  role: UserRoleEnum,
   iat: z.number().optional(),
   exp: z.number().optional(),
 });
 
 export const JwtUserSchema = z.object({
   userId: z.string(),
-  role: UserRoleSchema,
+  role: UserRoleEnum,
+  isBanned: z.boolean().optional(),
 });

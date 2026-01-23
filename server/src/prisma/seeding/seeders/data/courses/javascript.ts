@@ -468,7 +468,6 @@ console.log(typeof Infinity);     // "number"
 
 console.log(typeof "hello");      // "string"
 console.log(typeof 'world');      // "string"
-console.log(typeof &#96;template&#96;);   // "string"
 
 console.log(typeof true);         // "boolean"
 console.log(typeof false);        // "boolean"

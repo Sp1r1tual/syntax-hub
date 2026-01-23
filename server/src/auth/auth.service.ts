@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  Injectable,
+  UnauthorizedException,
+  ForbiddenException,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { randomBytes } from "crypto";
 
@@ -8,6 +12,7 @@ import { RefreshTokenResponseDto, GoogleAuthUserDto } from "./dto/index";
 
 import { UsersService } from "src/user/users.service";
 import { PrismaService } from "src/prisma/prisma.service";
+import { TokenBlacklistService } from "./token-blacklist.service";
 
 @Injectable()
 export class AuthService {
@@ -15,6 +20,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly tokenBlacklistService: TokenBlacklistService,
   ) {}
 
   async validateOAuthLogin(
@@ -28,7 +34,7 @@ export class AuthService {
 
     await this.cleanupUserTokens(user.id);
 
-    const accessToken = this.createAccessToken(user.id, user.role);
+    const accessToken = this.createAccessToken(user.id, user.role as UserRole);
     const refreshToken = await this.createRefreshToken(user.id);
 
     return GoogleAuthUserDto.create({
@@ -54,6 +60,13 @@ export class AuthService {
   }
 
   async refreshToken(oldToken: string): Promise<RefreshTokenResponseDto> {
+    const isBlacklisted =
+      await this.tokenBlacklistService.isBlacklisted(oldToken);
+
+    if (isBlacklisted) {
+      throw new UnauthorizedException("Token has been revoked");
+    }
+
     const dbToken = await this.prisma.refreshToken.findUnique({
       where: { token: oldToken },
       include: { user: true },
@@ -61,6 +74,10 @@ export class AuthService {
 
     if (!dbToken || dbToken.expiresAt < new Date()) {
       throw new UnauthorizedException("Invalid or expired refresh token");
+    }
+
+    if (dbToken.user.isBanned) {
+      throw new ForbiddenException("Your account has been banned");
     }
 
     await this.prisma.refreshToken.delete({ where: { id: dbToken.id } });

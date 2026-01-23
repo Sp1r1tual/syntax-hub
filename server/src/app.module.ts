@@ -11,6 +11,7 @@ import { UsersModule } from "./user/users.module";
 import { CoursesModule } from "./courses/courses.module";
 import { CommunityModule } from "./community/community.module";
 import { CourseCommentsModule } from "./course-comments/course-comments.module";
+import { TokenBlacklistModule } from "./auth/token-blacklist.module";
 import { PrismaModule } from "./prisma/prisma.module";
 
 import { validateEnv } from "./common/configs/env.validation";
@@ -33,6 +34,7 @@ import { validateEnv } from "./common/configs/env.validation";
     CoursesModule,
     CommunityModule,
     CourseCommentsModule,
+    TokenBlacklistModule,
     PrismaModule,
   ],
   controllers: [AppController],
