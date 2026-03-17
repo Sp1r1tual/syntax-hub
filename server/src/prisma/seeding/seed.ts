@@ -2,6 +2,7 @@ import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
+import { seedUser } from "./seeders/user";
 import { seedGroups } from "./seeders/groups";
 import { seedCourses } from "./seeders/courses";
 import { seedNews } from "./seeders/news";
@@ -13,6 +14,9 @@ export const prisma = new PrismaClient({
 });
 
 async function seed() {
+  console.log("Seeding seed user...");
+  await seedUser();
+
   console.log("Seeding courses groups...");
   await seedGroups();
 
